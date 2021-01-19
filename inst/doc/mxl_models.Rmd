@@ -1,0 +1,172 @@
+---
+title: "Estimating Mixed Logit Models"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Estimating Mixed Logit Models}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+bibliography: "`r here::here('vignettes', 'library.bib')`"
+---
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.retina = 3,
+  comment = "#>"
+)
+library(logitr)
+# Read in results from already estimated models  so that the
+# examples aren't actually run when building this page, otherwise it'll
+# take much longer to build
+mxl_pref <- readRDS(here::here('inst', 'extdata', 'mxl_pref.Rds'))
+mxl_wtp  <- readRDS(here::here('inst', 'extdata', 'mxl_wtp.Rds'))
+wtp_mxl_pref <- readRDS(here::here('inst', 'extdata', 'wtp_mxl_pref.Rds'))
+wtp_mxl_comparison <- readRDS(
+    here::here('inst', 'extdata', 'wtp_mxl_comparison.Rds'))
+```
+
+This vignette demonstrates an example of how to use the `logitr()` function to estimate mixed logit (MXL) models with preference space and WTP space utility parameterizations.
+
+# The data
+
+```{r, child=here::here('man', 'rmdchunks', 'yogurtDataDescription.Rmd')}
+```
+
+In the utility models described below, the data variables are represented as follows:
+
+<div style="width:550px">
+| Symbol | Variable                             |
+|--------|--------------------------------------|
+| $p$                        | The price in US dollars.       |
+| $x_{j}^{\mathrm{Feat}}$     | Dummy variable for whether the newspaper advertisement was shown to the customer.    |
+| $x_{j}^{\mathrm{Hiland}}$ | Dummy variable for the "Highland" brand. |
+| $x_{j}^{\mathrm{Yoplait}}$  | Dummy variable for the "Yoplait" brand.  |
+| $x_{j}^{\mathrm{Dannon}}$   | Dummy variable for the "Dannon" brand.   |
+</div>
+
+# Preference space model
+
+This example will estimate the following mixed logit model in the preference space:
+
+```{r, child=here::here('man', 'rmdchunks', 'mxlPrefExample.Rmd')}
+```
+
+where the parameters $\alpha$, $\beta_1$, $\beta_2$, $\beta_3$, and $\beta_4$ have units of utility. In the example below, we will model $\beta_1$, $\beta_2$, $\beta_3$, and $\beta_4$ as normally distributed across the population. As a result, the model will estimate two parameters for each of these coefficients: a mean (`parname_mu`) and a standard deviation (`parname_sigma`).
+
+To estimate the model, first load the **logitr** package:
+
+```{r eval=FALSE}
+library(logitr)
+```
+
+Estimate the model using the `logitr()` function:
+
+```{r eval=FALSE}
+mxl_pref <- logitr(
+  data       = yogurt,
+  choiceName = 'choice',
+  obsIDName  = 'obsID',
+  parNames   = c('price', 'feat', 'hiland', 'yoplait', 'dannon'),
+  randPars   = c(feat = 'n', hiland = 'n', yoplait = 'n', dannon = 'n'),
+  # You should run a multistart for MXL models since they are non-convex,
+  # but it can take a long time. Here I just use 5 starts for brevity:
+  options    = list(numMultiStarts = 5)
+)
+```
+```
+#> Running Multistart 1 of 5...
+#> Running Multistart 2 of 5...
+#> Running Multistart 3 of 5...
+#> Running Multistart 4 of 5...
+#> Running Multistart 5 of 5...
+#> Done!
+```
+
+Print a summary of the results:
+
+```{r}
+summary(mxl_pref)
+```
+
+The above summary table prints summaries of the estimated coefficients as well as a summary table of the distribution of 10,000 population draws for each normally-distributed model coefficient. The results show that the `feat` attribute has a significant standard deviation coefficient, suggesting that there is considerable heterogeneity across the population for this attribute. In contrast, the `brand` coefficients have small and insignificant standard deviation coefficients.
+
+Compute the WTP implied from the preference space model:
+
+```{r, eval=FALSE}
+wtp_mxl_pref <- wtp(mxl_pref, priceName = "price")
+```
+```{r}
+wtp_mxl_pref
+```
+
+# WTP space model
+
+This example will estimate the following mixed logit model in the WTP space:
+
+```{r, child=here::here('man', 'rmdchunks', 'mxlWtpExample.Rmd')}
+```
+
+where the parameters $\omega_1$, $\omega_2$, $\omega_3$, and $\omega_4$ have units of dollars and $\lambda$ is the scale parameter. In the example below, we will model $\omega_1$, $\omega_2$, $\omega_3$, and $\omega_4$ as normally distributed across the population. As a result, the model will estimate two parameters for each of these coefficients: a mean (`parname_mu`) and a standard deviation (`parname_sigma`).
+
+To estimate the model, first load the **logitr** package:
+
+```{r eval=FALSE}
+library(logitr)
+```
+
+Estimate the model using the `logitr()` function:
+
+```{r eval=FALSE}
+# Extract the WTP computed from the preference space model
+# to use as the initial starting values
+startingValues <- wtp_mxl_pref$Estimate
+
+mxl_wtp <- logitr(
+  data       = yogurt,
+  choiceName = 'choice',
+  obsIDName  = 'obsID',
+  parNames   = c('feat', 'hiland', 'yoplait', 'dannon'),
+  priceName  = 'price',
+  randPars   = c(feat = 'n', hiland = 'n', yoplait = 'n', dannon = 'n'),
+  modelSpace = 'wtp',
+  options    = list(
+    # You should run a multistart for MXL models since they are non-convex,
+    # but it can take a long time. Here I just use 5 starts for brevity:
+    numMultiStarts = 5,
+    # Use the computed WTP from the preference space model as the starting
+    # values for the first run:
+    startVals = startingValues,
+    # Because the computed WTP from the preference space model has values
+    # as large as 8, I increase the boundaries of the random starting values:
+    startParBounds = c(-10, 10)))
+```
+```
+#> Running Multistart 1 of 5...
+#> NOTE: Using user-provided starting values for this run
+#> Running Multistart 2 of 5...
+#> Running Multistart 3 of 5...
+#> Running Multistart 4 of 5...
+#> Running Multistart 5 of 5...
+#> Done!
+```
+
+Print a summary of the results:
+
+```{r}
+summary(mxl_wtp)
+```
+
+If you want to compare the WTP from the two different model spaces, use the `wtpCompare()` function:
+
+```{r, eval=FALSE}
+wtp_mxl_comparison <- wtpCompare(mxl_pref, mxl_wtp, priceName = 'price')
+```
+```{r}
+wtp_mxl_comparison
+```
+
+Note that the WTP will not necessarily be the same between preference space and WTP space MXL models. This is because the distributional assumptions in MXL models imply different distributions on WTP depending on the model space. See Train and Weeks [-@Train2005] and Sonnier, Ainslie, and Otter [-@Sonnier2007] for details on this topic.
+
+# References

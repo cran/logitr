@@ -1,0 +1,176 @@
+---
+title: "Estimating Multinomial Logit Models"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Estimating Multinomial Logit Models}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+bibliography: "`r here::here('vignettes', 'library.bib')`"
+---
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.retina = 3,
+  comment = "#>"
+)
+library(logitr)
+# Read in results from already estimated models  so that the
+# examples aren't actually run when building this page, otherwise it'll
+# take much longer to build
+mnl_pref <- readRDS(here::here('inst', 'extdata', 'mnl_pref.Rds'))
+mnl_wtp  <- readRDS(here::here('inst', 'extdata', 'mnl_wtp.Rds'))
+wtp_mnl_pref <- readRDS(here::here('inst', 'extdata', 'wtp_mnl_pref.Rds'))
+wtp_mnl_comparison <- readRDS(here::here('inst', 'extdata',
+    'wtp_mnl_comparison.Rds'))
+```
+
+This vignette demonstrates an example of how to use the `logitr()` function to estimate multinomial logit (MNL) models with preference space and WTP space utility parameterizations.
+
+# The data
+
+```{r, child=here::here('man', 'rmdchunks', 'yogurtDataDescription.Rmd')}
+```
+
+In the utility models described below, the data variables are represented as follows:
+
+<div style="width:550px">
+| Symbol | Variable                             |
+|--------|--------------------------------------|
+| $p$                        | The price in US dollars.       |
+| $x_{j}^{\mathrm{Feat}}$     | Dummy variable for whether the newspaper advertisement was shown to the customer.    |
+| $x_{j}^{\mathrm{Hiland}}$ | Dummy variable for the "Highland" brand. |
+| $x_{j}^{\mathrm{Yoplait}}$  | Dummy variable for the "Yoplait" brand.  |
+| $x_{j}^{\mathrm{Dannon}}$   | Dummy variable for the "Dannon" brand.   |
+</div>
+
+# Preference space model
+
+This example will estimate the following homogeneous multinomial logit model in the preference space:
+
+```{r, child=here::here('man', 'rmdchunks', 'mnlPrefExample.Rmd')}
+```
+
+where the parameters $\alpha$, $\beta_1$, $\beta_2$, $\beta_3$, and $\beta_4$ have units of utility.
+
+To estimate the model, first load the **logitr** package:
+
+```{r, eval=FALSE}
+library(logitr)
+```
+
+Estimate the model using the `logitr()` function:
+
+```{r, eval=FALSE}
+mnl_pref <- logitr(
+  data       = yogurt,
+  choiceName = 'choice',
+  obsIDName  = 'obsID',
+  parNames   = c('price', 'feat', 'hiland', 'yoplait', 'dannon')
+)
+```
+```
+#> Running Model...
+#> Done!
+```
+
+Print a summary of the results:
+
+```{r}
+summary(mnl_pref)
+```
+
+View the estimated model coefficients:
+
+```{r}
+coef(mnl_pref)
+```
+
+Compute the WTP implied from the preference space model:
+
+```{r, eval=FALSE}
+wtp_mnl_pref <- wtp(mnl_pref, priceName =  "price")
+```
+```{r}
+wtp_mnl_pref
+```
+
+# WTP space model
+
+This example will estimate the following homogeneous multinomial logit model in the WTP space:
+
+```{r, child=here::here('man', 'rmdchunks', 'mnlWtpExample.Rmd')}
+```
+
+where the parameters $\omega_1$, $\omega_2$, $\omega_3$, and $\omega_4$ have units of dollars and $\lambda$ is the scale parameter.
+
+Estimate the model using the `logitr()` function:
+
+```{r eval=FALSE}
+# Extract the WTP computed from the preference space model
+# to use as the initial starting values
+startingValues <- wtp_mnl_pref$Estimate
+
+mnl_wtp <- logitr(
+  data       = yogurt,
+  choiceName = 'choice',
+  obsIDName  = 'obsID',
+  parNames   = c('feat', 'hiland', 'yoplait', 'dannon'),
+  priceName  = 'price',
+  modelSpace = 'wtp',
+  options = list(
+    # Since WTP space models are non-convex, run a multistart:
+    numMultiStarts = 10,
+    # If you want to view the results from each multistart run,
+    # set keepAllRuns=TRUE:
+    keepAllRuns = TRUE,
+    # Use the computed WTP from the preference space model as the starting
+    # values for the first run:
+    startVals = startingValues,
+    # Because the computed WTP from the preference space model has values
+    # as large as 8, I increase the boundaries of the random starting values:
+    startParBounds = c(-10, 10)))
+```
+```
+#> Running Multistart 1 of 10...
+#> NOTE: Using user-provided starting values for this run
+#> Running Multistart 2 of 10...
+#> Running Multistart 3 of 10...
+#> Running Multistart 4 of 10...
+#> Running Multistart 5 of 10...
+#> Running Multistart 6 of 10...
+#> Running Multistart 7 of 10...
+#> Running Multistart 8 of 10...
+#> Running Multistart 9 of 10...
+#> Running Multistart 10 of 10...
+#> Done!
+```
+
+Print a summary of the results:
+
+```{r}
+summary(mnl_wtp)
+```
+
+View the estimated model coefficients:
+
+```{r}
+coef(mnl_wtp)
+```
+
+# Compare WTP from both models
+
+Since WTP space models are non-convex, you cannot be certain that the model reached a global solution, even when using a multi-start. However, homogeneous models in the _preference_ space are convex, so you are guaranteed to find the global solution in that space. Therefore, it can be useful to compute the WTP from the preference space model and compare it against the WTP from the WTP space model. If the WTP values and log-likelihood values from the two model spaces are equal, then the WTP space model is likely at a global solution.
+
+To compare the WTP and log-likelihood values between the preference space and WTP space models, use the `wtpCompare()` function:
+
+```{r, eval=FALSE}
+wtp_mnl_comparison <- wtpCompare(mnl_pref, mnl_wtp, priceName = 'price')
+```
+```{r}
+wtp_mnl_comparison
+```
+
+# References
