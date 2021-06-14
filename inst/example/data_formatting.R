@@ -4,61 +4,42 @@
 # Load logitr package
 library('logitr')
 
-# Preview the yogurt data
-head(yogurt)
+# Set factors for "brand" to the default levels
+yogurt$brand <- factor(yogurt$brand, levels = c(
+  "dannon", "hiland", "weight", "yoplait"))
 
-# ============================================================================
-# Estimate MNL models with different encodings
-
-model_default <- logitr(
-  data       = cars_us,
+mnl_pref_dannon <- logitr(
+  data       = yogurt,
   choiceName = 'choice',
-  obsIDName  = 'obsnum',
-  parNames   = c(
-    'price', 'hev', 'phev10', 'phev20', 'phev40', 'bev75', 'bev100',
-    'bev150', 'american', 'japanese', 'chinese', 'skorean',
-    'phevFastcharge', 'bevFastcharge','opCost', 'accelTime'))
+  obsIDName  = 'obsID',
+  parNames   = c('price', 'feat', 'brand')
+)
 
-# In this model, since the price variable is a "double" variable type,
-# it is modeled as a continuous variable by default:
-typeof(cars_us$price)
-summary(model_default)
+# Set the factors for "brand" so that "weight" is the reference level
+yogurt$brand <- factor(yogurt$brand, levels = c(
+  "weight", "hiland", "yoplait", "dannon"))
 
-# To model price as a categorical variable, simple change it to a
-# "character" or "factor" type:
-cars_us$price <- as.character(cars_us$price)
-typeof(cars_us$price)
-model_character_price <- logitr(
-  data       = cars_us,
+mnl_pref_weight <- logitr(
+  data       = yogurt,
   choiceName = 'choice',
-  obsIDName  = 'obsnum',
-  parNames   = c(
-    'price', 'hev', 'phev10', 'phev20', 'phev40', 'bev75', 'bev100',
-    'bev150', 'american', 'japanese', 'chinese', 'skorean',
-    'phevFastcharge', 'bevFastcharge','opCost', 'accelTime'))
+  obsIDName  = 'obsID',
+  parNames   = c('price', 'feat', 'brand')
+)
 
-# Now price is modeled with a coefficient for all but the first level:
-typeof(cars_us$price)
-summary(model_character_price)
+yogurt <- fastDummies::dummy_cols(yogurt, "brand")
 
-## 2) Create dummy-coded variables
-cars_us_dummy <- dummyCode(df = cars_us, vars = "price")
-model_dummy_price <- logitr(
-  data       = cars_us_dummy,
+mnl_pref_dummies <- logitr(
+  data       = yogurt,
   choiceName = 'choice',
-  obsIDName  = 'obsnum',
+  obsIDName  = 'obsID',
   parNames   = c(
-    "price_15", "price_18", "price_23", "price_32",
-    'hev', 'phev10', 'phev20', 'phev40', 'bev75', 'bev100',
-    'bev150', 'american', 'japanese', 'chinese', 'skorean',
-    'phevFastcharge', 'bevFastcharge','opCost', 'accelTime'))
-
-summary(model_dummy_price)
+    'price', 'feat', 'brand_yoplait', 'brand_dannon', 'brand_weight')
+)
 
 # Save results
-saveRDS(model_default,
-  here::here('inst', 'extdata', 'encoding_model_default.Rds'))
-saveRDS(model_character_price,
-  here::here('inst', 'extdata', 'encoding_model_character_price.Rds'))
-saveRDS(model_dummy_price,
-  here::here('inst', 'extdata', 'encoding_model_dummy_price.Rds'))
+saveRDS(mnl_pref_dannon,
+  here::here('inst', 'extdata', 'mnl_pref_dannon.Rds'))
+saveRDS(mnl_pref_weight,
+  here::here('inst', 'extdata', 'mnl_pref_weight.Rds'))
+saveRDS(mnl_pref_dummies,
+  here::here('inst', 'extdata', 'mnl_pref_dummies.Rds'))

@@ -4,9 +4,6 @@
 # Load logitr package
 library('logitr')
 
-# Preview the cars_us data
-head(cars_us)
-
 # ============================================================================
 # Estimate weighted and unweighted homogeneous MNL models
 
@@ -21,12 +18,11 @@ mnl_wtp_unweighted <- logitr(
     'bevFastcharge','opCost', 'accelTime'),
   priceName = 'price',
   modelSpace = 'wtp',
+  robust = TRUE,
   options = list(
     # Since WTP space models are non-convex, run a multistart:
-    numMultiStarts = 10,
-    # Because the computed WTP from the preference space model has values
-    # as large as 8, I increase the boundaries of the random starting values:
-    startParBounds = c(-10, 10)))
+    numMultiStarts = 10)
+)
 
 # Print a summary of all multistart runs and a summary of the best model
 summary(mnl_wtp_unweighted)
@@ -43,12 +39,11 @@ mnl_wtp_weighted <- logitr(
   priceName = 'price',
   modelSpace = 'wtp',
   weightsName = 'weights', # This is the key argument for enabling weights
+  robust = TRUE,
   options = list(
     # Since WTP space models are non-convex, run a multistart:
-    numMultiStarts = 10,
-    # Because the computed WTP from the preference space model has values
-    # as large as 8, I increase the boundaries of the random starting values:
-    startParBounds = c(-10, 10)))
+    numMultiStarts = 10)
+)
 
 # Print a summary of all multistart runs and a summary of the best model:
 summary(mnl_wtp_weighted)

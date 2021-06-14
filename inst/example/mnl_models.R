@@ -4,9 +4,6 @@
 # Load logitr package
 library('logitr')
 
-# Preview the yogurt data
-head(yogurt)
-
 # ============================================================================
 # Estimate homogeneous MNL models
 
@@ -15,7 +12,8 @@ mnl_pref <- logitr(
   data       = yogurt,
   choiceName = 'choice',
   obsIDName  = 'obsID',
-  parNames   = c('price', 'feat', 'hiland', 'yoplait', 'dannon'))
+  parNames   = c('price', 'feat', 'brand')
+)
 
 # Print a summary of the results:
 summary(mnl_pref)
@@ -28,14 +26,11 @@ wtp_mnl_pref <- wtp(mnl_pref, priceName = 'price')
 wtp_mnl_pref
 
 # Run a MNL model in the WTP Space using a multistart:
-# Extract the WTP computed from the preference space model
-# to use as the initial starting values
-startingValues <- wtp_mnl_pref$Estimate
 mnl_wtp <- logitr(
   data       = yogurt,
   choiceName = 'choice',
   obsIDName  = 'obsID',
-  parNames   = c('feat', 'hiland', 'yoplait', 'dannon'),
+  parNames   = c('feat', 'brand'),
   priceName  = 'price',
   modelSpace = 'wtp',
   options = list(
@@ -46,10 +41,8 @@ mnl_wtp <- logitr(
     keepAllRuns = TRUE,
     # Use the computed WTP from the preference space model as the starting
     # values for the first run:
-    startVals = startingValues,
-    # Because the computed WTP from the preference space model has values
-    # as large as 8, I increase the boundaries of the random starting values:
-    startParBounds = c(-10, 10)))
+    startVals = wtp_mnl_pref$Estimate)
+)
 
 # Print a summary of all multistart runs and a summary of the best model:
 summary(mnl_wtp)

@@ -4,9 +4,6 @@
 # Load logitr package
 library('logitr')
 
-# Preview the yogurt data
-head(yogurt)
-
 # ============================================================================
 # Estimate homogeneous MNL models with interactions
 

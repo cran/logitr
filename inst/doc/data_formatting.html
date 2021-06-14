@@ -26,7 +26,14 @@
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
@@ -135,220 +142,87 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="basic-required-format" class="section level1">
 <h1>Basic required format</h1>
-<p>The <code>data.frame</code> provided to the <code>data</code> argument must be arranged in a particular way (i.e. “long” or <a href="https://r4ds.had.co.nz/tidy-data.html">“tidy”</a> format). Each row should be an alternative from a choice observation. The choice observations do not have to be symmetric (i.e. each choice observation could have a different number of alternatives). The data must include columns for each of the following arguments in the <code>logitr()</code> function:</p>
-<ol style="list-style-type: decimal">
-<li><code>choiceName</code>: A dummy variable that identifies which alternative was chosen (<code>1</code> = chosen, <code>0</code> = not chosen).</li>
-<li><code>obsIDName</code>: A sequence of numbers that identifies each unique choice occasion. For example, if the first three choice occasions had 2 alternatives each, then the first 9 rows of the <code>obsID</code> variable would be .</li>
-<li><code>parNames</code>: The names of the variables that will be used as model covariates. For WTP space models, do <strong>not</strong> include the price variable in <code>parNames</code> - this is provided separately with the <code>priceName</code> argument.</li>
-</ol>
-<p>The data sets included in this package all follow this format (e.g. the <a href="https://jhelvy.github.io/logitr/reference/yogurt.html">yogurt</a> data set).</p>
+<p>The <code>data</code> argument must be provided a <code>data.frame</code> arranged in “long” or “tidy” format <span class="citation">[@Wickham2014]</span>. Each row should be an alternative from a choice observation. The choice observations do not have to be symmetric (i.e. each choice observation could have a different number of alternatives). The data must also include variables for each of the following arguments in the <code>logitr()</code> function:</p>
+<ul>
+<li><code>choiceName</code>: A dummy variable that identifies which alternative was chosen (<code>1</code> is chosen, <code>0</code> is not chosen). Only one alternative should be chosen per choice observation.</li>
+<li><code>obsIDName</code>: A sequence of repeated numbers that identifies each unique choice observation For example, if the first three choice observations had 2 alternatives each, then the first 6 rows of the <code>obsID</code> variable would be <code>1, 1, 2, 2, 3, 3</code>.</li>
+<li><code>parNames</code>: The names of the variables that will be used as model covariates. For WTP space models, the price variable should <strong>not</strong> be included in <code>parNames</code> as it is provided separately with the <code>priceName</code> argument.</li>
+</ul>
+<p>The {logitr} package contains several example data sets that illustrate this data structure. For example, in the <code>yogurt</code> data set, which contains observations of yogurt purchases by a panel of 100 households, each row is an alternative from a choice observation. Choice is identified by the <code>choice</code> column, the observation ID is identified by the <code>obsID</code> column, and the columns <code>price</code>, <code>feat</code>, and <code>brand</code> can be used as model covariates (brand is also broken out into additional dummy-coded columns):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(yogurt)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   id obsID alt choice price feat   brand dannon hiland weight yoplait</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  1     1   1      0   8.1    0  dannon      1      0      0       0</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  1     1   2      0   6.1    0  hiland      0      1      0       0</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  1     1   3      1   7.9    0  weight      0      0      1       0</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  1     1   4      0  10.8    0 yoplait      0      0      0       1</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5  1     2   1      1   9.8    0  dannon      1      0      0       0</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6  1     2   2      0   6.4    0  hiland      0      1      0       0</span></span></code></pre></div>
+<p>This data set also has an <code>alt</code> variable that determines the alternatives included in the choice set of each observation and an <code>id</code> variable that determines the individual (this data set contains repeated observations from each individual).</p>
 </div>
-<div id="continuous-and-discrete-variables" class="section level1">
-<h1>Continuous and discrete variables</h1>
-<p><strong>Numeric variables</strong> are by default estimated with a single “slope” coefficient.</p>
-<p><em>Example</em>: Consider a data frame that contains a <code>price</code> variable with the following three levels: <code>c(10, 15, 20)</code>. Adding <code>price</code> to the <code>parNames</code> argument in the main <code>logitr()</code> function would result in a single <code>price</code> coefficient for the “slope” of the change in price.</p>
-<p><strong>Categorical variables</strong> (i.e. “character” or “factor” type variables) are by default estimated with a coefficient for all but the first “level”, which serves as the “baseline” or <code>&quot;0&quot;</code> level. Categorical variables are automatically “dummy” coded: <code>0</code> for <code>FALSE</code> and <code>1</code> for <code>TRUE</code>.</p>
-<p><em>Example</em>: Consider a data frame that contains a <code>brand</code> variable with the following four levels: <code>c(&quot;dannon&quot;, &quot;hiland&quot;, &quot;weight&quot;, &quot;yoplait&quot;)</code>. Adding <code>brand</code> to the <code>parNames</code> argument in the main <code>logitr()</code> function would result in three covariates: <code>brand_hiland</code>, <code>brand_weight</code>, and <code>brand_yoplait</code>, with <code>brand_dannon</code> serving as the “dummied out” baseline level.</p>
+<div id="continuous-versus-discrete-variables" class="section level1">
+<h1>Continuous versus discrete variables</h1>
+<p>Variables are modeled as either continuous or discrete based on their data <em>type</em>. Numeric variables are by default estimated with a single “slope” coefficient. For example, consider a data frame that contains a <code>price</code> variable with the levels $10, $15, and $20. Adding <code>price</code> to the <code>parNames</code> argument in the main <code>logitr()</code> function would result in a single <code>price</code> coefficient for the “slope” of the change in price.</p>
+<p>In contrast, categorical variables (i.e. <code>character</code> or <code>factor</code> type variables) are by default estimated with a coefficient for all but the first level, which serves as the reference level. The default reference level is determined alphabetically, but it can also be set by modifying the factor levels for that variable. For example, the default reference level for the <code>brand</code> variable is <code>&quot;dannon&quot;</code> as it is alphabetically first. To set <code>&quot;weight&quot;</code> as the reference level, the factor levels can be modified using the <code>factor()</code> function:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>brands <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;weight&quot;</span>, <span class="st">&quot;hiland&quot;</span>, <span class="st">&quot;yoplait&quot;</span>, <span class="st">&quot;dannon&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>yogurt<span class="sc">$</span>brand <span class="ot">&lt;-</span> <span class="fu">factor</span>(yogurt<span class="sc">$</span>brand, <span class="at">levels =</span> brands)</span></code></pre></div>
 </div>
 <div id="creating-dummy-coded-variables" class="section level1">
 <h1>Creating dummy coded variables</h1>
-<p>To model a continuous variable as a discrete variable with a coefficient for all but the first level, there are two options:</p>
-<ol style="list-style-type: decimal">
-<li>Convert the variable to a <code>&quot;character&quot;</code> or <code>&quot;factor&quot;</code> type.</li>
-<li>Create dummy coded variables using the <code>dummyCode()</code> function.</li>
-</ol>
-<p>The second approach of using the <code>dummyCode()</code> function allows the modeler to specify the baseline level. It can also be used to create dummy-coded variables of a categorical variable.</p>
-<p>Details for each approach are provided below.</p>
-<div id="convert-variable-types" class="section level2">
-<h2>1) Convert variable types</h2>
-<p>The simplest way to model a continuous variable as a discrete variable is to convert the column in the data frame to a <code>&quot;character&quot;</code> or <code>&quot;factor&quot;</code> type prior to estimating the model. For example, consider the following model:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>model_default <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data       =</span> cars_us,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">choiceName =</span> <span class="st">&#39;choice&#39;</span>,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsIDName  =</span> <span class="st">&#39;obsnum&#39;</span>,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">parNames   =</span> <span class="fu">c</span>(</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;price&#39;</span>, <span class="st">&#39;hev&#39;</span>, <span class="st">&#39;phev10&#39;</span>, <span class="st">&#39;phev20&#39;</span>, <span class="st">&#39;phev40&#39;</span>, <span class="st">&#39;bev75&#39;</span>, <span class="st">&#39;bev100&#39;</span>,</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;bev150&#39;</span>, <span class="st">&#39;american&#39;</span>, <span class="st">&#39;japanese&#39;</span>, <span class="st">&#39;chinese&#39;</span>, <span class="st">&#39;skorean&#39;</span>,</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;phevFastcharge&#39;</span>, <span class="st">&#39;bevFastcharge&#39;</span>,<span class="st">&#39;opCost&#39;</span>, <span class="st">&#39;accelTime&#39;</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<pre><code>#&gt; Running Model...
-#&gt; Done!</code></pre>
-<p>In this model, since the <code>price</code> variable is a <code>&quot;double&quot;</code> variable type, it is by default modeled as a continuous variable with a single “slope” coefficient:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(cars_us<span class="sc">$</span>price)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;double&quot;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_default)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MODEL SUMMARY: </span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                           </span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Space:    Preference</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Run:          1 of 1</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Iterations:             20</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:  0h:0m:0.47s</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Weights Used?:       FALSE</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 Estimate StdError    tStat   pVal signif</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price          -0.073882 0.002049 -36.0612 0.0000    ***</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hev             0.059741 0.073667   0.8110 0.4174       </span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; phev10          0.086141 0.078725   1.0942 0.2739       </span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; phev20          0.121737 0.079619   1.5290 0.1263       </span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; phev40          0.190580 0.079013   2.4120 0.0159      *</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; bev75          -1.185508 0.087262 -13.5856 0.0000    ***</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; bev100         -0.960710 0.086753 -11.0740 0.0000    ***</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; bev150         -0.707314 0.084204  -8.4000 0.0000    ***</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; american        0.173212 0.058839   2.9438 0.0033     **</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; japanese       -0.027662 0.058507  -0.4728 0.6364       </span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; chinese        -0.758692 0.062305 -12.1771 0.0000    ***</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; skorean        -0.445575 0.060899  -7.3166 0.0000    ***</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; phevFastcharge  0.212802 0.059931   3.5508 0.0004    ***</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; bevFastcharge   0.215705 0.066998   3.2196 0.0013     **</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; opCost         -0.120876 0.004429 -27.2948 0.0000    ***</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; accelTime      -0.125380 0.011587 -10.8207 0.0000    ***</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Fit Values: </span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Log.Likelihood.         -4616.9517861</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null.Log.Likelihood.    -6328.0067827</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AIC.                     9265.9036000</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BIC.                     9372.4427000</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; McFadden.R2.                0.2703940</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adj..McFadden.R2            0.2678655</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number.of.Observations.  5760.0000000</span></span></code></pre></div>
-<p>To model <code>price</code> as a categorical variable, simple change it to a <code>&quot;character&quot;</code> or <code>&quot;factor&quot;</code> type:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cars_us<span class="sc">$</span>price <span class="ot">&lt;-</span> <span class="fu">as.character</span>(cars_us<span class="sc">$</span>price)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(cars_us<span class="sc">$</span>price)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;character&quot;</span></span></code></pre></div>
-<p>Now re-estimate the model:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>model_character_price <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data       =</span> cars_us,</span>
+<p>If you wish to make dummy-coded variables yourself to use them in a model, I recommend using the <code>dummy_cols()</code> function from the <a href="https://github.com/jacobkap/fastDummies">{fastDummies}</a> package. For example, in the code below, I create dummy-coded columns for the <code>brand</code> variable and then use those variables as covariates in a model:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>yogurt <span class="ot">&lt;-</span> fastDummies<span class="sc">::</span><span class="fu">dummy_cols</span>(yogurt, <span class="st">&quot;brand&quot;</span>)</span></code></pre></div>
+<p>The <code>yogurt</code> data frame now has new dummy-coded columns for brand (it actually already had these, but now there are additional ones):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(yogurt)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 x 15</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      id obsID   alt choice price  feat brand   dannon hiland weight yoplait</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     1     1     1      0  8.1      0 dannon       1      0      0       0</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     1     1     2      0  6.10     0 hiland       0      1      0       0</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3     1     1     3      1  7.90     0 weight       0      0      1       0</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4     1     1     4      0 10.8      0 yoplait      0      0      0       1</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5     1     2     1      1  9.80     0 dannon       1      0      0       0</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6     1     2     2      0  6.40     0 hiland       0      1      0       0</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 4 more variables: brand_dannon &lt;int&gt;, brand_hiland &lt;int&gt;,</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   brand_weight &lt;int&gt;, brand_yoplait &lt;int&gt;</span></span></code></pre></div>
+<p>Now I can use those columns as covariates:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mnl_pref_dummies <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data       =</span> yogurt,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">choiceName =</span> <span class="st">&#39;choice&#39;</span>,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsIDName  =</span> <span class="st">&#39;obsnum&#39;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsIDName  =</span> <span class="st">&#39;obsID&#39;</span>,</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">parNames   =</span> <span class="fu">c</span>(</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;price&#39;</span>, <span class="st">&#39;hev&#39;</span>, <span class="st">&#39;phev10&#39;</span>, <span class="st">&#39;phev20&#39;</span>, <span class="st">&#39;phev40&#39;</span>, <span class="st">&#39;bev75&#39;</span>, <span class="st">&#39;bev100&#39;</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;bev150&#39;</span>, <span class="st">&#39;american&#39;</span>, <span class="st">&#39;japanese&#39;</span>, <span class="st">&#39;chinese&#39;</span>, <span class="st">&#39;skorean&#39;</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;phevFastcharge&#39;</span>, <span class="st">&#39;bevFastcharge&#39;</span>,<span class="st">&#39;opCost&#39;</span>, <span class="st">&#39;accelTime&#39;</span>)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<pre><code>#&gt; Running Model...
-#&gt; Done!</code></pre>
-<p>Now <code>price</code> is modeled as a categorical variable with a coefficient for all but the first level:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(cars_us<span class="sc">$</span>price)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;character&quot;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_character_price)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MODEL SUMMARY: </span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                          </span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Space:   Preference</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Run:         1 of 1</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Iterations:            22</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:  0h:0m:0.6s</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Weights Used?:      FALSE</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 Estimate StdError    tStat   pVal signif</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hev             0.062222 0.073722   0.8440 0.3987       </span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; phev10          0.088042 0.078788   1.1175 0.2638       </span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; phev20          0.121140 0.079657   1.5208 0.1284       </span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; phev40          0.192805 0.079087   2.4379 0.0148      *</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; bev75          -1.189301 0.087337 -13.6175 0.0000    ***</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; bev100         -0.962399 0.086843 -11.0820 0.0000    ***</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; bev150         -0.711546 0.084280  -8.4426 0.0000    ***</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; american        0.174072 0.058863   2.9573 0.0031     **</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; japanese       -0.024672 0.058548  -0.4214 0.6735       </span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; chinese        -0.758227 0.062362 -12.1585 0.0000    ***</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; skorean        -0.445432 0.060921  -7.3116 0.0000    ***</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; phevFastcharge  0.211813 0.059977   3.5316 0.0004    ***</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; bevFastcharge   0.217633 0.067059   3.2454 0.0012     **</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; opCost         -0.121119 0.004435 -27.3095 0.0000    ***</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; accelTime      -0.125424 0.011592 -10.8196 0.0000    ***</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price_18       -0.191639 0.054849  -3.4939 0.0005    ***</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price_23       -0.657617 0.057072 -11.5227 0.0000    ***</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price_32       -1.317372 0.060378 -21.8188 0.0000    ***</span></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price_50       -2.546410 0.077090 -33.0317 0.0000    ***</span></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Fit Values: </span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Log.Likelihood.         -4614.4422294</span></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null.Log.Likelihood.    -6328.0067827</span></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AIC.                     9266.8845000</span></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BIC.                     9393.3996000</span></span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; McFadden.R2.                0.2707906</span></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adj..McFadden.R2            0.2677880</span></span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number.of.Observations.  5760.0000000</span></span></code></pre></div>
-</div>
-<div id="create-dummy-coded-variables" class="section level2">
-<h2>2) Create dummy-coded variables</h2>
-<p>For the second option, you can use the <code>dummyCode()</code> function to create new dummy-coded variables for all the levels of a continuous variable and then use those variables in the model:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cars_us_dummy <span class="ot">&lt;-</span> <span class="fu">dummyCode</span>(<span class="at">df =</span> cars_us, <span class="at">vars =</span> <span class="st">&quot;price&quot;</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(cars_us_dummy)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;id&quot;             &quot;obsnum&quot;         &quot;choice&quot;         &quot;hev&quot;           </span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] &quot;phev10&quot;         &quot;phev20&quot;         &quot;phev40&quot;         &quot;bev75&quot;         </span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] &quot;bev100&quot;         &quot;bev150&quot;         &quot;phevFastcharge&quot; &quot;bevFastcharge&quot; </span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] &quot;opCost&quot;         &quot;accelTime&quot;      &quot;american&quot;       &quot;japanese&quot;      </span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [17] &quot;chinese&quot;        &quot;skorean&quot;        &quot;weights&quot;        &quot;price&quot;         </span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [21] &quot;price_15&quot;       &quot;price_18&quot;       &quot;price_23&quot;       &quot;price_32&quot;      </span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [25] &quot;price_50&quot;</span></span></code></pre></div>
-<p>The new <code>cars_us_dummy</code> data frame now contains variables for each level of the <code>price</code> column. This approach allows the modeler to specify the baseline level. In this example, I’ll use the <code>price_50</code> level as the baseline:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model_dummy_price <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data       =</span> cars_us_dummy,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">choiceName =</span> <span class="st">&#39;choice&#39;</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsIDName  =</span> <span class="st">&#39;obsnum&#39;</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">parNames   =</span> <span class="fu">c</span>(</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;price_15&quot;</span>, <span class="st">&quot;price_18&quot;</span>, <span class="st">&quot;price_23&quot;</span>, <span class="st">&quot;price_32&quot;</span>,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;hev&#39;</span>, <span class="st">&#39;phev10&#39;</span>, <span class="st">&#39;phev20&#39;</span>, <span class="st">&#39;phev40&#39;</span>, <span class="st">&#39;bev75&#39;</span>, <span class="st">&#39;bev100&#39;</span>,</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;bev150&#39;</span>, <span class="st">&#39;american&#39;</span>, <span class="st">&#39;japanese&#39;</span>, <span class="st">&#39;chinese&#39;</span>, <span class="st">&#39;skorean&#39;</span>,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;phevFastcharge&#39;</span>, <span class="st">&#39;bevFastcharge&#39;</span>,<span class="st">&#39;opCost&#39;</span>, <span class="st">&#39;accelTime&#39;</span>)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<pre><code>#&gt; Running Model...
-#&gt; Done!</code></pre>
-<p>Now <code>price</code> is modeled with a specified coefficient for all but the <code>price_50</code> level:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_dummy_price)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MODEL SUMMARY: </span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                          </span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Space:   Preference</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Run:         1 of 1</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Iterations:            23</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:  0h:0m:0.7s</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Weights Used?:      FALSE</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 Estimate StdError    tStat   pVal signif</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price_15        2.546463 0.077091  33.0321 0.0000    ***</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price_18        2.354811 0.076783  30.6686 0.0000    ***</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price_23        1.888845 0.075124  25.1431 0.0000    ***</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price_32        1.229120 0.074531  16.4915 0.0000    ***</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hev             0.062127 0.073722   0.8427 0.3994       </span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; phev10          0.087935 0.078787   1.1161 0.2644       </span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; phev20          0.121048 0.079657   1.5196 0.1287       </span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; phev40          0.192727 0.079086   2.4369 0.0148      *</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; bev75          -1.189114 0.087334 -13.6157 0.0000    ***</span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; bev100         -0.962333 0.086842 -11.0814 0.0000    ***</span></span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; bev150         -0.711515 0.084279  -8.4424 0.0000    ***</span></span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; american        0.173844 0.058862   2.9534 0.0032     **</span></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; japanese       -0.024653 0.058548  -0.4211 0.6737       </span></span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; chinese        -0.758252 0.062361 -12.1590 0.0000    ***</span></span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; skorean        -0.445564 0.060921  -7.3138 0.0000    ***</span></span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; phevFastcharge  0.211886 0.059977   3.5328 0.0004    ***</span></span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; bevFastcharge   0.217423 0.067058   3.2423 0.0012     **</span></span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; opCost         -0.121112 0.004435 -27.3084 0.0000    ***</span></span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; accelTime      -0.125420 0.011592 -10.8193 0.0000    ***</span></span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Fit Values: </span></span>
-<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Log.Likelihood.         -4614.4422281</span></span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null.Log.Likelihood.    -6328.0067827</span></span>
-<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AIC.                     9266.8845000</span></span>
-<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BIC.                     9393.3996000</span></span>
-<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; McFadden.R2.                0.2707906</span></span>
-<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adj..McFadden.R2            0.2677880</span></span>
-<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number.of.Observations.  5760.0000000</span></span></code></pre></div>
-</div>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;price&#39;</span>, <span class="st">&#39;feat&#39;</span>, <span class="st">&#39;brand_yoplait&#39;</span>, <span class="st">&#39;brand_dannon&#39;</span>, <span class="st">&#39;brand_weight&#39;</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>Running Model...
+Done!</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mnl_pref_dummies)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MODEL SUMMARY: </span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                           </span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Space:    Preference</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Run:          1 of 1</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Iterations:             18</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:  0h:0m:0.11s</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Exit Status:             3</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Weights Used?:       FALSE</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                Estimate StdError    tStat pVal signif</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price         -0.366581 0.024366 -15.0447    0    ***</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat           0.491412 0.120063   4.0930    0    ***</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brand_yoplait  4.450197 0.187118  23.7828    0    ***</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brand_dannon   3.715575 0.145419  25.5508    0    ***</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brand_weight   3.074399 0.145384  21.1467    0    ***</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Fit Values: </span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -2656.8878788</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Log-Likelihood:    -3343.7419990</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AIC:                     5323.7758000</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BIC:                     5352.7168000</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.2054148</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.2039195</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of Observations:  2412.0000000</span></span></code></pre></div>
 </div>
 
 

@@ -12,48 +12,59 @@ runMultistart <- function(modelInputs) {
     } else {
       message("Running Multistart ", i, " of ", numMultiStarts, "...")
     }
-    logLik <- NA
-    noFirstRunErr <- TRUE
-    while (is.na(logLik)) {
-      tryCatch(
-        {
-          startPars <- getStartPars(modelInputs, i, noFirstRunErr)
-          model <- runModel(modelInputs, startPars)
-          logLik <- model$logLik
-          model$multistartNumber <- i
-        },
-        error = function(e) {
-          warning("ERROR: failed to converge...restarting search")
-        }
-      )
-      if ((i == 1) &
-          is.na(logLik) &
-          (is.null(modelInputs$options$startVals) == FALSE)) {
-        noFirstRunErr <- FALSE
-        warning(
-          "NOTE: User provided starting values did not converge...",
-          "using random starting values now"
-        )
-      }
-    }
+    startTime <- proc.time()
+    model <- makeBlankModel(modelInputs)
+    startPars <- getStartPars(modelInputs, i)
+    tryCatch({
+      model <- runModel(modelInputs, startPars)
+      },
+      error = function(e) { message("ERROR: failed to converge") }
+    )
+    model$startPars <- startPars
+    model$multistartNumber <- i
+    model$time <- proc.time() - startTime
     models[[i]] <- model
   }
   return(models)
 }
 
-getStartPars <- function(modelInputs, i, noFirstRunErr) {
+# Runs the MNL model
+runModel <- function(modelInputs, startPars) {
+  model <- nloptr::nloptr(
+    x0 = startPars,
+    eval_f = modelInputs$evalFuncs$objective,
+    modelInputs = modelInputs,
+    opts = list(
+      "algorithm" = modelInputs$options$algorithm,
+      "xtol_rel"  = modelInputs$options$xtol_rel,
+      "xtol_abs"  = modelInputs$options$xtol_abs,
+      "ftol_rel"  = modelInputs$options$ftol_rel,
+      "ftol_abs"  = modelInputs$options$ftol_abs,
+      print_level = modelInputs$options$printLevel,
+      maxeval     = modelInputs$options$maxeval
+    )
+  )
+  model$logLik <- -1*model$objective # -1 for (+) rather than (-) LL
+  return(model)
+}
+
+getStartPars <- function(modelInputs, i) {
   startPars <- getRandomStartPars(modelInputs)
   if (i == 1) {
-    if (noFirstRunErr & (is.null(modelInputs$options$startVals) == F)) {
+    if (! (is.null(modelInputs$options$startVals))) {
       message("NOTE: Using user-provided starting values for this run")
-      startPars <- modelInputs$options$startVals
-    } else if (noFirstRunErr) {
+      userStartPars <- modelInputs$options$startVals
+      if (length(userStartPars) != length(startPars)) {
+        stop(
+          "Number of user-provided starting values do not match number ",
+          "of model parameters."
+        )
+      }
+      return(userStartPars)
+    } else {
+      # For first run only, use all 0s as the starting parameters
       startPars <- 0 * startPars
     }
-  }
-  if ((i == 2) & noFirstRunErr &
-    (is.null(modelInputs$options$startVals) == F)) {
-    startPars <- 0 * startPars
   }
   startPars <- checkStartPars(startPars, modelInputs)
   return(startPars)
@@ -74,40 +85,24 @@ getRandomStartPars <- function(modelInputs) {
   return(startPars)
 }
 
-# For mxl models in the WTP space, lambda_mu can't be zero
+# For lambda and logN parameters must start with positive numbers
 checkStartPars <- function(startPars, modelInputs) {
-  if (modelInputs$modelSpace == "wtp" &
-    "lambda_mu" %in% modelInputs$parNameList$mu) {
-    if (startPars["lambda_mu"] <= 0) {
-      startPars["lambda_mu"] <- 0.01
-      warning(
-        "lambda_mu must be > 0...",
-        "setting starting point for lambda_mu to 0.01"
-      )
+  lambdaParIDs <- NULL
+  if (modelInputs$modelSpace == "wtp") {
+    lambdaParIDs <- which(grepl("lambda", modelInputs$parNameList$all))
+  }
+  logNParNames <- names(getLogNormParIDs(modelInputs$parSetup))
+  logNParIDs <- c()
+  if (length(logNParNames) > 0) {
+    for (parName in logNParNames) {
+      logNParIDs <- c(logNParIDs,
+                      which(grepl(parName, modelInputs$parNameList$all)))
     }
   }
+  positiveParIDs <- unique(c(lambdaParIDs, logNParIDs))
+  if (length(positiveParIDs) > 0) {
+    startPars[positiveParIDs] <- stats::runif(
+      length(positiveParIDs), 0.01, 0.1)
+  }
   return(startPars)
-}
-
-# Runs the MNL model
-runModel <- function(modelInputs, startPars) {
-  startTime <- proc.time()
-  model <- nloptr::nloptr(
-    x0 = startPars,
-    eval_f = modelInputs$evalFuncs$objective,
-    modelInputs = modelInputs,
-    opts = list(
-      "algorithm" = modelInputs$options$algorithm,
-      "xtol_rel"  = modelInputs$options$xtol_rel,
-      "xtol_abs"  = modelInputs$options$xtol_abs,
-      "ftol_rel"  = modelInputs$options$ftol_rel,
-      "ftol_abs"  = modelInputs$options$ftol_abs,
-      print_level = modelInputs$options$printLevel,
-      maxeval     = modelInputs$options$maxeval
-    )
-  )
-  model$startPars <- startPars
-  model$logLik <- -1 * model$objective # -1 for (+) rather than (-) LL
-  model$time <- proc.time() - startTime
-  return(model)
 }

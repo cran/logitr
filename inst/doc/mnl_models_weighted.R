@@ -29,12 +29,10 @@ mnl_wtp_weighted <- readRDS(
 #      'bevFastcharge','opCost', 'accelTime'),
 #    priceName = 'price',
 #    modelSpace = 'wtp',
+#    robust = TRUE,
 #    options = list(
 #      # Since WTP space models are non-convex, run a multistart:
-#      numMultiStarts = 10,
-#      # Because the computed WTP from the preference space model has values
-#      # as large as 8, I increase the boundaries of the random starting values:
-#      startParBounds = c(-10, 10))
+#      numMultiStarts = 10)
 #  )
 
 ## -----------------------------------------------------------------------------
@@ -55,9 +53,8 @@ summary(cars_us$weights)
 #    priceName = 'price',
 #    modelSpace = 'wtp',
 #    weightsName = 'weights', # This is the key argument for enabling weights
-#    options = list(
-#      numMultiStarts = 10,
-#      startParBounds = c(-10, 10))
+#    robust = TRUE,
+#    options = list(numMultiStarts = 10)
 #  )
 
 ## -----------------------------------------------------------------------------

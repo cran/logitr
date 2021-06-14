@@ -57,5 +57,5 @@ summary(model_price_brand)
 #  )
 
 ## -----------------------------------------------------------------------------
-summary(model_price_brand)
+summary(model_price_feat_mxl)
 

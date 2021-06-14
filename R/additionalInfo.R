@@ -3,11 +3,16 @@
 # ============================================================================
 
 appendModelInfo <- function(model, modelInputs) {
+  if (is_logitr_fail(model)) {
+    # This run failed to converge - return the "blank" model summary
+    return(model)
+  }
   # Compute variables
   coef <- getModelCoefs(model, modelInputs)
   gradient <- getModelGradient(model, modelInputs)
   hessian <- getModelHessian(model, modelInputs)
-  se <- getModelStandErrs(coef, hessian)
+  covariance <- getModelCovariance(model, modelInputs, hessian)
+  se <- getModelStandErrs(covariance)
   logLik <- as.numeric(model$logLik)
   nullLogLik <- -1 * modelInputs$evalFuncs$negLL(coef * 0, modelInputs)
   numObs <- sum(modelInputs$choice)
@@ -19,6 +24,7 @@ appendModelInfo <- function(model, modelInputs) {
     nullLogLik       = nullLogLik,
     gradient         = gradient,
     hessian          = hessian,
+    covariance       = covariance,
     numObs           = numObs,
     numParams        = length(coef),
     startPars        = model$startPars,
@@ -27,11 +33,18 @@ appendModelInfo <- function(model, modelInputs) {
     iterations       = model$iterations,
     message          = model$message,
     status           = model$status,
+    modelType        = modelInputs$modelType,
     modelSpace       = modelInputs$modelSpace,
-    standardDraws    = NA,
-    randParSummary   = NA,
+    priceName        = modelInputs$priceName,
+    parNames         = modelInputs$parNames,
+    randPars         = modelInputs$randPars,
     parSetup         = modelInputs$parSetup,
     weightsUsed      = modelInputs$weightsUsed,
+    clusterName      = modelInputs$clusterName,
+    numClusters      = modelInputs$numClusters,
+    robust           = modelInputs$robust,
+    standardDraws    = NA,
+    randParSummary   = NA,
     options          = options
   ),
   class = "logitr"
@@ -69,7 +82,7 @@ getModelGradient <- function(model, modelInputs) {
   gradient <- -1 * modelInputs$evalFuncs$negGradLL(pars, modelInputs)
   if (modelInputs$options$scaleInputs) {
     scaleFactors <- getModelScaleFactors(model, modelInputs)
-    gradient <- gradient / scaleFactors
+    gradient <- gradient * scaleFactors
   }
   names(gradient) <- names(pars)
   return(gradient)
@@ -113,15 +126,81 @@ getModelScaleFactors <- function(model, modelInputs) {
   }
 }
 
-getModelStandErrs <- function(coef, hessian) {
-  se <- rep(NA, length(coef))
+getModelCovariance <- function(model, modelInputs, hessian) {
+  clusterID <- modelInputs$clusterIDs
+  if (is.null(clusterID) | modelInputs$robust == FALSE) {
+    return(getModelCovarianceNonRobust(hessian))
+  }
+  return(getModelCovarianceRobust(model, modelInputs, hessian))
+
+}
+
+getModelCovarianceRobust <- function(model, modelInputs, hessian) {
+  i <- 0
+  gradientList <- c()
+  clusterID <- modelInputs$clusterIDs
+  for (tempID in sort(unique(clusterID))) {
+    indices <- which(clusterID == tempID)
+    tempModelInputs <- getClusterModelInputs(modelInputs, indices)
+    tempGradient <- getModelGradient(model, tempModelInputs)
+    gradientList <- c(gradientList, tempGradient)
+    i <- i + 1
+  }
+  gradMat <- matrix(gradientList, nrow = i, length(tempGradient), byrow = TRUE)
+  gradMean <- colMeans(gradMat)
+  gradMeans <- c()
+  for (tempID in sort(unique(clusterID))) {
+    gradMeans <- c(gradMeans, gradMean)
+  }
+  gradMeanMat <- matrix(
+    gradMeans, nrow = i, length(tempGradient), byrow = TRUE)
+
+  diffMat <- gradMat - gradMeanMat
+
+  M <- t(diffMat) %*% diffMat
+  smallSampleCorrection <- (i / (i - 1))
+  M <- smallSampleCorrection * M
+  D <- getModelCovarianceNonRobust(hessian)
+  if (any(is.na(D))) {
+    return(D) # If there are NAs the next line will error
+  }
+  covar <- D %*% M %*% D
+  return(covar)
+}
+
+getModelCovarianceNonRobust <- function(hessian) {
+  covariance <- hessian*NA
   tryCatch(
     {
-      se <- diag(sqrt(abs(solve(hessian))))
+      covariance <- solve(-1*hessian)
     },
     error = function(e) {}
   )
-  names(se) <- names(coef)
+  return(covariance)
+}
+
+getClusterModelInputs <- function (modelInputs, indices) {
+  modelInputs$X <- modelInputs$X[indices, ]
+  #Cast to matrix in cases where there is 1 independent variable
+  if(!is.matrix(modelInputs$X)){
+    modelInputs$X <- as.matrix(modelInputs$X)
+  }
+  modelInputs$choice <- modelInputs$choice[indices]
+  modelInputs$price <- modelInputs$price[indices]
+  modelInputs$weights <- modelInputs$weights[indices]
+  modelInputs$obsID <- modelInputs$obsID[indices]
+  modelInputs$clusterIDs <- modelInputs$clusterIDs[indices]
+  return(modelInputs)
+}
+
+getModelStandErrs <- function(covariance) {
+  se <- covariance[1,]*NA
+  tryCatch(
+    {
+      se <- diag(sqrt(abs(covariance)))
+    },
+    error = function(e) {}
+  )
   return(se)
 }
 

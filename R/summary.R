@@ -92,10 +92,7 @@ printMultistartSummary <- function(model) {
 
 printModelSummary <- function(model) {
   coefTable <- getCoefTable(model)
-  statTable <- getStatTable(
-    model$logLik, model$nullLogLik, model$numObs,
-    model$numParams
-  )
+  statTable <- getStatTable(model)
   printLine()
   cat("MODEL SUMMARY:", "\n")
   print(getBasicInfoTable(model))
@@ -128,13 +125,23 @@ getBasicInfoTable <- function(model) {
   modelTime <- convertTime(model$time)
   basicInfoSummary <- data.frame(c(
     modelSpace, modelRun, model$iterations,
-    modelTime, model$weightsUsed
+    modelTime, model$status, model$weightsUsed
   ))
   colnames(basicInfoSummary) <- ""
   row.names(basicInfoSummary) <- c(
-    "Model Space:", "Model Run:",
-    "Iterations:", "Elapsed Time:", "Weights Used?:"
+    "Model Space:", "Model Run:", "Iterations:",
+    "Elapsed Time:", "Exit Status:", "Weights Used?:"
   )
+  if (!is.null(model$robust)) { # Added for backwards compatibility
+    basicInfoSummary <- rbind(basicInfoSummary, model$robust)
+    row.names(basicInfoSummary)[nrow(basicInfoSummary)] <- "robust?"
+  }
+  if (!is.null(model$numClusters)) { # Added for backwards compatibility
+    if (model$numClusters > 0) {
+      basicInfoSummary <- rbind(basicInfoSummary, model$clusterName)
+      row.names(basicInfoSummary)[nrow(basicInfoSummary)] <- "Cluster Name:"
+    }
+  }
   return(basicInfoSummary)
 }
 
@@ -201,18 +208,23 @@ getSignifCodes <- function(pVal) {
   return(signif)
 }
 
-getStatTable <- function(logLik, nullLogLik, numObs, numParams) {
-  aic <- round(2 * numParams - 2 * logLik, 4)
-  bic <- round(log(numObs) * numParams - 2 * logLik, 4)
-  result <- t(data.frame(
-    "Log-Likelihood:"         = logLik,
-    "Null Log-Likelihood:"    = nullLogLik,
-    "AIC:"                    = aic,
-    "BIC:"                    = bic,
-    "McFadden R2:"            = 1 - (logLik / nullLogLik),
-    "Adj. McFadden R2"        = 1 - ((logLik - numParams) / nullLogLik),
-    "Number of Observations:" = numObs
+getStatTable <- function(model) {
+  aic <- round(2 * model$numParams - 2 * model$logLik, 4)
+  bic <- round(log(model$numObs) * model$numParams - 2 * model$logLik, 4)
+  mcR2 <- 1 - (model$logLik / model$nullLogLik)
+  adjMcR2 <- 1 - ((model$logLik - model$numParams) / model$nullLogLik)
+  statTable <- data.frame(c(
+    model$logLik, model$nullLogLik, aic, bic, mcR2, adjMcR2, model$numObs
   ))
-  colnames(result) <- ""
-  return(result)
+  colnames(statTable) <- ""
+  row.names(statTable) <- c(
+    "Log-Likelihood:", "Null Log-Likelihood:", "AIC:", "BIC:", "McFadden R2:",
+    "Adj McFadden R2:" , "Number of Observations:")
+  if (!is.null(model$numClusters)) { # Added for backwards compatibility
+    if (model$numClusters > 0) {
+      statTable <- rbind(statTable, model$numClusters)
+      row.names(statTable)[nrow(statTable)] <- "Number of Clusters"
+    }
+  }
+  return(statTable)
 }

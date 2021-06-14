@@ -1,3 +1,54 @@
+# logitr 0.2.0
+
+## Summary of larger updates:
+
+- New prediction functions: `predictChoices()` and `predictProbs()`, and , depreciated `simulateShares()`.
+- Added robust covariance matrix calculations.
+- Added support for clustering errors.
+- Major modifications to the `recodeData()` function to improve encoding efficiency.
+- Depreciated `dummyCode()`
+
+## Summary of smaller updates:
+
+- Improved documentation across all vignettes for new features.
+- Improved explanation of preference space and WTP space utility models in vignettes.
+
+# logitr 0.1.5
+
+- Added robust covariance matrix calculations.
+- Added support for clustering errors.
+
+# logitr 0.1.4
+
+- Added `predictChoices()` function.
+- Added `predictShares()` function, depreciating `simulateShares()`.
+
+# logitr 0.1.3
+
+- Modified the `recodeData()` and `dummyCode()` functions for improved speed.
+- Updated `simulateShares()` to work with the automatic dummy coding from the revised `recodeData()` and `dummyCode()` functions.
+- Added support for `simulateShares()` to compute shares for multiple sets of alternatives.
+- Added tests for encoding functions
+- Added covariance matrix to model export
+
+## Bugs
+
+- When simulating shares from a WTP model, only accepted a price named "price" rather than something else such as "Price" - fixed this.
+- In `simulateShares()`, the shares were not correctly computed with a WTP space model because price was still being multiplied by -1. This has been corrected.
+- Changes to automatic dummy coding were accidentally ignoring factor levels - that's been fixed.
+
+# logitr 0.1.2
+
+- Fixed bug where model with single variable would error due to a matrix being converted to a vector in the `standardDraws()` function
+- Fixed bug in `getCatVarDummyNames()` - previously used string matching, which can accidentally match with other similarly-named variables.
+- Fixed bug in `rowsum()` where the `reorder` argument was set to `TRUE`, which resulted in wrong logit calculations unless the `obsID` happened to be already sorted.
+
+# logitr 0.1.1
+
+- Changed how failures to converge are handled. Previously would continue to run a while loop. Now it fails and records the failure, along with appropriate changes in summary() and coef().
+- Re-defined the wtp space utility models as B*X - p. Before it was p + B*X and p was re-defined as -1*p.
+- If tidyverse library is loaded, data frames were getting converted to tibbles, which broke some things. Fixed this by forcing the input data to be a data.frame()
+
 # logitr 0.1.0
 
 ## Summary of larger updates:

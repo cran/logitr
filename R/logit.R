@@ -21,7 +21,7 @@
 # Returns the logit fraction for mnl (homogeneous) models
 getMnlLogit <- function(V, obsID) {
   expV <- exp(V)
-  sumExpV <- rowsum(expV, group = obsID)
+  sumExpV <- rowsum(expV, group = obsID, reorder = FALSE)
   repTimes <- as.numeric(table(obsID))
   sumExpVMat <- matrix(rep(sumExpV, times = repTimes), ncol = 1)
   logit <- expV / sumExpVMat
@@ -90,7 +90,7 @@ getMnlHessLL <- function(pars, modelInputs) {
 getMxlLogit <- function(VDraws, obsID) {
   numDraws <- ncol(VDraws)
   expVDraws <- exp(VDraws)
-  sumExpVDraws <- rowsum(expVDraws, group = obsID)
+  sumExpVDraws <- rowsum(expVDraws, group = obsID, reorder = FALSE)
   repTimes <- rep(as.numeric(table(obsID)), each = numDraws)
   sumExpVDrawsMat <- matrix(rep(sumExpVDraws, times = repTimes),
     ncol = numDraws, byrow = FALSE
@@ -257,7 +257,7 @@ getMxlV_pref <- function(betaDraws, X, p) {
   return(VDraws)
 }
 
-# Computes the gradient of the negative likelihood for a mixed logit model.
+# Computes the gradient of the negative likelihood for a mixed logit model
 mxlNegGradLL_pref <- function(X, parSetup, obsID, choice, standardDraws,
                               betaDraws, VDraws, logitDraws, pHat, weights) {
   randParIDs <- getRandParIDs(parSetup)
@@ -283,7 +283,7 @@ mxlNegGradLL_pref <- function(X, parSetup, obsID, choice, standardDraws,
     partial_mu <- Xtemp
     partial_sigma <- Xtemp * drawsMat
     partial <- cbind(partial_mu, partial_sigma)
-    temp <- rowsum(logitMat * partial, group = obsID)
+    temp <- rowsum(logitMat * partial, group = obsID, reorder = FALSE)
     tempMat <- matrix(rep(temp, times = repTimes),
       ncol = ncol(partial),
       byrow = F
@@ -310,7 +310,7 @@ mxlNegGradLL_pref <- function(X, parSetup, obsID, choice, standardDraws,
 getMnlV_wtp <- function(pars, X, p) {
   lambda <- as.numeric(pars[1])
   beta <- as.numeric(pars[2:length(pars)])
-  V <- lambda * (p + (X %*% beta))
+  V <- lambda * ((X %*% beta) - p)
   return(V)
 }
 
@@ -319,7 +319,7 @@ mnlNegGradLL_wtp <- function(p, X, pars, choice, logit, weights) {
   lambda <- as.numeric(pars[1])
   beta <- as.numeric(pars[2:length(pars)])
   weightedLogit <- weights * (choice - logit)
-  gradLLLambda <- t(p + (X %*% beta)) %*% weightedLogit
+  gradLLLambda <- t((X %*% beta) - p) %*% weightedLogit
   gradLLBeta <- lambda * (t(X) %*% weightedLogit)
   negGradLL <- -1 * c(gradLLLambda, gradLLBeta)
   return(negGradLL)
@@ -355,13 +355,15 @@ getDiffMatByObsID_wtp <- function(lambda, beta, p, X, logit, obsID) {
     tempP <- as.matrix(p[indices])
     tempX <- as.matrix(X[indices, ])
     tempLogit <- logit[indices]
-    tempMat <- tempP + (tempX %*% beta)
+    tempMat <- (tempX %*% beta) - tempP
     diffMatLambda[indices, ] <- tempMat - repmat(
       t(tempLogit) %*% tempMat,
       nrow(tempP), 1
     )
-    diffMatBeta[indices, ] <- lambda * tempX - repmat(t(tempLogit) %*% (lambda *
-      tempX), nrow(tempX), 1)
+    diffMatBeta[indices, ] <- lambda * tempX - repmat(
+      t(tempLogit) %*% (lambda * tempX),
+      nrow(tempX), 1
+    )
   }
   return(cbind(diffMatLambda, diffMatBeta))
 }
@@ -377,7 +379,7 @@ getMxlV_wtp <- function(betaDraws, X, p) {
     rep(betaDraws[, 1], nrow(X)), ncol = numDraws, byrow = T)
   gammaDraws <- matrix(betaDraws[, 2:ncol(betaDraws)], nrow = numDraws)
   pMat <- matrix(rep(p, numDraws), ncol = numDraws, byrow = F)
-  return(lambdaDraws * (pMat + X %*% t(gammaDraws)))
+  return(lambdaDraws * (X %*% t(gammaDraws) - pMat))
 }
 
 mxlNegGradLL_wtp <- function(X, parSetup, obsID, choice, standardDraws,
@@ -424,7 +426,7 @@ mxlNegGradLL_wtp <- function(X, parSetup, obsID, choice, standardDraws,
     partial_mu <- cbind(lambda_partial_mu, gamma_partial_mu)
     partial_sigma <- cbind(lambda_partial_sigma, gamma_partial_sigma)
     partial <- cbind(partial_mu, partial_sigma)
-    temp <- rowsum(logitMat * partial, group = obsID)
+    temp <- rowsum(logitMat * partial, group = obsID, reorder = FALSE)
     tempMat <- matrix(rep(temp, times = repTimes),
       ncol = ncol(partial),
       byrow = F

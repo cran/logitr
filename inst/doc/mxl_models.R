@@ -24,8 +24,8 @@ wtp_mxl_comparison <- readRDS(
 #    data       = yogurt,
 #    choiceName = 'choice',
 #    obsIDName  = 'obsID',
-#    parNames   = c('price', 'feat', 'hiland', 'yoplait', 'dannon'),
-#    randPars   = c(feat = 'n', hiland = 'n', yoplait = 'n', dannon = 'n'),
+#    parNames   = c('price', 'feat', 'brand'),
+#    randPars   = c(feat = 'n', brand = 'n'),
 #    # You should run a multistart for MXL models since they are non-convex,
 #    # but it can take a long time. Here I just use 5 starts for brevity:
 #    options    = list(numMultiStarts = 5)
@@ -44,17 +44,13 @@ wtp_mxl_pref
 #  library(logitr)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  # Extract the WTP computed from the preference space model
-#  # to use as the initial starting values
-#  startingValues <- wtp_mxl_pref$Estimate
-#  
 #  mxl_wtp <- logitr(
 #    data       = yogurt,
 #    choiceName = 'choice',
 #    obsIDName  = 'obsID',
-#    parNames   = c('feat', 'hiland', 'yoplait', 'dannon'),
+#    parNames   = c('feat', 'brand'),
 #    priceName  = 'price',
-#    randPars   = c(feat = 'n', hiland = 'n', yoplait = 'n', dannon = 'n'),
+#    randPars   = c(feat = 'n', brand = 'n'),
 #    modelSpace = 'wtp',
 #    options    = list(
 #      # You should run a multistart for MXL models since they are non-convex,
@@ -62,10 +58,8 @@ wtp_mxl_pref
 #      numMultiStarts = 5,
 #      # Use the computed WTP from the preference space model as the starting
 #      # values for the first run:
-#      startVals = startingValues,
-#      # Because the computed WTP from the preference space model has values
-#      # as large as 8, I increase the boundaries of the random starting values:
-#      startParBounds = c(-10, 10)))
+#      startVals = wtp_mxl_pref$Estimate)
+#  )
 
 ## -----------------------------------------------------------------------------
 summary(mxl_wtp)

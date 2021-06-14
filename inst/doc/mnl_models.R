@@ -24,7 +24,7 @@ wtp_mnl_comparison <- readRDS(here::here('inst', 'extdata',
 #    data       = yogurt,
 #    choiceName = 'choice',
 #    obsIDName  = 'obsID',
-#    parNames   = c('price', 'feat', 'hiland', 'yoplait', 'dannon')
+#    parNames   = c('price', 'feat', 'brand')
 #  )
 
 ## -----------------------------------------------------------------------------
@@ -40,15 +40,11 @@ coef(mnl_pref)
 wtp_mnl_pref
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  # Extract the WTP computed from the preference space model
-#  # to use as the initial starting values
-#  startingValues <- wtp_mnl_pref$Estimate
-#  
 #  mnl_wtp <- logitr(
 #    data       = yogurt,
 #    choiceName = 'choice',
 #    obsIDName  = 'obsID',
-#    parNames   = c('feat', 'hiland', 'yoplait', 'dannon'),
+#    parNames   = c('feat', 'brand'),
 #    priceName  = 'price',
 #    modelSpace = 'wtp',
 #    options = list(
@@ -59,10 +55,8 @@ wtp_mnl_pref
 #      keepAllRuns = TRUE,
 #      # Use the computed WTP from the preference space model as the starting
 #      # values for the first run:
-#      startVals = startingValues,
-#      # Because the computed WTP from the preference space model has values
-#      # as large as 8, I increase the boundaries of the random starting values:
-#      startParBounds = c(-10, 10)))
+#      startVals = wtp_mnl_pref$Estimate)
+#  )
 
 ## -----------------------------------------------------------------------------
 summary(mnl_wtp)

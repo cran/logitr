@@ -15,7 +15,8 @@
 #'
 #' @param data The choice data, formatted as a `data.frame` object.
 #' @param choiceName The name of the column that identifies the choice variable.
-#' @param obsIDName The name of the column that identifies the `obsID` variable.
+#' @param obsIDName The name of the column that identifies each choice
+#' observation.
 #' @param parNames The names of the parameters to be estimated in the model.
 #' Must be the same as the column names in the `data` argument. For WTP space
 #' models, do not include price in `parNames`.
@@ -30,6 +31,14 @@
 #' @param modelSpace Set to `'wtp'` for WTP space models. Defaults to `"pref"`.
 #' @param weightsName The name of the column that identifies the weights to be
 #' used in model estimation. Optional. Defaults to `NULL`.
+#' @param clusterName The name of the column that identifies the cluster
+#' groups to be used in model estimation. Optional. Defaults to `NULL`.
+#' @param robust Determines whether or not a robust covariance matrix is
+#' estimated. Defaults to `FALSE`. Specification of a clusterName or
+#' weightsName will override the user setting and set this to `TRUE' (a
+#' warning will be displayed in this case). Replicates the functionality of
+#' Stata's cmcmmixlogit.
+#'
 #' @param options A list of options.
 #'
 #' @details
@@ -46,7 +55,7 @@
 #' |`useAnalyticGrad`|Set to `FALSE` to use numerically approximated gradients instead of analytic gradients during estimation (which is slower).|`TRUE`|
 #' |`scaleInputs`|By default each variable in `data` is scaled to be between 0 and 1 before running the optimization routine because it usually helps with stability, especially if some of the variables have very large or very small values (e.g. `> 10^3` or `< 10^-3`). Set to `FALSE` to turn this feature off.|`TRUE`|
 #' |`standardDraws`|By default, a new set of standard normal draws are generated during each call to `logitr` (the same draws are used during each multistart iteration). The user can override those draws by providing a matrix of standard normal draws if desired.|`NULL`|
-#' |`numDraws`|The number of draws to use for MXL models for the maximum simulated likelihood.|`50`|
+#' |`numDraws`|The number of Halton draws to use for MXL models for the maximum simulated likelihood.|`50`|
 #' |`printLevel`|The print level of the `nloptr` optimization loop. Use `nloptr::nloptr.print.options()` for more details.|`0`|
 #' |`xtol_rel`|The relative `x` tolerance for the `nloptr` optimization loop. Use `nloptr::nloptr.print.options()` for more details.|`1.0e-6`|
 #' |`xtol_abs`|The absolute `x` tolerance for the `nloptr` optimization loop. Use `nloptr::nloptr.print.options()` for more details.|`1.0e-6`|
@@ -66,6 +75,7 @@
 #' |`nullLogLik`|The null log-likelihood value (if all coefficients are 0).|
 #' |`gradient`|The gradient of the log-likelihood at convergence.|
 #' |`hessian`|The hessian of the log-likelihood at convergence.|
+#' |`covariance`|The covariance matrix at convergence.|
 #' |`numObs`|The number of observations.|
 #' |`numParams`|The number of model parameters.|
 #' |`startPars`|The starting values used.|
@@ -75,11 +85,18 @@
 #' |`message`|A more informative message with the status of the optimization result.|
 #' |`status`|An integer value with the status of the optimization (positive values are successes). Use [statusCodes()] for a detailed description.|
 #' |`modelSpace`|The model space (`'pref'` or `'wtp'`).|
+#' |`priceName`|The name of the column that identifies the price variable.|
+#' |`parNames`|The names of the parameters to be estimated in the model.|
+#' |`randPars`|A named vector whose names are the random parameters and values the distribution: `'n'` for normal or `'ln'` for log-normal.|
+#' |`parSetup`|A summary of the distributional assumptions on each model parameter (`"f"`="fixed", `"n"`="normal distribution", `"ln"`="log-normal distribution").|
+#' |`weightsUsed`|`TRUE` or `FALSE` for whether weights were used in the model.|
+#' |`clusterName`|The name of the column used to identify the cluster groups used in model estimation.|
+#' |`numClusters`|The number of clusters.|
+#' |`robust`|`TRUE` or `FALSE` for whether or not a robust covariance matrix was estimated.|
 #' |`standardDraws`|The draws used during maximum simulated likelihood (for MXL models).|
 #' |`randParSummary`|A summary of any random parameters (for MXL models).|
-#' |`parSetup`|A summary of the distributional assumptions on each model parameter (`"f"`="fixed", `"n"`="normal distribution", `"ln"`="log-normal distribution").|
+#' |`multistartSummary`|A summary of the log-likelihood values for each multistart run (if more than one multistart was used).|
 #' |`options`|A list of all the model options.|
-#' |`multistartSummary`|A summary of the log-likelihood values for each multistart run.|
 #'
 #' @export
 #' @examples
@@ -108,13 +125,23 @@
 #'   modelSpace = "wtp"
 #' )
 #' }
-logitr <- function(data, choiceName, obsIDName, parNames, priceName = NULL,
-                   randPars = NULL, randPrice = NULL, modelSpace = "pref",
-                   weightsName = NULL, options = list()) {
+logitr <- function(
+  data,
+  choiceName,
+  obsIDName,
+  parNames,
+  priceName = NULL,
+  randPars = NULL,
+  randPrice = NULL,
+  modelSpace = "pref",
+  weightsName = NULL,
+  clusterName = NULL,
+  robust = FALSE,
+  options = list()
+) {
   modelInputs <- getModelInputs(
-    data, choiceName, obsIDName, parNames,
-    randPars, priceName, randPrice, modelSpace, weightsName,
-    options
+    data, choiceName, obsIDName, parNames, randPars, priceName, randPrice,
+    modelSpace, weightsName, clusterName, robust, options
   )
   allModels <- runMultistart(modelInputs)
   if (modelInputs$options$keepAllRuns) {
@@ -148,21 +175,9 @@ appendAllModelsInfo <- function(allModels, modelInputs) {
   return(result)
 }
 
-getMultistartSummary <- function(models) {
-  summary <- as.data.frame(matrix(0, ncol = 4, nrow = length(models)))
-  colnames(summary) <- c("run", "logLik", "iterations", "status")
-  for (i in seq_len(length(models))) {
-    summary[i, 1] <- i
-    summary[i, 2] <- round(models[[i]]$logLik, 5)
-    summary[i, 3] <- models[[i]]$iterations
-    summary[i, 4] <- models[[i]]$status
-  }
-  return(summary)
-}
-
 getBestModel <- function(models, modelInputs) {
   logLikVals <- getLogLikVals(models)
-  bestModel <- models[[which(logLikVals == max(logLikVals))[1]]]
+  bestModel <- models[[which(logLikVals == max(logLikVals, na.rm = TRUE))[1]]]
   bestModel <- appendModelInfo(bestModel, modelInputs)
   return(bestModel)
 }
@@ -173,4 +188,16 @@ getLogLikVals <- function(models) {
     logLikVals[i] <- models[[i]]$logLik
   }
   return(logLikVals)
+}
+
+getMultistartSummary <- function(models) {
+  summary <- as.data.frame(matrix(0, ncol = 4, nrow = length(models)))
+  colnames(summary) <- c("run", "logLik", "iterations", "status")
+  for (i in seq_len(length(models))) {
+    summary[i, 1] <- i
+    summary[i, 2] <- round(models[[i]]$logLik, 5)
+    summary[i, 3] <- models[[i]]$iterations
+    summary[i, 4] <- models[[i]]$status
+  }
+  return(summary)
 }

@@ -57,6 +57,36 @@ statusCodes <- function() {
   )
 }
 
+makeBlankModel <- function(modelInputs) {
+  result <- structure(list(
+    coef             = NA,
+    standErrs        = NA,
+    logLik           = NA,
+    nullLogLik       = NA,
+    gradient         = NA,
+    hessian          = NA,
+    covariance       = NA,
+    numObs           = NA,
+    numParams        = NA,
+    iterations       = NA,
+    message          = NA,
+    standardDraws    = NA,
+    randParSummary   = NA,
+    status           = -1,
+    modelType        = modelInputs$modelType,
+    modelSpace       = modelInputs$modelSpace,
+    priceName        = modelInputs$priceName,
+    parNames         = modelInputs$parNames,
+    randPars         = modelInputs$randPars,
+    parSetup         = modelInputs$parSetup,
+    weightsUsed      = modelInputs$weightsUsed,
+    options          = modelInputs$options
+  ),
+  class = c("logitr", "logitr.fail")
+  )
+  return(result)
+}
+
 # R equivalent of matlab's repmat function
 repmat <- function(X, m, n) {
   mx <- dim(X)[1]
@@ -119,6 +149,9 @@ is_logitr_multistart <- function(x) {
 }
 is_logitr_allRuns <- function(x) {
   inherits(x, "logitr.allRuns")
+}
+is_logitr_fail <- function(x) {
+  inherits(x, "logitr.fail")
 }
 
 allRunsCheck <- function(model) {
