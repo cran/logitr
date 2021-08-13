@@ -14,88 +14,99 @@ mnl_pref <- readRDS(here::here('inst', 'extdata', 'mnl_pref.Rds'))
 mnl_wtp  <- readRDS(here::here('inst', 'extdata', 'mnl_wtp.Rds'))
 
 ## ---- eval=FALSE--------------------------------------------------------------
-#  model <- logitr(
-#    data,
-#    choiceName,
-#    obsIDName,
-#    parNames,
-#    priceName = NULL,
-#    randPars = NULL,
-#    randPrice = NULL,
-#    modelSpace = "pref",
-#    weightsName = NULL,
-#    options = list()
+#  mnl_pref <- logitr(
+#      data   = yogurt,
+#      choice = "choice",
+#      obsID  = "obsID",
+#      pars   = c("price", "feat", "brand")
 #  )
 
 ## ---- eval=FALSE--------------------------------------------------------------
-#  mnl_pref <- logitr(
-#      data       = yogurt,
-#      choiceName = "choice",
-#      obsIDName  = "obsID",
-#      parNames   = c("price", "brand"))
+#  mnl_wtp <- logitr(
+#      data   = yogurt,
+#      choice = "choice",
+#      obsID  = "obsID",
+#      pars   = c("feat", "brand"),
+#      price  = "price",
+#      modelSpace = "wtp"
 #  )
+
+## -----------------------------------------------------------------------------
+mnl_wtp <- logitr(
+    data   = yogurt,
+    choice = "choice",
+    obsID  = "obsID",
+    pars   = c("feat", "brand"),
+    price  = "price",
+    modelSpace = "wtp",
+    numMultiStarts = 10
+)
 
 ## -----------------------------------------------------------------------------
 summary(mnl_pref)
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  mnl_wtp <- logitr(
-#      data       = yogurt,
-#      choiceName = "choice",
-#      obsIDName  = "obsID",
-#      parNames   = "brand",
-#      priceName  = "price",
-#      modelSpace = "wtp",
-#      options    = list(numMultiStarts = 10)
-#  )
+## -----------------------------------------------------------------------------
+coef(mnl_pref)
+
+## -----------------------------------------------------------------------------
+logLik(mnl_pref)
+
+## -----------------------------------------------------------------------------
+vcov(mnl_pref)
+
+## -----------------------------------------------------------------------------
+sqrt(diag(vcov(mnl_pref)))
+
+## -----------------------------------------------------------------------------
+wtp(mnl_pref, price = "price")
+
+## -----------------------------------------------------------------------------
+wtpCompare(mnl_pref, mnl_wtp, price = "price")
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  mxl_pref <- logitr(
-#      data       = yogurt,
-#      choiceName = "choice",
-#      obsIDName  = "obsID",
-#      parNames   = c("price", "brand"),
-#      randPars   = c(brand = "n"),
-#      options    = list(numMultiStarts = 10)
+#      data     = yogurt,
+#      choice   = 'choice',
+#      obsID    = 'obsID',
+#      pars     = c('price', 'feat', 'brand'),
+#      randPars = c(feat = 'n', brand = 'n'),
+#      numMultiStarts = 10
 #  )
-
-## -----------------------------------------------------------------------------
-wtp(mnl_pref, priceName = "price")
-
-## -----------------------------------------------------------------------------
-wtpCompare(mnl_pref, mnl_wtp, priceName = "price")
 
 ## -----------------------------------------------------------------------------
 alts <- subset(
   yogurt, obsID %in% c(42, 13),
-  select = c('obsID', 'choice', 'price', 'feat', 'brand')
+  select = c('obsID', 'alt', 'choice', 'price', 'feat', 'brand')
 )
 
 alts
 
 ## -----------------------------------------------------------------------------
 probs <- predictProbs(
-  model     = mnl_pref,
-  alts      = alts,
-  obsIDName = "obsID"
+  model = mnl_pref,
+  alts  = alts,
+  altID = "alt",
+  obsID = "obsID"
 )
 
 probs
 
 ## -----------------------------------------------------------------------------
 probs <- predictProbs(
-  model     = mnl_wtp,
-  alts      = alts,
-  obsIDName = "obsID"
+  model = mnl_wtp,
+  alts  = alts,
+  altID = "alt",
+  obsID = "obsID"
 )
 
 probs
 
 ## -----------------------------------------------------------------------------
 choices <- predictChoices(
-  model     = mnl_pref,
-  alts      = yogurt,
-  obsIDName = "obsID"
+  model = mnl_pref,
+  alts  = yogurt,
+  altID = "alt",
+  obsID = "obsID"
 )
 
 # Preview actual and predicted choices

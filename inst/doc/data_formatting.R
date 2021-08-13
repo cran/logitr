@@ -32,10 +32,10 @@ head(yogurt)
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  mnl_pref_dummies <- logitr(
-#    data       = yogurt,
-#    choiceName = 'choice',
-#    obsIDName  = 'obsID',
-#    parNames   = c(
+#    data   = yogurt,
+#    choice = 'choice',
+#    obsID  = 'obsID',
+#    pars   = c(
 #      'price', 'feat', 'brand_yoplait', 'brand_dannon', 'brand_weight')
 #  )
 

@@ -15,54 +15,50 @@
 #' @param alts A data frame of a set of alternatives for which to predict
 #' choices. Each row is an alternative and each column an attribute
 #' corresponding to parameter names in the estimated model.
-#' @param obsIDName The name of the column that identifies each set of
-#' alternatives. Required if simulating results for more than one set of
+#' @param altID The name of the column that identifies each alternative
+#' in each set of alternatives.
+#' @param obsID The name of the column that identifies each set of
+#' alternatives. Required if predicting results for more than one set of
 #' alternatives. Defaults to `NULL` (for a single set of alternatives).
 #'
 #' @return A data frame with the predicted choices for each alternative in
 #' `alts`.
 #' @export
 #' @examples
-#' \dontrun{
-#' # Run a MNL model in the Preference Space:
 #' library(logitr)
 #'
+#' # Estimate a preference space model
 #' mnl_pref <- logitr(
-#'   data = yogurt,
-#'   choiceName = "choice",
-#'   obsIDName = "obsID",
-#'   parNames = c("price", "feat", "brand")
+#'   data   = yogurt,
+#'   choice = "choice",
+#'   obsID  = "obsID",
+#'   pars   = c("price", "feat", "brand")
 #' )
 #'
 #' # You can predict choices for any set of alternative, such as hold out
-#' # samples or within-sample. For this example I will predict choices on
+#' # samples or within-sample. For this example, choices will be predicted for
 #' # the full yogurt data set, which was used to estimate the model.
 #'
-#' # Run the simulation using the preference space MNL model:
-#' choices_mnl_pref <- predictChoices(
-#'   model      = mnl_pref,
-#'   alts       = yogurt,
-#'   obsIDName  = "obsID"
+#' # Predict choices using the estimated preference space MNL model
+#' choices <- predictChoices(
+#'   model = mnl_pref,
+#'   alts  = yogurt,
+#'   altID = "alt",
+#'   obsID = "obsID"
 #' )
 #'
-#' head(choices_mnl_pref)
+#' head(choices)
 #'
 #' # Compute the accuracy
 #' chosen <-  subset(choices, choice == 1)
 #' chosen$correct <- chosen$choice == chosen$choice_predict
-#' sum(chosen$correct) / nrow(chosen)
-#' }
-predictChoices <- function(
-  model,
-  alts,
-  obsIDName = NULL
-) {
-  probs <- predictProbs(
-    model, alts, obsIDName = obsIDName, computeCI = FALSE)
-  if (is.null(obsIDName)) {
-    obsIDName <- "obsID"
+#' sum(chosen$correct) / nrow(chosen) # % correctly predicted
+predictChoices <- function(model, alts, altID, obsID = NULL) {
+  probs <- predictProbs(model, alts, altID, obsID, computeCI = FALSE)
+  if (is.null(obsID)) {
+    obsID <- "obsID"
   }
-  choices <- split(probs, probs[obsIDName])
+  choices <- split(probs, probs[obsID])
   choices <- lapply(choices, simChoice)
   result <- do.call(rbind, choices)
   result <- result['choice_predict']
@@ -88,119 +84,159 @@ simChoice <- function(df) {
 #' @param alts A data frame of a set of alternatives for which to predict
 #' choice probabilities. Each row is an alternative and each column an
 #' attribute corresponding to parameter names in the estimated model.
-#' @param obsIDName The name of the column that identifies each set of
-#' alternatives. Required if simulating results for more than one set of
+#' @param altID The name of the column that identifies each alternative
+#' in each set of alternatives.
+#' @param obsID The name of the column that identifies each set of
+#' alternatives. Required if predicting results for more than one set of
 #' alternatives. Defaults to `NULL` (for a single set of alternatives).
 #' @param computeCI Should a confidence interval be computed?
 #' Defaults to `TRUE`.
-#' @param alpha The sensitivity of the computed confidence interval.
-#' Defaults to `alpha = 0.025`, reflecting a 95% CI.
+#' @param ci The sensitivity of the computed confidence interval (CI).
+#' Defaults to `ci = 0.95`, reflecting a 95% CI.
 #' @param numDraws The number of draws to use in simulating uncertainty
 #' for the computed confidence interval.
+#' @param alpha The sensitivity of the computed confidence interval.
+#' No longer used as of v0.2.7 - if provided, a warning is shown and `ci`
+#' is computed from `alpha`.
 #'
 #' @return A data frame with the estimated choice probabilities for each
 #' alternative in `alts`.
 #' @export
 #' @examples
-#' \dontrun{
-#' # Run a MNL model in the Preference Space:
 #' library(logitr)
 #'
+#' # Estimate a preference space model
 #' mnl_pref <- logitr(
-#'   data = yogurt,
-#'   choiceName = "choice",
-#'   obsIDName = "obsID",
-#'   parNames = c("price", "feat", "brand")
+#'   data   = yogurt,
+#'   choice = "choice",
+#'   obsID  = "obsID",
+#'   pars   = c("price", "feat", "brand")
 #' )
 #'
 #' # Create a set of alternatives for which to predict choice probabilities.
-#' # Each row is an alternative and each column an attribute.
-#' # In this example, I just use two of the choice observations from the
-#' # yogurt dataset:
-#' alts <- subset(yogurt, obsID %in% c(42, 13),
-#'                select = c('obsID', 'price', 'feat', 'brand'))
+#' # Each row is an alternative and each column an attribute. In this example,
+#' # two of the choice observations from the yogurt dataset are used
+#' alts <- subset(
+#'     yogurt, obsID %in% c(42, 13),
+#'     select = c('obsID', 'alt', 'price', 'feat', 'brand'))
+#'
 #' alts
 #'
 #' # Predict choice probabilities using the estimated preference space MNL
-#' # model:
-#' predictProbs(mnl_pref, alts, obsIDName = "obsID")
-#' }
+#' # model
+#' predictProbs(mnl_pref, alts, altID = "alt", obsID = "obsID")
 predictProbs <- function(
   model,
   alts,
-  obsIDName = NULL,
+  altID,
+  obsID     = NULL,
   computeCI = TRUE,
-  alpha = 0.025,
-  numDraws = 10^4
+  ci        = 0.95,
+  numDraws  = 10^4,
+  alpha
 ) {
+  # In v0.2.7, alpha was changed to ci
+  calls <- names(sapply(match.call(), deparse))[-1]
+  if (any("alpha" %in% calls)) {
+    ci <- 1 - 2*alpha
+    warning(
+      "Use 'ci' instead of 'alpha'...converting 'alpha = ", alpha,
+      "' to 'ci = ", ci, "'"
+    )
+  }
+  predictInputsCheck(model, alts, altID, obsID)
   alts <- as.data.frame(alts)
-  model <- allRunsCheck(model)
-  recoded <- recodeData(alts, model$parNames, model$randPars)
+  recoded <- recodeData(alts, model$inputs$pars, model$inputs$randPars)
   X <- recoded$X
-  # Check if model parNames match those from alts
-  checkParNames(model, X)
+  predictParCheck(model, X) # Check if model pars match those from alts
   price <- NA
   getV <- getMnlV_pref
   getVDraws <- getMxlV_pref
-  if (model$modelSpace == "wtp") {
+  if (model$inputs$modelSpace == "wtp") {
     getVDraws <- getMxlV_wtp
     getV <- getMnlV_wtp
-    price <- as.matrix(alts[, which(colnames(alts) == model$priceName)])
+    price <- as.matrix(alts[, which(colnames(alts) == model$inputs$price)])
   }
-  if (is.null(obsIDName)) {
+  altIDName <- altID
+  obsIDName <- obsID
+  altID <- alts[,altID]
+  if (is.null(obsID)) {
     obsID <- rep(1, nrow(X))
     obsIDName <- "obsID"
   } else {
-    obsID <- alts[,obsIDName]
+    obsID <- alts[, obsIDName]
   }
   if (model$modelType == "mxl") {
     return(
       mxlSimulation(
-        alts, model, X, price, obsID, obsIDName, numDraws, alpha, getV,
-        getVDraws, computeCI))
+        alts, model, price, X, altID, obsID, altIDName, obsIDName, numDraws,
+        ci, getV, getVDraws, computeCI))
   } else {
     return(
       mnlSimulation(
-        alts, model, X, price, obsID, obsIDName, numDraws, alpha, getV,
-        getVDraws, computeCI))
+        alts, model, price, X, altID, obsID, altIDName, obsIDName, numDraws,
+        ci, getV, getVDraws, computeCI))
   }
 }
 
-checkParNames <- function(model, X) {
-  modelParNames <- names(model$parSetup)
-  if (model$modelSpace == "wtp") {
-    # Drop lambda parameter
-    modelParNames <- modelParNames[2:length(modelParNames)]
-  }
-  dataNames <- colnames(X)
-  if (length(setdiff(modelParNames, dataNames)) > 0) {
-    modelPars <- paste(modelParNames, collapse = ", ")
-    dataPars <- paste(dataNames, collapse = ", ")
-    stop(paste0(
-      'The coefficient names for the provided model do not correspond to ',
-      'variables in `alts`.\n\n',
-      'Expect columns:\n\t', modelPars, '\n\n',
-      'Encoded column names from provided `alts` object:\n\t', dataPars, '\n\n',
-      'If you have a factor variable in alts, check that the factor ',
-      'levels match those of the data used to estimate the model.'
-    ))
-  }
+predictLogit <- function(V, obsID) {
+  expV <- exp(V)
+  sumExpV <- rowsum(expV, group = obsID, reorder = FALSE)
+  reps <- table(obsID)
+  return(expV / sumExpV[rep(seq_along(reps), reps),])
 }
 
-mnlSimulation <- function(alts, model, X, price, obsID, obsIDName,
-                          numDraws, alpha, getV, getVDraws, computeCI) {
+mnlSimulation <- function(
+  alts, model, price, X, altID, obsID, altIDName, obsIDName, numDraws, ci,
+  getV, getVDraws, computeCI
+) {
   # Compute mean probs
   V <- getV(stats::coef(model), X, price)
-  meanProb <- getMnlLogit(V, obsID)
+  meanProb <- predictLogit(V, obsID)
   if (computeCI == FALSE) {
-    return(summarizeMeanProbs(meanProb, obsID, obsIDName))
+    return(summarizeMeanProbs(meanProb, altID, obsID, altIDName, obsIDName))
   }
   # Compute uncertainty with simulation
   betaUncDraws <- getUncertaintyDraws(model, numDraws)
-  betaUncDraws <- selectSimDraws(betaUncDraws, model$modelSpace, X)
+  betaUncDraws <- selectSimDraws(betaUncDraws, model$inputs$modelSpace, X)
   VUncDraws <- getVDraws(betaUncDraws, X, price)
-  logitUncDraws <- getMxlLogit(VUncDraws, obsID)
-  return(summarizeUncProbs(meanProb, logitUncDraws, obsID, obsIDName, alpha))
+  logitUncDraws <- predictLogit(VUncDraws, obsID)
+  return(summarizeUncProbs(
+    meanProb, logitUncDraws, altID, obsID, altIDName, obsIDName, ci))
+}
+
+mxlSimulation <- function(
+  alts, model, price, X, altID, obsID, altIDName, obsIDName, numDraws, ci,
+  getV, getVDraws, computeCI
+) {
+  # Compute mean probs
+  meanProb <- getSimPHat(stats::coef(model), model, X, price, obsID, getVDraws)
+  if (computeCI == FALSE) {
+    return(summarizeMeanProbs(meanProb, altID, obsID, altIDName, obsIDName))
+  }
+  # Compute uncertainty with simulation
+  betaUncDraws <- getUncertaintyDraws(model, numDraws)
+  logitUncDraws <- matrix(0, nrow = nrow(X), ncol = nrow(betaUncDraws))
+  for (i in seq_len(nrow(betaUncDraws))) {
+    pars <- betaUncDraws[i, ]
+    logitUncDraws[, i] <- getSimPHat(
+      pars, model, X, price, obsID, getVDraws)
+  }
+  return(summarizeUncProbs(
+    meanProb, logitUncDraws, altID, obsID, altIDName, obsIDName, ci))
+}
+
+getSimPHat <- function(pars, model, X, price, obsID, getVDraws) {
+  numDraws <- model$inputs$numDraws
+  parSetup <- model$parSetup
+  parIDs <- model$parIDs
+  standardDraws <- getStandardDraws(parIDs, numDraws)
+  betaDraws <- makeBetaDraws(pars, parIDs, numDraws, standardDraws)
+  colnames(betaDraws) <- names(parSetup)
+  betaDraws <- selectSimDraws(betaDraws, model$inputs$modelSpace, X)
+  VDraws <- getVDraws(betaDraws, X, price)
+  logitDraws <- predictLogit(VDraws, obsID)
+  return(rowMeans(logitDraws, na.rm = T))
 }
 
 selectSimDraws <- function(betaDraws, modelSpace, X) {
@@ -215,56 +251,35 @@ selectSimDraws <- function(betaDraws, modelSpace, X) {
   return(as.matrix(betaDraws))
 }
 
-mxlSimulation <- function(alts, model, X, price, obsID, obsIDName,
-                          numDraws, alpha, getV, getVDraws, computeCI) {
-  # Compute mean probs
-  meanProb <- getSimPHat(
-    stats::coef(model), model, X, price, obsID, getVDraws)
-  if (computeCI == FALSE) {
-    return(summarizeMeanProbs(meanProb, obsID, obsIDName))
-  }
-  # Compute uncertainty with simulation
-  betaUncDraws <- getUncertaintyDraws(model, numDraws)
-  logitUncDraws <- matrix(0, nrow = nrow(X), ncol = nrow(betaUncDraws))
-  for (i in seq_len(nrow(betaUncDraws))) {
-    pars <- betaUncDraws[i, ]
-    logitUncDraws[, i] <- getSimPHat(pars, model, X, price, obsID, getVDraws)
-  }
-  return(summarizeUncProbs(meanProb, logitUncDraws, obsID, obsIDName, alpha))
-}
-
-getSimPHat <- function(pars, model, X, price, obsID, getVDraws) {
-  betaDraws <- makeBetaDraws(
-    pars, model$parSetup, model$options$numDraws, model$standardDraws)
-  colnames(betaDraws) <- names(model$parSetup)
-  betaDraws <- selectSimDraws(betaDraws, model$modelSpace, X)
-  VDraws <- getVDraws(betaDraws, X, price)
-  logitDraws <- getMxlLogit(VDraws, obsID)
-  pHat <- rowMeans(logitDraws, na.rm = T)
-  return(pHat)
-}
-
-summarizeMeanProbs <- function(meanProb, obsID, obsIDName) {
+summarizeMeanProbs <- function(meanProb, altID, obsID, altIDName, obsIDName) {
   probs <- as.data.frame(meanProb)
   colnames(probs) <- "prob_mean"
+  probs[altIDName] <- altID
   probs[obsIDName] <- obsID
-  names <- c(obsIDName, "prob_mean")
-  return(probs[names])
+  return(probs[c(obsIDName, altIDName, "prob_mean")])
 }
 
 summarizeUncProbs <- function(
-  meanProb,
-  logitUncDraws,
-  obsID,
-  obsIDName,
-  alpha
+  meanProb, logitUncDraws, altID, obsID, altIDName, obsIDName, ci
 ) {
-  probs <- as.data.frame(t(apply(logitUncDraws, 1, ci, alpha)))
+  probs <- as.data.frame(t(apply(logitUncDraws, 1, getCI, ci)))
   probs$mean <- as.numeric(meanProb)
   colnames(probs) <- paste0("prob_", colnames(probs))
-  names <- c(obsIDName, colnames(probs))
+  names <- c(obsIDName, altIDName, colnames(probs))
+  probs[altIDName] <- altID
   probs[obsIDName] <- obsID
   return(probs[names])
+}
+
+# Returns a confidence interval from a vector of data
+getCI <- function(data, ci = 0.95) {
+  alpha <- (1 - ci)/2
+  B <- mean(data, na.rm = T)
+  L <- stats::quantile(data, alpha, na.rm = T)
+  U <- stats::quantile(data, 1 - alpha, na.rm = T)
+  ests <- c(B, L, U)
+  names(ests) <- c("mean", "low", "high")
+  return(ests)
 }
 
 #' Simulate expected shares

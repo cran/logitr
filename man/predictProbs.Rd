@@ -7,10 +7,12 @@
 predictProbs(
   model,
   alts,
-  obsIDName = NULL,
+  altID,
+  obsID = NULL,
   computeCI = TRUE,
-  alpha = 0.025,
-  numDraws = 10^4
+  ci = 0.95,
+  numDraws = 10^4,
+  alpha
 )
 }
 \arguments{
@@ -21,18 +23,25 @@ function.}
 choice probabilities. Each row is an alternative and each column an
 attribute corresponding to parameter names in the estimated model.}
 
-\item{obsIDName}{The name of the column that identifies each set of
-alternatives. Required if simulating results for more than one set of
+\item{altID}{The name of the column that identifies each alternative
+in each set of alternatives.}
+
+\item{obsID}{The name of the column that identifies each set of
+alternatives. Required if predicting results for more than one set of
 alternatives. Defaults to \code{NULL} (for a single set of alternatives).}
 
 \item{computeCI}{Should a confidence interval be computed?
 Defaults to \code{TRUE}.}
 
-\item{alpha}{The sensitivity of the computed confidence interval.
-Defaults to \code{alpha = 0.025}, reflecting a 95\% CI.}
+\item{ci}{The sensitivity of the computed confidence interval (CI).
+Defaults to \code{ci = 0.95}, reflecting a 95\% CI.}
 
 \item{numDraws}{The number of draws to use in simulating uncertainty
 for the computed confidence interval.}
+
+\item{alpha}{The sensitivity of the computed confidence interval.
+No longer used as of v0.2.7 - if provided, a warning is shown and \code{ci}
+is computed from \code{alpha}.}
 }
 \value{
 A data frame with the estimated choice probabilities for each
@@ -43,29 +52,28 @@ Returns the expected choice probabilities for a single set or multiple sets
 of alternatives based on the results from an estimated model.
 }
 \examples{
-\dontrun{
-# Run a MNL model in the Preference Space:
 library(logitr)
 
+# Estimate a preference space model
 mnl_pref <- logitr(
-  data = yogurt,
-  choiceName = "choice",
-  obsIDName = "obsID",
-  parNames = c("price", "feat", "brand")
+  data   = yogurt,
+  choice = "choice",
+  obsID  = "obsID",
+  pars   = c("price", "feat", "brand")
 )
 
 # Create a set of alternatives for which to predict choice probabilities.
-# Each row is an alternative and each column an attribute.
-# In this example, I just use two of the choice observations from the
-# yogurt dataset:
-alts <- subset(yogurt, obsID \%in\% c(42, 13),
-               select = c('obsID', 'price', 'feat', 'brand'))
+# Each row is an alternative and each column an attribute. In this example,
+# two of the choice observations from the yogurt dataset are used
+alts <- subset(
+    yogurt, obsID \%in\% c(42, 13),
+    select = c('obsID', 'alt', 'price', 'feat', 'brand'))
+
 alts
 
 # Predict choice probabilities using the estimated preference space MNL
-# model:
-predictProbs(mnl_pref, alts, obsIDName = "obsID")
-}
+# model
+predictProbs(mnl_pref, alts, altID = "alt", obsID = "obsID")
 }
 \keyword{logitr}
 \keyword{predict}

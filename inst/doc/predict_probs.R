@@ -12,32 +12,32 @@ library(logitr)
 # examples aren't actually run when building this page, otherwise it'll
 # take much longer to build
 probs_mnl_pref <- readRDS(here::here('inst', 'extdata', 'probs_mnl_pref.Rds'))
-probs_mnl_wtp <- readRDS(here::here('inst', 'extdata', 'probs_mnl_wtp.Rds'))
+probs_mnl_wtp <-  readRDS(here::here('inst', 'extdata', 'probs_mnl_wtp.Rds'))
 probs_mxl_pref <- readRDS(here::here('inst', 'extdata', 'probs_mxl_pref.Rds'))
-probs_mxl_wtp <- readRDS(here::here('inst', 'extdata', 'probs_mxl_wtp.Rds'))
+probs_mxl_wtp <-  readRDS(here::here('inst', 'extdata', 'probs_mxl_wtp.Rds'))
 
 ## -----------------------------------------------------------------------------
 alts <- subset(
   yogurt, obsID %in% c(42, 13),
-  select = c('obsID', 'price', 'feat', 'brand'))
+  select = c('obsID', 'alt', 'price', 'feat', 'brand'))
 
 alts
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  # Estimate the model
 #  mnl_pref <- logitr(
-#    data       = yogurt,
-#    choiceName = 'choice',
-#    obsIDName  = 'obsID',
-#    parNames   = c('price', 'feat', 'brand')
+#    data   = yogurt,
+#    choice = 'choice',
+#    obsID  = 'obsID',
+#    pars   = c('price', 'feat', 'brand')
 #  )
 #  
 #  # Predict choice probabilities
 #  probs_mnl_pref <- predictProbs(
-#    model     = mnl_pref,
-#    alts      = alts,
-#    obsIDName = "obsID",
-#    alpha     = 0.025
+#    model = mnl_pref,
+#    alts  = alts,
+#    altID = "alt",
+#    obsID = "obsID"
 #  )
 
 ## -----------------------------------------------------------------------------
@@ -47,19 +47,20 @@ probs_mnl_pref
 #  # Estimate the model
 #  mnl_wtp <- logitr(
 #    data       = yogurt,
-#    choiceName = 'choice',
-#    obsIDName  = 'obsID',
-#    parNames   = c('feat', 'brand'),
-#    priceName  = 'price',
+#    choice     = 'choice',
+#    obsID      = 'obsID',
+#    pars       = c('feat', 'brand'),
+#    price      = 'price',
 #    modelSpace = 'wtp',
-#    options = list(numMultiStarts = 10)
+#    numMultiStarts = 10
 #  )
 #  
 #  # Predict choice probabilities
 #  probs_mnl_wtp <- predictProbs(
-#    model     = mnl_wtp,
-#    alts      = alts,
-#    obsIDName = "obsID"
+#    model = mnl_wtp,
+#    alts  = alts,
+#    altID = "alt",
+#    obsID = "obsID"
 #  )
 
 ## -----------------------------------------------------------------------------
@@ -68,19 +69,20 @@ probs_mnl_wtp
 ## ---- eval=FALSE--------------------------------------------------------------
 #  # Estimate the model
 #  mxl_pref <- logitr(
-#    data       = yogurt,
-#    choiceName = 'choice',
-#    obsIDName  = 'obsID',
-#    parNames   = c('price', 'feat', 'brand'),
-#    randPars   = c(feat = 'n', brand = 'n'),
-#    options    = list(numMultiStarts = 5)
+#    data     = yogurt,
+#    choice   = 'choice',
+#    obsID    = 'obsID',
+#    pars     = c('price', 'feat', 'brand'),
+#    randPars = c(feat = 'n', brand = 'n'),
+#    numMultiStarts = 5
 #  )
 #  
 #  # Predict choice probabilities
 #  probs_mxl_pref <- predictProbs(
-#    model     = mxl_pref,
-#    alts      = alts,
-#    obsIDName = "obsID"
+#    model = mxl_pref,
+#    alts  = alts,
+#    altID = "alt",
+#    obsID = "obsID"
 #  )
 
 ## -----------------------------------------------------------------------------
@@ -90,20 +92,21 @@ probs_mxl_pref
 #  # Estimate the model
 #  mxl_wtp <- logitr(
 #    data       = yogurt,
-#    choiceName = 'choice',
-#    obsIDName  = 'obsID',
-#    parNames   = c('feat', 'brand'),
-#    priceName  = 'price',
+#    choice     = 'choice',
+#    obsID      = 'obsID',
+#    pars       = c('feat', 'brand'),
+#    price      = 'price',
 #    randPars   = c(feat = 'n', brand = 'n'),
 #    modelSpace = 'wtp',
-#    options    = list(numMultiStarts = 5)
+#    numMultiStarts = 5
 #  )
 #  
 #  # Predict choice probabilities
 #  probs_mxl_wtp <- predictProbs(
-#    model     = mxl_wtp,
-#    alts      = alts,
-#    obsIDName = "obsID"
+#    model = mxl_wtp,
+#    alts  = alts,
+#    altID = "alt",
+#    obsID = "obsID"
 #  )
 
 ## -----------------------------------------------------------------------------

@@ -1,3 +1,64 @@
+# logitr 0.3.0
+
+## Breaking changes with v0.2.0:
+
+- Several arguments were moved out of the previous `options` argument and are now passed directly as arguments to `logitr()`. These include: `numMultiStarts`, `useAnalyticGrad`, `scaleInputs`, `startParBounds`, `standardDraws`, `numDraws`, `startVals`. The `options` argument is now only used for options to control the optimization handled by `nloptr()`.
+- Options for keeping all model outputs on a multistart were removed.
+
+## Summary of larger updates:
+
+- Added support for panel data in the log-likelihood function and gradients.
+- Several argument names in the `logitr()` function were changed to make them easier to understand: `choiceName` became `choice`, `obsIDName` became `obsID`, `parNames` became `pars`, `priceName` became `price`, `weightsName` became `weights`, `clusterName` became `cluster`. If used, old names will be passed to the new argument names and a warning will be displayed.
+- The log-likelihood and gradient functions were overhauled to improve computational efficiency, resulting in substantially faster estimation for all models.
+- The following new methods were introduced: `print.logitr()`, `logLik.logitr()`, `coef.summary.logitr()`, `vcov.logitr()`, `terms.logitr()`
+
+## Summary of smaller updates:
+
+- Improved `summary.logitr()` and `coef.logitr()` methods for better printing, now using `printCoefmat()`.
+- Added input checks for `wtp()` and `wtpCompare()` functions
+- Fixed some errors in some of the documentation examples and removed the dontrun commands on all of them.
+- Added the `altIDName` argument to `predictChoices()` and `predictProbs()` to preserve the row order of predictions for each alternative in each set of alternatives. Closes issue #13.
+- Fixed bug in data encoding where random parameter names were not aligned with encoded data.
+- Added input checks for all predict functions.
+
+# logitr 0.2.7
+
+Added support for panel data in the log-likelihood function and gradients
+
+# logitr 0.2.6
+
+Major changes were made to the gradient functions, which dramatically improved computational efficiency. MNL and MXL models in either preference or WTP spaces now use the faster implementation of the logit calculations.
+
+# logitr 0.2.5
+
+This version was the first implementation of an alternative approach for computing the logit probabilities, which increased computational speed. Specifically, the formulation was to compute P = 1 / (1 + sum(exp(V - V_chosen)))
+
+# logitr 0.2.4
+
+The `vcov()` method was modified such that it computes the covariance post model estimation. Previously, the covariance matrix was being computed internally in the `logitr()` function, and `vcov()` just returned this value, which was computationally much slower.
+
+# logitr 0.2.3
+
+**Several breaking changes in this version**. 
+
+- Several argument names were changed to make them easier to understand. These include: `choiceName` --> `choice`, `obsIDName` --> `obsID`, `parNames` --> `pars`, `priceName` --> `price`, `weightsName` --> `weights`, `clusterName` --> `cluster`.
+- Several arguments were moved out of the previous `options` argument and are now passed directly as arguments to `logitr()`. These include: `numMultiStarts`, `useAnalyticGrad`, `scaleInputs`, `startParBounds`, `standardDraws`, `numDraws`, `startVals`.
+- Some minor tweaks to printing methods.
+
+# logitr 0.2.2
+
+- Improved `summary.logitr()` and `coef.logitr()` methods for better printing, using `printCoefmat()`
+- Added new methods: `print.logitr()`, `logLik.logitr()`, `coef.summary.logitr()`, `vcov.logitr()`
+- Removed option for keeping all model outputs.
+- Added input checks for `wtp()` and `wtpCompare()` functions
+- Fixed some errors in some of the examples and made them all run (removed dontrun commands).
+
+# logitr 0.2.1
+
+- Added `altIDName` argument to `predictChoices()` and `predictProbs()` to preserve the row order of predictions for each alternative in each set of alternatives. Closes issue #13.
+- Fixed bug in data encoding where random parameter names were not aligned with encoded data.
+- Added input checks for all predict functions.
+
 # logitr 0.2.0
 
 ## Summary of larger updates:

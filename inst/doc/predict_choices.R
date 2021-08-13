@@ -26,17 +26,18 @@ head(yogurt)
 ## ---- eval=FALSE--------------------------------------------------------------
 #  # Estimate the model
 #  mnl_pref <- logitr(
-#    data       = yogurt,
-#    choiceName = 'choice',
-#    obsIDName  = 'obsID',
-#    parNames   = c('price', 'feat', 'brand')
+#    data   = yogurt,
+#    choice = 'choice',
+#    obsID  = 'obsID',
+#    pars   = c('price', 'feat', 'brand')
 #  )
 #  
 #  # Predict choices
 #  choices_mnl_pref <- predictChoices(
-#    model      = mnl_pref,
-#    alts       = yogurt,
-#    obsIDName  = "obsID"
+#    model = mnl_pref,
+#    alts  = yogurt,
+#    altID = "alt",
+#    obsID = "obsID"
 #  )
 
 ## -----------------------------------------------------------------------------
@@ -52,19 +53,20 @@ sum(chosen$correct) / nrow(chosen)
 #  # Estimate the model
 #  mnl_wtp <- logitr(
 #    data       = yogurt,
-#    choiceName = 'choice',
-#    obsIDName  = 'obsID',
-#    parNames   = c('feat', 'brand'),
-#    priceName  = 'price',
+#    choice     = 'choice',
+#    obsID      = 'obsID',
+#    pars       = c('feat', 'brand'),
+#    price      = 'price',
 #    modelSpace = 'wtp',
-#    options = list(numMultiStarts = 10)
+#    numMultiStarts = 10
 #  )
 #  
 #  # Make predictions
 #  choices_mnl_wtp <- predictChoices(
-#    model      = mnl_wtp,
-#    alts       = yogurt,
-#    obsIDName  = "obsID"
+#    model = mnl_wtp,
+#    alts  = yogurt,
+#    altID = "alt",
+#    obsID = "obsID"
 #  )
 
 ## -----------------------------------------------------------------------------
@@ -74,19 +76,20 @@ head(choices_mnl_wtp[c('obsID', 'choice', 'choice_predict')])
 ## ---- eval=FALSE--------------------------------------------------------------
 #  # Estimate the model
 #  mxl_pref <- logitr(
-#    data       = yogurt,
-#    choiceName = 'choice',
-#    obsIDName  = 'obsID',
-#    parNames   = c('price', 'feat', 'brand'),
-#    randPars   = c(feat = 'n', brand = 'n'),
-#    options    = list(numMultiStarts = 5)
+#    data     = yogurt,
+#    choice   = 'choice',
+#    obsID    = 'obsID',
+#    pars     = c('price', 'feat', 'brand'),
+#    randPars = c(feat = 'n', brand = 'n'),
+#    numMultiStarts = 5
 #  )
 #  
 #  # Make predictions
 #  choices_mxl_pref <- predictChoices(
-#    model      = mxl_pref,
-#    alts       = yogurt,
-#    obsIDName  = "obsID"
+#    model = mxl_pref,
+#    alts  = yogurt,
+#    altID = "alt",
+#    obsID = "obsID"
 #  )
 
 ## -----------------------------------------------------------------------------
@@ -97,20 +100,21 @@ head(choices_mxl_pref[c('obsID', 'choice', 'choice_predict')])
 #  # Estimate the model
 #  mxl_wtp <- logitr(
 #    data       = yogurt,
-#    choiceName = 'choice',
-#    obsIDName  = 'obsID',
-#    parNames   = c('feat', 'brand'),
-#    priceName  = 'price',
+#    choice     = 'choice',
+#    obsID      = 'obsID',
+#    pars       = c('feat', 'brand'),
+#    price      = 'price',
 #    randPars   = c(feat = 'n', brand = 'n'),
 #    modelSpace = 'wtp',
-#    options    = list(numMultiStarts = 5)
+#    numMultiStarts = 5
 #  )
 #  
 #  # Make predictions
 #  choices_mxl_wtp <- predictChoices(
-#    model      = mxl_wtp,
-#    alts       = yogurt,
-#    obsIDName  = "obsID"
+#    model = mxl_wtp,
+#    alts  = yogurt,
+#    altID = "alt",
+#    obsID = "obsID"
 #  )
 
 ## -----------------------------------------------------------------------------

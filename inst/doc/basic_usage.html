@@ -140,223 +140,264 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<div id="estimating-models" class="section level1">
-<h1>Estimating models</h1>
-<p>The <code>logitr()</code> function estimates multinomial logit (MNL) and mixed logit (MXL) models using “Preference” space or “Willingness-to-pay (WTP)” space <a href="utility_models.html">utility parameterizations</a>. The basic usage for estimating models is as follows:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  data,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  choiceName,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  obsIDName,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  parNames,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">priceName =</span> <span class="cn">NULL</span>,</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">randPars =</span> <span class="cn">NULL</span>,</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">randPrice =</span> <span class="cn">NULL</span>,</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">modelSpace =</span> <span class="st">&quot;pref&quot;</span>,</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">weightsName =</span> <span class="cn">NULL</span>,</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">options =</span> <span class="fu">list</span>()</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <div id="data-format" class="section level2">
 <h2>Data format</h2>
-<p>The <code>data</code> argument must be provided a <code>data.frame</code> arranged in “long” or “tidy” format <span class="citation">[@Wickham2014]</span>. Each row should be an alternative from a choice observation. The choice observations do not have to be symmetric (i.e. each choice observation could have a different number of alternatives). The data must also include variables for each of the following arguments in the <code>logitr()</code> function:</p>
+<p>The {logitr} package requires that data be structured in a <code>data.frame</code> and arranged in “long” or “tidy” format <span class="citation">[@Wickham2014]</span>. Each row should be an alternative from a choice observation. The choice observations do not have to be symmetric, meaning they can have a “ragged” structure where different choice observations have different numbers of alternatives. The data must also include variables for each of the following:</p>
 <ul>
-<li><code>choiceName</code>: A dummy variable that identifies which alternative was chosen (<code>1</code> is chosen, <code>0</code> is not chosen). Only one alternative should be chosen per choice observation.</li>
-<li><code>obsIDName</code>: A sequence of repeated numbers that identifies each unique choice observation For example, if the first three choice observations had 2 alternatives each, then the first 6 rows of the <code>obsID</code> variable would be <code>1, 1, 2, 2, 3, 3</code>.</li>
-<li><code>parNames</code>: The names of the variables that will be used as model covariates. For WTP space models, the price variable should <strong>not</strong> be included in <code>parNames</code> as it is provided separately with the <code>priceName</code> argument.</li>
+<li><strong>Choice</strong>: A dummy variable that identifies which alternative was chosen (<code>1</code> is chosen, <code>0</code> is not chosen). Only one alternative should be chosen per choice observation.</li>
+<li><strong>Observation ID</strong>: A sequence of repeated numbers that identifies each unique choice observation. For example, if the first three choice observations had 2 alternatives each, then the first 6 rows of the <code>obsID</code> variable would be <code>1, 1, 2, 2, 3, 3</code>.</li>
+<li><strong>Covariates</strong>: Other variables that will be used as model covariates.</li>
 </ul>
 <p>The <a href="data_formatting.html">“Data Formatting and Encoding”</a> vignette has more details about the required data format.</p>
 </div>
-<div id="preference-space-models" class="section level2">
-<h2>Preference space models</h2>
-<p>The <code>logitr()</code> function assumes that the deterministic part of the utility function, <span class="math inline">\(v_{j}\)</span>, is linear in parameters, i.e.:</p>
+<div id="model-specification-interface" class="section level2">
+<h2>Model specification interface</h2>
+<p>Models are specified and estimated using the <code>logitr()</code> function. The <code>data</code> argument should be set to the data frame containing the choice data, and the <code>choice</code> and <code>obsID</code> arguments should be set to the column names in the data frame that correspond to the choice dummy variable column and the observation ID column, respectively. All variables to be used as model covariates should be provided as a vector of column names to the <code>pars</code> argument. Each variable in the vector is additively included as a covariate in the utility model, with the interpretation that they represent utilities in preference space models and WTPs in a WTP space model.</p>
+<p>For example, consider a preference space model where the utility for yogurt is given by the following utility model:</p>
 <p><span class="math display">\[\begin{equation}
-    u_{j} = v_{j} + \varepsilon_{j}
-        \hspace{0.5in}
-        \varepsilon_{j} \sim \textrm{Gumbel}\left(0,\frac{\pi^2}{6}\right)
-\label{eq:utilityComponents}
+    u_{j} =
+        \alpha p_{j} +
+        \beta_1 x_{j1} +
+        \beta_2 x_{j2} +
+        \beta_3 x_{j3} +
+        \beta_4 x_{j4} +
+        \varepsilon_{j},
+\label{eq:yogurtUtilityPref}
 \end{equation}\]</span></p>
+<p> where <span class="math inline">\(p_{j}\)</span> is <code>price</code>, <span class="math inline">\(x_{j1}\)</span> is <code>feat</code>, and <span class="math inline">\(x_{j2-4}\)</span> are dummy-coded variables for each <code>brand</code> (with the fourth brand representing the reference level). This model can be estimated using the <code>logitr()</code> function as follows:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>mnl_pref <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data   =</span> yogurt,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">choice =</span> <span class="st">&quot;choice&quot;</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">obsID  =</span> <span class="st">&quot;obsID&quot;</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">pars   =</span> <span class="fu">c</span>(<span class="st">&quot;price&quot;</span>, <span class="st">&quot;feat&quot;</span>, <span class="st">&quot;brand&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>The equivalent model in the WTP space is given by the following utility model:</p>
 <p><span class="math display">\[\begin{equation}
-    v_{j} =
-        \mathbf{β}&#39; \mathrm{\mathbf{x}}_{j} +
-        \alpha p_{j}
-        \hspace{0.5in}
-\label{eq:utilityPreferenceObserved}
+    u_{j} =
+        \lambda \left(
+            \omega_1 x_{j1} +
+            \omega_1 x_{j2} +
+            \omega_1 x_{j3} +
+            \omega_2 x_{j4} -
+            p_{j}
+        \right) +
+        \varepsilon_{j},
+\label{eq:yogurtUtilityWtp}
 \end{equation}\]</span></p>
-<p>where <span class="math inline">\(\mathbf{β}\)</span> is the vector of coefficients for non-price attributes <span class="math inline">\(\mathrm{\mathbf{x}}_{j}\)</span>, <span class="math inline">\(\alpha\)</span> is the coefficient for price <span class="math inline">\(p_{j}\)</span>. Accordingly, each parameter in the <code>parNames</code> argument is an additive part of <span class="math inline">\(v_{j}\)</span>.</p>
-<p>For example, if the observed utility for yogurt purchases was <span class="math inline">\(v_{j} = \beta x_{j} + \alpha p_{j}\)</span>, where <span class="math inline">\(p_{j}\)</span> is “price” and <span class="math inline">\(x_{j}\)</span> is “brand”, then the <code>parNames</code> argument should be <code>c(&quot;price&quot;, &quot;brand&quot;)</code>. This model can be estimated as follows using the <code>yogurt</code> data frame:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mnl_pref <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data       =</span> yogurt,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">choiceName =</span> <span class="st">&quot;choice&quot;</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">obsIDName  =</span> <span class="st">&quot;obsID&quot;</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">parNames   =</span> <span class="fu">c</span>(<span class="st">&quot;price&quot;</span>, <span class="st">&quot;brand&quot;</span>))</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="er">)</span></span></code></pre></div>
-<p>Use the <code>summary()</code> function to view a summary of the estimated model results. In the following summary, three coefficients are shown for the “brand” attribute, with <code>&quot;dannon&quot;</code> set as the reference level:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mnl_pref)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MODEL SUMMARY: </span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                           </span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Space:    Preference</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Run:          1 of 1</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Iterations:             21</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:  0h:0m:0.13s</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Exit Status:             3</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Weights Used?:       FALSE</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; robust?              FALSE</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               Estimate StdError    tStat pVal signif</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price        -0.366543 0.024365 -15.0439    0    ***</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat          0.491433 0.120061   4.0932    0    ***</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland  -3.715428 0.145416 -25.5504    0    ***</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight  -0.641128 0.054498 -11.7643    0    ***</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait  0.734496 0.080642   9.1082    0    ***</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Fit Values: </span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -2656.8878799</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Log-Likelihood:    -3343.7419990</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AIC:                     5323.7758000</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BIC:                     5352.7168000</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.2054148</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.2039195</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of Observations:  2412.0000000</span></span></code></pre></div>
+<p> To specify this model, the user should move <code>&quot;price&quot;</code> from the <code>pars</code> argument to the <code>price</code> argument and set the <code>modelSpace</code> argument to <code>&quot;wtp&quot;</code> (<code>&quot;pref&quot;</code> is the default value):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mnl_wtp <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data   =</span> yogurt,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">choice =</span> <span class="st">&quot;choice&quot;</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">obsID  =</span> <span class="st">&quot;obsID&quot;</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">pars   =</span> <span class="fu">c</span>(<span class="st">&quot;feat&quot;</span>, <span class="st">&quot;brand&quot;</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">price  =</span> <span class="st">&quot;price&quot;</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">modelSpace =</span> <span class="st">&quot;wtp&quot;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p> In the above model, the variables in <code>pars</code> are marginal WTPs, whereas in the preference space model they are marginal utilities. Note that in the WTP space model price is separately specified with the <code>price</code> argument as it acts as a scaling term and does not reflect a marginal WTP.</p>
+<p>Interactions between covariates can be entered in the <code>pars</code> vector separated by the <code>*</code> symbol. For example, an interaction between <code>price</code> with <code>feat</code> in the above preference space model could be included by specifying <code>pars = c(&quot;price&quot;, &quot;feat&quot;, &quot;brand&quot;, &quot;price*feat&quot;)</code>, or even more concisely just <code>pars = c(&quot;price*feat&quot;, &quot;brand&quot;)</code> as the interaction between <code>price</code> and <code>feat</code> will produce individual parameters for <code>price</code> and <code>feat</code> in addition to the interaction parameter.</p>
+<p>Both of these examples are multinomial logit models with fixed parameters. See the <a href="mnl_models.html">“Estimating Multinomial Logit Models”</a> vignette for more details.</p>
 </div>
-<div id="wtp-space-models" class="section level2">
-<h2>WTP space models</h2>
-<p>For models estimated in the WTP space, the <code>modelSpace</code> argument should be set to <code>&quot;wtp&quot;</code>. In addition, the <code>parNames</code> argument should <em>not</em> contain the name of the column for the price attribute because there is no estimated “price” parameter in WTP space models. Instead, a “scale” parameter given by <span class="math inline">\(\lambda\)</span> will be estimated, and the column for “price” should be provided separately using the <code>priceName</code> argument.</p>
-<p>For example, if the observed utility was <span class="math inline">\(v_{j} = \lambda \left(\omega x_{j} - p_{j}\right)\)</span>, where <span class="math inline">\(p_{j}\)</span> is “price” and <span class="math inline">\(x_{j}\)</span> is “brand”, then the <code>parNames</code> argument should be <code>&quot;brand&quot;</code> and the <code>priceName</code> argument should be <code>&quot;price&quot;</code>. This model can be estimated as follows using the <code>yogurt</code> data frame:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mnl_wtp <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data       =</span> yogurt,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">choiceName =</span> <span class="st">&quot;choice&quot;</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">obsIDName  =</span> <span class="st">&quot;obsID&quot;</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">parNames   =</span> <span class="st">&quot;brand&quot;</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">priceName  =</span> <span class="st">&quot;price&quot;</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">modelSpace =</span> <span class="st">&quot;wtp&quot;</span>,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">options    =</span> <span class="fu">list</span>(<span class="at">numMultiStarts =</span> <span class="dv">10</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>Since WTP space models are non-convex, it is recommended to use a multi-start search to run the optimization loop multiple times to search for different local minima. This was implemented in the above example by passing a <code>numMultiStarts</code> argument inside a list to the <code>options</code> argument (other options can be passed in the same list).</p>
-<p>In the WTP space model, the estimated “brand” coefficients have units of dollars and can be interpreted as the average willingness to pay for each brand relative to the “Dannon” brand, all else being equal.</p>
+<div id="multi-start-estimation" class="section level2">
+<h2>Multi-start estimation</h2>
+<p>Since WTP space models have non-convex log-likelihood functions, it is recommended to use a multi-start search to run the optimization loop multiple times to search for different local minima. This is implemented using the <code>numMultiStarts</code> argument, e.g.:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mnl_wtp <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data   =</span> yogurt,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">choice =</span> <span class="st">&quot;choice&quot;</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">obsID  =</span> <span class="st">&quot;obsID&quot;</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">pars   =</span> <span class="fu">c</span>(<span class="st">&quot;feat&quot;</span>, <span class="st">&quot;brand&quot;</span>),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">price  =</span> <span class="st">&quot;price&quot;</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">modelSpace =</span> <span class="st">&quot;wtp&quot;</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">numMultiStarts =</span> <span class="dv">10</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </div>
-<div id="mixed-logit-models" class="section level2">
-<h2>Mixed logit models</h2>
-<p>To estimate a mixed logit model, use the <code>randPars</code> argument in the <code>logitr()</code> function to denote which parameters will be modeled with a distribution. The current package version supports normal (<code>&quot;n&quot;</code>) and log-normal (<code>&quot;ln&quot;</code>) distributions.</p>
-<p>For example, assume the observed utility for yogurts was <span class="math inline">\(v_{j} = \beta x_{j} + \alpha p_{j}\)</span>, where <span class="math inline">\(p_{j}\)</span> is “price” and <span class="math inline">\(x_{j}\)</span> is “brand”. To model <code>&quot;brand&quot;</code> parameter, <span class="math inline">\(\beta\)</span>, with a normal or log-normal distribution, set <code>randPars = c(size = &quot;n&quot;)</code> or <code>randPars = c(size = &quot;ln&quot;)</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mxl_pref <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data       =</span> yogurt,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">choiceName =</span> <span class="st">&quot;choice&quot;</span>,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">obsIDName  =</span> <span class="st">&quot;obsID&quot;</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">parNames   =</span> <span class="fu">c</span>(<span class="st">&quot;price&quot;</span>, <span class="st">&quot;brand&quot;</span>),</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">randPars   =</span> <span class="fu">c</span>(<span class="at">brand =</span> <span class="st">&quot;n&quot;</span>),</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">options    =</span> <span class="fu">list</span>(<span class="at">numMultiStarts =</span> <span class="dv">10</span>)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>Since mixed logit models are non-convex, it is again recommended to use a multi-start search to run the optimization loop multiple times to search for different local minima. Note that mixed logit models can take a long time to estimate, so setting large number for <code>numMultiStarts</code> could take hours or longer to complete.</p>
-</div>
-<div id="view-results" class="section level2">
-<h2>View results</h2>
-<p>Use the <code>summary()</code> function to print a summary of the results from an estimated model. The function will print the following based on the model settings:</p>
-<ul>
-<li>For a single model run, it prints some summary information, including the model space (Preference or WTP), log-likelihood value at the solution, and a summary table of the model coefficients.</li>
-<li>For MXL models, the function also prints a summary of the random parameters.</li>
-<li>If you set <code>keepAllRuns = TRUE</code> in the <code>options</code> argument, <code>summary()</code> will print a summary of all the multistart runs followed by a summary of the best model (as determined by the largest log-likelihood value).</li>
-</ul>
+<div id="viewing-results" class="section level2">
+<h2>Viewing results</h2>
+<p>Use the <code>summary()</code> function to print a summary of the results from an estimated model, e.g.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mnl_pref)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; logitr(data = yogurt, choice = &quot;choice&quot;, obsID = &quot;obsID&quot;, pars = c(&quot;price&quot;, </span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     &quot;feat&quot;, &quot;brand&quot;))</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Frequencies of alternatives:</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        1        2        3        4 </span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.402156 0.029436 0.229270 0.339138 </span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Exit Status: 3, Optimization stopped because ftol_rel or ftol_abs was reached.</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                 </span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Type:    Multinomial Logit</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Space:          Preference</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Run:                1 of 1</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Iterations:                   21</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:        0h:0m:0.04s</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Algorithm:        NLOPT_LD_LBFGS</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Weights Used?:             FALSE</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Robust?                    FALSE</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price        -0.366555   0.024365 -15.0441 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat          0.491439   0.120062   4.0932 4.254e-05 ***</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland  -3.715477   0.145417 -25.5506 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight  -0.641138   0.054498 -11.7645 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait  0.734519   0.080642   9.1084 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -2656.8878790</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Log-Likelihood:    -3343.7419990</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AIC:                     5323.7757580</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BIC:                     5352.7168000</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.2054148</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.2039195</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of Observations:  2412.0000000</span></span></code></pre></div>
 <p>Use <code>statusCodes()</code> to print a description of each status code from the <code>nloptr</code> optimization routine.</p>
+<p>You can also extract other values of interest at the solution, such as:</p>
+<p><strong>The estimated coefficients</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mnl_pref)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        price         feat  brandhiland  brandweight brandyoplait </span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   -0.3665546    0.4914392   -3.7154773   -0.6411384    0.7345195</span></span></code></pre></div>
+<p><strong>The log-likelihood</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(mnl_pref)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &#39;log Lik.&#39; -2656.888 (df=5)</span></span></code></pre></div>
+<p><strong>The variance-covariance matrix</strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vcov</span>(mnl_pref)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                      price          feat  brandhiland  brandweight</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price         0.0005936657  5.729619e-04  0.001851795 1.249988e-04</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat          0.0005729619  1.441482e-02  0.000855011 5.092010e-06</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland   0.0018517954  8.550110e-04  0.021146019 1.490080e-03</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight   0.0001249988  5.092009e-06  0.001490080 2.970026e-03</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait -0.0015377720 -1.821331e-03 -0.003681036 7.779428e-04</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               brandyoplait</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price        -0.0015377720</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat         -0.0018213311</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland  -0.0036810363</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight   0.0007779428</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait  0.0065031782</span></span></code></pre></div>
+<p><strong>The coefficient standard errors</strong></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">vcov</span>(mnl_pref)))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        price         feat  brandhiland  brandweight brandyoplait </span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0.02436526   0.12006175   0.14541671   0.05449794   0.08064229</span></span></code></pre></div>
 </div>
 <div id="computing-and-comparing-wtp" class="section level2">
 <h2>Computing and comparing WTP</h2>
 <p>For models in the preference space, a summary table of the computed WTP based on the estimated preference space parameters can be obtained with the <code>wtp()</code> function. For example, the computed WTP from the previously estimated fixed parameter model can be obtained with the following command:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wtp</span>(mnl_pref, <span class="at">priceName =</span> <span class="st">&quot;price&quot;</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                Estimate StdError    tStat  pVal signif</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda         0.366543 0.024384  15.0320 0e+00    ***</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat           1.340724 0.359525   3.7292 2e-04    ***</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland  -10.136406 0.582781 -17.3932 0e+00    ***</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight   -1.749121 0.182274  -9.5961 0e+00    ***</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait   2.003848 0.143285  13.9851 0e+00    ***</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wtp</span>(mnl_pref, <span class="at">price =</span> <span class="st">&quot;price&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda         0.366555   0.024396  15.0253 &lt; 2.2e-16 ***</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat           1.340699   0.359136   3.7331 0.0001891 ***</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland  -10.136219   0.583646 -17.3671 &lt; 2.2e-16 ***</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight   -1.749094   0.181400  -9.6422 &lt; 2.2e-16 ***</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait   2.003848   0.143323  13.9814 &lt; 2.2e-16 ***</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
 <p>The <code>wtp()</code> function divides the non-price parameters by the negative of the price parameter. Standard errors are estimated using the Krinsky and Robb parametric bootstrapping method <span class="citation">[@Krinsky1986]</span>. Similarly, the <code>wtpCompare()</code> function can be used to compare the WTP from a WTP space model with that computed from an equivalent preference space model:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wtpCompare</span>(mnl_pref, mnl_wtp, <span class="at">priceName =</span> <span class="st">&quot;price&quot;</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                      pref           wtp  difference</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda           0.366543     0.3665854  0.00004238</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat             1.340724     1.3405708 -0.00015315</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland    -10.136406   -10.1357346  0.00067139</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight     -1.749121    -1.7490629  0.00005807</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait     2.003848     2.0038178 -0.00003018</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; logLik       -2656.887880 -2656.8878779  0.00000194</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wtpCompare</span>(mnl_pref, mnl_wtp, <span class="at">price =</span> <span class="st">&quot;price&quot;</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                       pref           wtp  difference</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda           0.3665546     0.3665832  0.00002867</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat             1.3406987     1.3405926 -0.00010605</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland    -10.1362190   -10.1357635  0.00045548</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight     -1.7490940    -1.7490826  0.00001133</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait     2.0038476     2.0038208 -0.00002686</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; logLik       -2656.8878790 -2656.8878779  0.00000106</span></span></code></pre></div>
 </div>
-<div id="making-predictions" class="section level2">
-<h2>Making predictions</h2>
+<div id="mixed-logit-models" class="section level2">
+<h2>Mixed logit models</h2>
+<p>To estimate a mixed logit model, use the <code>randPars</code> argument in the <code>logitr()</code> function to denote which parameters will be modeled with a distribution. The current package version supports normal (<code>&quot;n&quot;</code>) and log-normal (<code>&quot;ln&quot;</code>) distributions.</p>
+<p>For example, assume the observed utility for yogurts was <span class="math inline">\(v_{j} = \alpha p_{j} + \beta_1 x_{j1} + \beta_2 x_{j2} + \beta_3 x_{j3} + \beta_4 x_{j4}\)</span>, where <span class="math inline">\(p_{j}\)</span> is <code>price</code>, <span class="math inline">\(x_{j1}\)</span> is <code>feat</code>, and <span class="math inline">\(x_{j2-4}\)</span> are dummy-coded variables for <code>brand</code>. To model <code>feat</code> as well as each of the brands as normally-distributed, set <code>randPars = c(feat = &quot;n&quot;, brand = &quot;n&quot;)</code>:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>mxl_pref <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data     =</span> yogurt,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">choice   =</span> <span class="st">&#39;choice&#39;</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">obsID    =</span> <span class="st">&#39;obsID&#39;</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">pars     =</span> <span class="fu">c</span>(<span class="st">&#39;price&#39;</span>, <span class="st">&#39;feat&#39;</span>, <span class="st">&#39;brand&#39;</span>),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">randPars =</span> <span class="fu">c</span>(<span class="at">feat =</span> <span class="st">&#39;n&#39;</span>, <span class="at">brand =</span> <span class="st">&#39;n&#39;</span>),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">numMultiStarts =</span> <span class="dv">10</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>Since mixed logit models also have non-convex log-likelihood functions, it is again recommended to use a multi-start search to run the optimization loop multiple times to search for different local minima.</p>
+<p>See the <a href="mxl_models.html">“Estimating Mixed Logit Models”</a> vignette for more details.</p>
+</div>
+<div id="predicting-choice-probabilities" class="section level2">
+<h2>Predicting choice probabilities</h2>
 <p>Estimated models can be used to predict expected choices and choice probabilities for a set (or multiple sets) of alternatives based on an estimated model. As an example, consider predicting choice probabilities for two of the choice observations from the <code>yogurt</code> dataset:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>alts <span class="ot">&lt;-</span> <span class="fu">subset</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  yogurt, obsID <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">42</span>, <span class="dv">13</span>),</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">select =</span> <span class="fu">c</span>(<span class="st">&#39;obsID&#39;</span>, <span class="st">&#39;choice&#39;</span>, <span class="st">&#39;price&#39;</span>, <span class="st">&#39;feat&#39;</span>, <span class="st">&#39;brand&#39;</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>alts</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     obsID choice price feat   brand</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 49     13      0   8.1    0  dannon</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 50     13      0   5.0    0  hiland</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 51     13      1   8.6    0  weight</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 52     13      0  10.8    0 yoplait</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 165    42      1   6.3    0  dannon</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 166    42      0   6.1    1  hiland</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 167    42      0   7.9    0  weight</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 168    42      0  11.5    0 yoplait</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>alts <span class="ot">&lt;-</span> <span class="fu">subset</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  yogurt, obsID <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">42</span>, <span class="dv">13</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">select =</span> <span class="fu">c</span>(<span class="st">&#39;obsID&#39;</span>, <span class="st">&#39;alt&#39;</span>, <span class="st">&#39;choice&#39;</span>, <span class="st">&#39;price&#39;</span>, <span class="st">&#39;feat&#39;</span>, <span class="st">&#39;brand&#39;</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>alts</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     obsID alt choice price feat   brand</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 49     13   1      0   8.1    0  dannon</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 50     13   2      0   5.0    0  hiland</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 51     13   3      1   8.6    0  weight</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 52     13   4      0  10.8    0 yoplait</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 165    42   1      1   6.3    0  dannon</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 166    42   2      0   6.1    1  hiland</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 167    42   3      0   7.9    0  weight</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 168    42   4      0  11.5    0 yoplait</span></span></code></pre></div>
 <p>In the example below, the expected choice probabilities for these two sets of alternatives are computed using the fixed parameter <code>mnl_pref</code> model:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>probs <span class="ot">&lt;-</span> <span class="fu">predictProbs</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model     =</span> mnl_pref,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">alts      =</span> alts,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsIDName =</span> <span class="st">&quot;obsID&quot;</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>probs</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     obsID  prob_mean   prob_low  prob_high</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 49     13 0.43684871 0.41507538 0.45803979</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 50     13 0.03313009 0.02620996 0.04185603</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 51     13 0.19155738 0.17623217 0.20774895</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 52     13 0.33846382 0.31891140 0.35928491</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 165    42 0.60763975 0.57309149 0.64106191</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 166    42 0.02602079 0.01841343 0.03671153</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 167    42 0.17803594 0.16200334 0.19478044</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 168    42 0.18830353 0.16779635 0.20987379</span></span></code></pre></div>
-<p>The resulting <code>probs</code> data frame contains the expected choice probabilities for each alternative. The low and high values show a 95% confidence interval, estimated using the Krinsky and Robb parametric bootstrapping method <span class="citation">[@Krinsky1986]</span>. You can change the CI level by setting alpha to a different value (e.g. a 90% CI is obtained with alpha = 0.05).</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>probs <span class="ot">&lt;-</span> <span class="fu">predictProbs</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> mnl_pref,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">alts  =</span> alts,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">altID =</span> <span class="st">&quot;alt&quot;</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsID =</span> <span class="st">&quot;obsID&quot;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>probs</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     obsID alt  prob_mean   prob_low  prob_high</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 49     13   1 0.43685145 0.41510696 0.45779942</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 50     13   2 0.03312986 0.02628916 0.04170730</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 51     13   3 0.19155548 0.17617411 0.20820785</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 52     13   4 0.33846321 0.31868868 0.35880207</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 165    42   1 0.60764778 0.57287197 0.63979259</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 166    42   2 0.02602007 0.01838555 0.03665216</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 167    42   3 0.17803313 0.16206314 0.19501828</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 168    42   4 0.18829902 0.16827987 0.20961170</span></span></code></pre></div>
+<p>The resulting <code>probs</code> data frame contains the expected choice probabilities for each alternative. The low and high values show a 95% confidence interval, estimated using the Krinsky and Robb parametric bootstrapping method <span class="citation">[@Krinsky1986]</span>. You can change the CI level with the optional <code>ci</code> argument (e.g. a 90% CI is obtained with <code>ci = 0.90</code>).</p>
 <p>Choice probabilities can also be predicted used WTP space models. For example, the predicted choice probabilities using the <code>mnl_wtp</code> model are nearly identical with those from the <code>mnl_pref</code> model:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>probs <span class="ot">&lt;-</span> <span class="fu">predictProbs</span>(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model     =</span> mnl_wtp,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">alts      =</span> alts,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsIDName =</span> <span class="st">&quot;obsID&quot;</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>probs</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     obsID  prob_mean   prob_low  prob_high</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 49     13 0.43686166 0.41514663 0.45812349</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 50     13 0.03312933 0.02651411 0.04212799</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 51     13 0.19154885 0.17606783 0.20749348</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 52     13 0.33846015 0.31828622 0.35897979</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 165    42 0.60767236 0.57218829 0.64084438</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 166    42 0.02601763 0.01836858 0.03677997</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 167    42 0.17802398 0.16177482 0.19462268</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 168    42 0.18828603 0.16728440 0.20955128</span></span></code></pre></div>
-<p>Similar to the <code>predictProbs()</code> function, the <code>predictChoices()</code> function can be used to predict choices using the results of an estimated model. In the example below, choices are predicted for the entire <code>yogurt</code> dataset, which was used to the estimate the <code>mnl_pref</code> model:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>choices <span class="ot">&lt;-</span> <span class="fu">predictChoices</span>(</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model     =</span> mnl_pref,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">alts      =</span> yogurt,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsIDName =</span> <span class="st">&quot;obsID&quot;</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview actual and predicted choices</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(choices[<span class="fu">c</span>(<span class="st">&#39;obsID&#39;</span>, <span class="st">&#39;choice&#39;</span>, <span class="st">&#39;choice_predict&#39;</span>)])</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     obsID choice choice_predict</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1.1     1      0              0</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1.2     1      0              0</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1.3     1      1              1</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1.4     1      0              0</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2.5     2      1              0</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2.6     2      0              0</span></span></code></pre></div>
-<p>The resulting <code>choices</code> data frame contains the same <code>alts</code> data frame with an additional column, <code>choice_predict</code>, which contains the predicted choices. You can quickly compute the accuracy by dividing the number of correctly predicted choices by the total number of choices:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>chosen <span class="ot">&lt;-</span> <span class="fu">subset</span>(choices, choice <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>chosen<span class="sc">$</span>correct <span class="ot">&lt;-</span> chosen<span class="sc">$</span>choice <span class="sc">==</span> chosen<span class="sc">$</span>choice_predict</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(chosen<span class="sc">$</span>correct) <span class="sc">/</span> <span class="fu">nrow</span>(chosen)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.3681592</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>probs <span class="ot">&lt;-</span> <span class="fu">predictProbs</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> mnl_wtp,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">alts  =</span> alts,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">altID =</span> <span class="st">&quot;alt&quot;</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsID =</span> <span class="st">&quot;obsID&quot;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>probs</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     obsID alt  prob_mean   prob_low  prob_high</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 49     13   1 0.43686141 0.41501695 0.45781008</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 50     13   2 0.03312947 0.02654480 0.04229588</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 51     13   3 0.19154829 0.17641913 0.20760238</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 52     13   4 0.33846083 0.31857110 0.35884452</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 165    42   1 0.60767120 0.57285938 0.63931635</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 166    42   2 0.02601800 0.01856952 0.03663630</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 167    42   3 0.17802363 0.16222403 0.19470915</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 168    42   4 0.18828717 0.16735147 0.20898596</span></span></code></pre></div>
+<p>See the <a href="predict_probs.html">“Predicting Choice Probabilities from Estimated Models”</a> vignette for more details.</p>
 </div>
+<div id="predicting-choices" class="section level2">
+<h2>Predicting choices</h2>
+<p>Similar to the <code>predictProbs()</code> function, the <code>predictChoices()</code> function can be used to predict choices using the results of an estimated model. In the example below, choices are predicted for the entire <code>yogurt</code> dataset, which was used to the estimate the <code>mnl_pref</code> model:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>choices <span class="ot">&lt;-</span> <span class="fu">predictChoices</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> mnl_pref,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">alts  =</span> yogurt,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">altID =</span> <span class="st">&quot;alt&quot;</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsID =</span> <span class="st">&quot;obsID&quot;</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview actual and predicted choices</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(choices[<span class="fu">c</span>(<span class="st">&#39;obsID&#39;</span>, <span class="st">&#39;choice&#39;</span>, <span class="st">&#39;choice_predict&#39;</span>)])</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     obsID choice choice_predict</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1.1     1      0              1</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1.2     1      0              0</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1.3     1      1              0</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1.4     1      0              0</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2.5     2      1              1</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2.6     2      0              0</span></span></code></pre></div>
+<p>The resulting <code>choices</code> data frame contains the same <code>alts</code> data frame with an additional column, <code>choice_predict</code>, which contains the predicted choices. You can quickly compute the accuracy by dividing the number of correctly predicted choices by the total number of choices:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>chosen <span class="ot">&lt;-</span> <span class="fu">subset</span>(choices, choice <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>chosen<span class="sc">$</span>correct <span class="ot">&lt;-</span> chosen<span class="sc">$</span>choice <span class="sc">==</span> chosen<span class="sc">$</span>choice_predict</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(chosen<span class="sc">$</span>correct) <span class="sc">/</span> <span class="fu">nrow</span>(chosen)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.3884743</span></span></code></pre></div>
+<p>See the <a href="predict_choices.html">“Predicting Choices from Estimated Models”</a> vignette for more details.</p>
 </div>
 
 

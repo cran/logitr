@@ -17,64 +17,67 @@ mxl_wtp  <- readRDS(here::here('inst', 'extdata', 'mxl_wtp.Rds'))
 # Each row is an alternative and each column an attribute.
 # In this example, I just use two of the choice observations from the
 # yogurt dataset:
-alts <- subset(yogurt, obsID %in% c(42, 13),
-               select = c('obsID', 'price', 'feat', 'brand'))
+alts <- subset(
+  yogurt, obsID %in% c(42, 13),
+  select = c('obsID', 'alt', 'price', 'feat', 'brand'))
+
 alts
 
 # Compute choice probabilities using the preference space MNL model:
 probs_mnl_pref <- predictProbs(
-  model     = mnl_pref,
-  alts      = alts,
-  obsIDName = "obsID"
+  model = mnl_pref,
+  alts  = alts,
+  altID = "alt",
+  obsID = "obsID",
+  ci = 0.95
 )
 
 probs_mnl_pref
 
 # The results show the expected choice probabilities for each alternative.
 # The low and high values show a 95% confidence interval, estimated using
-# simulation. You can change the CI level by setting alpha to a different
-# value (e.g. a 90% CI is obtained with alpha = 0.05).
+# simulation. You can change the CI level by setting ci to a different
+# value (e.g. a 90% CI is obtained with ci = 0.90).
 
 # Compute choice probabilities using the WTP space MNL model:
 probs_mnl_wtp <- predictProbs(
-  model     = mnl_wtp,
-  alts      = alts,
-  obsIDName = "obsID"
+  model = mnl_wtp,
+  alts  = alts,
+  altID = "alt",
+  obsID = "obsID"
 )
 
 probs_mnl_wtp
 
 # Since these two models are equivalent except in different spaces, the
-# simulation results should be the same. Note that 'priceName' is the name
+# simulation results should be the same. Note that 'price' is the name
 # of the price attribute in the alts argument and must be included for
 # WTP space models.
 
 # Simulations can also be run using MXL models in either space:
 probs_mxl_pref <- predictProbs(
-  model     = mxl_pref,
-  alts      = alts,
-  obsIDName = "obsID"
+  model = mxl_pref,
+  alts  = alts,
+  altID = "alt",
+  obsID = "obsID"
 )
 
 probs_mxl_pref
 
 probs_mxl_wtp <- predictProbs(
-  model     = mxl_wtp,
-  alts      = alts,
-  obsIDName = "obsID"
+  model = mxl_wtp,
+  alts  = alts,
+  altID = "alt",
+  obsID = "obsID"
 )
 
 probs_mxl_wtp
 
 # Save results
-saveRDS(probs_mnl_pref,
-        here::here('inst', 'extdata', 'probs_mnl_pref.Rds'))
-saveRDS(probs_mnl_wtp,
-        here::here('inst', 'extdata', 'probs_mnl_wtp.Rds'))
-saveRDS(probs_mxl_pref,
-        here::here('inst', 'extdata', 'probs_mxl_pref.Rds'))
-saveRDS(probs_mxl_wtp,
-        here::here('inst', 'extdata', 'probs_mxl_wtp.Rds'))
+saveRDS(probs_mnl_pref, here::here('inst', 'extdata', 'probs_mnl_pref.Rds'))
+saveRDS(probs_mnl_wtp,  here::here('inst', 'extdata', 'probs_mnl_wtp.Rds'))
+saveRDS(probs_mxl_pref, here::here('inst', 'extdata', 'probs_mxl_pref.Rds'))
+saveRDS(probs_mxl_wtp,  here::here('inst', 'extdata', 'probs_mxl_wtp.Rds'))
 
 # Plot simulation results from each model:
 library(ggplot2)

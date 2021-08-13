@@ -20,18 +20,20 @@ head(yogurt)
 
 # Run the simulation using the preference space MNL model:
 choices_mnl_pref <- predictChoices(
-  model      = mnl_pref,
-  alts       = yogurt,
-  obsIDName  = "obsID"
+  model = mnl_pref,
+  alts  = yogurt,
+  altID = "alt",
+  obsID = "obsID"
 )
 
 head(choices_mnl_pref)
 
 # Run the simulation using the WTP space MNL model:
 choices_mnl_wtp <- predictChoices(
-  model      = mnl_wtp,
-  alts       = yogurt,
-  obsIDName  = "obsID"
+  model = mnl_wtp,
+  alts  = yogurt,
+  altID = "alt",
+  obsID = "obsID"
 )
 
 head(choices_mnl_wtp)
@@ -41,30 +43,28 @@ head(choices_mnl_wtp)
 
 # Simulations can also be run using MXL models in either space:
 choices_mxl_pref <- predictChoices(
-  model      = mxl_pref,
-  alts       = yogurt,
-  obsIDName  = "obsID"
+  model = mxl_pref,
+  alts  = yogurt,
+  altID = "alt",
+  obsID = "obsID"
 )
 
 head(choices_mxl_pref)
 
 choices_mxl_wtp <- predictChoices(
-  model      = mxl_wtp,
-  alts       = yogurt,
-  obsIDName  = "obsID"
+  model = mxl_wtp,
+  alts  = yogurt,
+  altID = "alt",
+  obsID = "obsID"
 )
 
 head(choices_mxl_wtp)
 
 # Save results
-saveRDS(choices_mnl_pref,
-        here::here('inst', 'extdata', 'choices_mnl_pref.Rds'))
-saveRDS(choices_mnl_wtp,
-        here::here('inst', 'extdata', 'choices_mnl_wtp.Rds'))
-saveRDS(choices_mxl_pref,
-        here::here('inst', 'extdata', 'choices_mxl_pref.Rds'))
-saveRDS(choices_mxl_wtp,
-        here::here('inst', 'extdata', 'choices_mxl_wtp.Rds'))
+saveRDS(choices_mnl_pref, here::here('inst', 'extdata', 'choices_mnl_pref.Rds'))
+saveRDS(choices_mnl_wtp,  here::here('inst', 'extdata', 'choices_mnl_wtp.Rds'))
+saveRDS(choices_mxl_pref, here::here('inst', 'extdata', 'choices_mxl_pref.Rds'))
+saveRDS(choices_mxl_wtp,  here::here('inst', 'extdata', 'choices_mxl_wtp.Rds'))
 
 # Compare prediction accuracy across models
 library(dplyr)

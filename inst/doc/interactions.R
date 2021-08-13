@@ -19,18 +19,18 @@ model_price_feat_mxl <- readRDS(
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  model <- logitr(
-#    data       = yogurt,
-#    choiceName = 'choice',
-#    obsIDName  = 'obsID',
-#    parNames   = c('price', 'feat', 'brand')
+#    data   = yogurt,
+#    choice = 'choice',
+#    obsID  = 'obsID',
+#    pars   = c('price', 'feat', 'brand')
 #  )
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  model_price_feat <- logitr(
-#    data       = yogurt,
-#    choiceName = 'choice',
-#    obsIDName  = 'obsID',
-#    parNames   = c('price', 'feat', 'brand', 'price*feat')
+#    data   = yogurt,
+#    choice = 'choice',
+#    obsID  = 'obsID',
+#    pars   = c('price', 'feat', 'brand', 'price*feat')
 #  )
 
 ## -----------------------------------------------------------------------------
@@ -38,10 +38,10 @@ summary(model_price_feat)
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  model_price_brand <- logitr(
-#    data       = yogurt,
-#    choiceName = 'choice',
-#    obsIDName  = 'obsID',
-#    parNames   = c('price', 'feat', 'brand', 'price*brand')
+#    data   = yogurt,
+#    choice = 'choice',
+#    obsID  = 'obsID',
+#    pars   = c('price', 'feat', 'brand', 'price*brand')
 #  )
 
 ## -----------------------------------------------------------------------------
@@ -49,11 +49,11 @@ summary(model_price_brand)
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  model_price_feat_mxl <- logitr(
-#    data       = yogurt,
-#    choiceName = 'choice',
-#    obsIDName  = 'obsID',
-#    parNames   = c('price', 'feat', 'brand', 'price*feat'),
-#    randPars   = c(feat = "n")
+#    data     = yogurt,
+#    choice   = 'choice',
+#    obsID    = 'obsID',
+#    pars     = c('price', 'feat', 'brand', 'price*feat'),
+#    randPars = c(feat = "n")
 #  )
 
 ## -----------------------------------------------------------------------------

@@ -35,17 +35,17 @@ mnl_pref_dummies <- readRDS(
 ```{r, child=here::here('man', 'rmdchunks', 'dataFormat.Rmd')}
 ```
 
-The {logitr} package contains several example data sets that illustrate this data structure. For example, in the `yogurt` data set, which contains observations of yogurt purchases by a panel of 100 households, each row is an alternative from a choice observation. Choice is identified by the `choice` column, the observation ID is identified by the `obsID` column, and the columns `price`, `feat`, and `brand` can be used as model covariates (brand is also broken out into additional dummy-coded columns):
+The {logitr} package contains several example data sets that illustrate this data structure. For example, the `yogurt` contains observations of yogurt purchases by a panel of 100 households [@Jain1994]. Choice is identified by the `choice` column, the observation ID is identified by the `obsID` column, and the columns `price`, `feat`, and `brand` can be used as model covariates (brand is also broken out into additional dummy-coded columns):
 
 ```{r}
 head(yogurt)
 ```
 
-This data set also has an `alt` variable that determines the alternatives included in the choice set of each observation and an `id` variable that determines the individual (this data set contains repeated observations from each individual).
+This data set also includes an `alt` variable that determines the alternatives included in the choice set of each observation and an `id` variable that determines the individual as the data have a panel structure containing multiple choice observations from each individual.
 
 # Continuous versus discrete variables
 
-Variables are modeled as either continuous or discrete based on their data _type_. Numeric variables are by default estimated with a single "slope" coefficient. For example, consider a data frame that contains a `price` variable with the levels $10, $15, and $20. Adding `price` to the `parNames` argument in the main `logitr()` function would result in a single `price` coefficient for the "slope" of the change in price.
+Variables are modeled as either continuous or discrete based on their data _type_. Numeric variables are by default estimated with a single "slope" coefficient. For example, consider a data frame that contains a `price` variable with the levels $10, $15, and $20. Adding `price` to the `pars` argument in the main `logitr()` function would result in a single `price` coefficient for the "slope" of the change in price.
 
 In contrast, categorical variables (i.e. `character` or `factor` type variables) are by default estimated with a coefficient for all but the first level, which serves as the reference level. The default reference level is determined alphabetically, but it can also be set by modifying the factor levels for that variable. For example, the default reference level for the `brand` variable is `"dannon"` as it is alphabetically first. To set `"weight"` as the reference level, the factor levels can be modified using the `factor()` function:
 
@@ -72,10 +72,10 @@ Now I can use those columns as covariates:
 
 ```{r, eval=FALSE}
 mnl_pref_dummies <- logitr(
-  data       = yogurt,
-  choiceName = 'choice',
-  obsIDName  = 'obsID',
-  parNames   = c(
+  data   = yogurt,
+  choice = 'choice',
+  obsID  = 'obsID',
+  pars   = c(
     'price', 'feat', 'brand_yoplait', 'brand_dannon', 'brand_weight')
 )
 ```

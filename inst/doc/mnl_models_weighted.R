@@ -20,19 +20,18 @@ mnl_wtp_weighted <- readRDS(
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  mnl_wtp_unweighted <- logitr(
-#    data       = cars_us,
-#    choiceName = 'choice',
-#    obsIDName  = 'obsnum',
-#    parNames   = c(
+#    data   = cars_us,
+#    choice = 'choice',
+#    obsID  = 'obsnum',
+#    pars   = c(
 #      'hev', 'phev10', 'phev20', 'phev40', 'bev75', 'bev100', 'bev150',
 #      'american', 'japanese', 'chinese', 'skorean', 'phevFastcharge',
 #      'bevFastcharge','opCost', 'accelTime'),
-#    priceName = 'price',
+#    price = 'price',
 #    modelSpace = 'wtp',
 #    robust = TRUE,
-#    options = list(
-#      # Since WTP space models are non-convex, run a multistart:
-#      numMultiStarts = 10)
+#    # Since WTP space models are non-convex, run a multistart
+#    numMultiStarts = 10
 #  )
 
 ## -----------------------------------------------------------------------------
@@ -43,32 +42,32 @@ summary(cars_us$weights)
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  mnl_wtp_weighted <- logitr(
-#    data       = cars_us,
-#    choiceName = 'choice',
-#    obsIDName  = 'obsnum',
-#    parNames   = c(
+#    data   = cars_us,
+#    choice = 'choice',
+#    obsID  = 'obsnum',
+#    pars   = c(
 #      'hev', 'phev10', 'phev20', 'phev40', 'bev75', 'bev100', 'bev150',
 #      'american', 'japanese', 'chinese', 'skorean', 'phevFastcharge',
 #      'bevFastcharge','opCost', 'accelTime'),
-#    priceName = 'price',
+#    price = 'price',
 #    modelSpace = 'wtp',
-#    weightsName = 'weights', # This is the key argument for enabling weights
+#    weights = 'weights', # This is the key argument for enabling weights
 #    robust = TRUE,
-#    options = list(numMultiStarts = 10)
+#    numMultiStarts = 10
 #  )
 
 ## -----------------------------------------------------------------------------
 summary(mnl_wtp_weighted)
 
 ## -----------------------------------------------------------------------------
-coef_compare <- data.frame(
+data.frame(
   Unweighted = coef(mnl_wtp_unweighted),
-  Weighted   = coef(mnl_wtp_weighted))
-coef_compare
+  Weighted   = coef(mnl_wtp_weighted)
+)
 
 ## -----------------------------------------------------------------------------
-logLik_compare <- c(
+c(
   "Unweighted" = mnl_wtp_unweighted$logLik,
-  "Weighted" = mnl_wtp_weighted$logLik)
-logLik_compare
+  "Weighted" = mnl_wtp_weighted$logLik
+)
 
