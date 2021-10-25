@@ -14,9 +14,8 @@ mxl_pref <- readRDS(here::here('inst', 'extdata', 'mxl_pref.Rds'))
 mxl_wtp  <- readRDS(here::here('inst', 'extdata', 'mxl_wtp.Rds'))
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  library(logitr)
-
-## ----eval=FALSE---------------------------------------------------------------
+#  library("logitr")
+#  
 #  mxl_pref <- logitr(
 #    data     = yogurt,
 #    choice   = 'choice',
@@ -33,9 +32,6 @@ summary(mxl_pref)
 ## -----------------------------------------------------------------------------
 wtp_mxl_pref <- wtp(mxl_pref, price =  "price")
 wtp_mxl_pref
-
-## ----eval=FALSE---------------------------------------------------------------
-#  library(logitr)
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  mxl_wtp <- logitr(

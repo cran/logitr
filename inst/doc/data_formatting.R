@@ -6,39 +6,32 @@ knitr::opts_chunk$set(
   fig.retina = 3,
   comment = "#>"
 )
-library(logitr)
-# Read in results from already estimated models  so that the
-# examples aren't actually run when building this page, otherwise it'll
-# take much longer to build
-mnl_pref_dannon <- readRDS(
-  here::here('inst', 'extdata', 'mnl_pref_dannon.Rds'))
-mnl_pref_weight <- readRDS(
-  here::here('inst', 'extdata', 'mnl_pref_weight.Rds'))
-mnl_pref_dummies <- readRDS(
-  here::here('inst', 'extdata', 'mnl_pref_dummies.Rds'))
 
 ## -----------------------------------------------------------------------------
+library("logitr")
+
 head(yogurt)
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  brands <- c("weight", "hiland", "yoplait", "dannon")
-#  yogurt$brand <- factor(yogurt$brand, levels = brands)
+## -----------------------------------------------------------------------------
+yogurt2 <- yogurt
+
+brands <- c("weight", "hiland", "yoplait", "dannon")
+yogurt2$brand <- factor(yogurt2$brand, levels = brands)
 
 ## -----------------------------------------------------------------------------
-yogurt <- fastDummies::dummy_cols(yogurt, "brand")
+yogurt2 <- fastDummies::dummy_cols(yogurt2, "brand")
 
 ## -----------------------------------------------------------------------------
-head(yogurt)
-
-## ---- eval=FALSE--------------------------------------------------------------
-#  mnl_pref_dummies <- logitr(
-#    data   = yogurt,
-#    choice = 'choice',
-#    obsID  = 'obsID',
-#    pars   = c(
-#      'price', 'feat', 'brand_yoplait', 'brand_dannon', 'brand_weight')
-#  )
+head(yogurt2)
 
 ## -----------------------------------------------------------------------------
+mnl_pref_dummies <- logitr(
+  data    = yogurt2,
+  outcome = 'choice',
+  obsID   = 'obsID',
+  pars    = c(
+    'price', 'feat', 'brand_yoplait', 'brand_dannon', 'brand_weight')
+)
+
 summary(mnl_pref_dummies)
 

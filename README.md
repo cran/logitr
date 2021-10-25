@@ -1,14 +1,14 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# logitr <a href='https://jhelvy.github.io/logitr/'><img src='man/figures/logitr-hex.png' align="right" height="139" /></a>
+# logitr <a href='https://jhelvy.github.io/logitr/'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/logitr)](https://CRAN.R-project.org/package=logitr)
 [![Travis build
-status](https://travis-ci.com/jhelvy/logitr.svg?branch=master)](https://travis-ci.com/jhelvy/logitr)
+status](https://app.travis-ci.com/jhelvy/logitr.svg?branch=master)](https://app.travis-ci.com/github/jhelvy/logitr)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/logitr?color=blue)](https://cran.r-project.org/package=logitr)
 <!-- badges: end -->
 
@@ -82,20 +82,20 @@ it if you cited it - you can get the citation by typing
 
 ``` r
 citation("logitr")
-#> 
+#>
 #> To cite logitr in publications use:
-#> 
+#>
 #>   John Paul Helveston (2021). logitr: Random utility logit models with
 #>   preference and willingness to pay space parameterizations. R package
-#>   version 0.3.0
-#> 
+#>   version 0.4.0
+#>
 #> A BibTeX entry for LaTeX users is
-#> 
+#>
 #>   @Manual{,
 #>     title = {logitr: Random Utility Logit Models with Preference and Willingness to Pay Space Parameterizations},
 #>     author = {John Paul Helveston},
 #>     year = {2021},
-#>     note = {R package version 0.3.0},
+#>     note = {R package version 0.4.0},
 #>     url = {https://jhelvy.github.io/logitr/},
 #>   }
 ```

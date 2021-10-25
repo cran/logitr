@@ -5,14 +5,15 @@
 
 # Creates a list of the data and other information needed for running the model
 getModelInputs <- function(
-    data, choice, obsID, pars, randPars, price, randPrice, modelSpace, weights,
-    panelID, clusterID, robust, numMultiStarts, useAnalyticGrad, scaleInputs,
-    startParBounds, standardDraws, numDraws, startVals, call, options
+    data, outcome, obsID, pars , randPars, price, randPrice, modelSpace,
+    weights, panelID, clusterID, robust, startParBounds, startVals,
+    numMultiStarts, useAnalyticGrad, scaleInputs, standardDraws, numDraws, vcov,
+    predict, call, options
 ) {
 
   # Keep original input arguments
   inputs <- list(
-    choice          = choice,
+    outcome         = outcome,
     obsID           = obsID,
     pars            = pars,
     randPars        = randPars,
@@ -23,12 +24,14 @@ getModelInputs <- function(
     panelID         = panelID,
     clusterID       = clusterID,
     robust          = robust,
+    startParBounds  = startParBounds,
+    startVals       = startVals,
     numMultiStarts  = numMultiStarts,
     useAnalyticGrad = useAnalyticGrad,
     scaleInputs     = scaleInputs,
-    startParBounds  = startParBounds,
     numDraws        = numDraws,
-    startVals       = startVals
+    vcov            = vcov,
+    predict         = predict
   )
 
   # Check for valid inputs and options
@@ -50,7 +53,9 @@ getModelInputs <- function(
   obsID <- as.matrix(data[obsID])
   reps <- as.numeric(table(obsID))
   obsID <- rep(seq_along(reps), reps) # Make sure obsID is sequential number
-  choice <- as.matrix(data[choice])
+  outcome <- as.matrix(data[outcome])
+  modelType <- "mnl"
+  if (isMxlModel(parSetup)) { modelType <- "mxl" }
 
   # Add names to startVals (if provided)
   if (!is.null(startVals)) {
@@ -76,54 +81,53 @@ getModelInputs <- function(
 
   # Setup clusters
   numClusters <- 0
-  if (robust & is.null(inputs$clusterID)) {
-    inputs$clusterID <- inputs$obsID
-  }
-  if (weightsUsed & is.null(inputs$clusterID)) {
-    message(
-      "Since weights are being used and no cluster was provided, ",
-      "the obsID argument will be used for clustering")
-    inputs$clusterID <- inputs$obsID
-  }
+  inputs <- setupClusters(inputs, panel, robust, weightsUsed)
   if (!is.null(inputs$clusterID)) {
     if (robust == FALSE) {
       message("Setting robust to TRUE since clusters are being used")
-      robust <- TRUE
-      inputs$robust <- robust
+      inputs$robust <- TRUE
     }
     clusterID <- as.matrix(data[inputs$clusterID])
-    numClusters <- getNumClusters(clusterID)
+    numClusters <- length(unique(clusterID))
   }
 
   # Make data object
   data <- list(
     price     = price,
     X         = X,
-    choice    = choice,
+    outcome   = outcome,
     obsID     = obsID,
     panelID   = panelID,
     clusterID = clusterID,
-    weights   = weights,
-    scaleFactors = rep(1, length(parList$all))
+    weights   = weights
   )
 
   # Scale data
   if (scaleInputs) {
-    data <- scaleData(data, modelSpace, parSetup, parIDs)
+    scaleFactors <- getScaleFactors(data, modelSpace, modelType, parIDs)
+    data_scaled <- scaleData(data, scaleFactors, modelSpace)
+    if (modelSpace == "wtp") {
+      n <- length(scaleFactors)
+      scaleFactors[2:n] <- scaleFactors[2:n] / scaleFactors[1]
+    }
+  } else {
+    scaleFactors <- rep(1, length(parList$all))
+    data_scaled <- data
   }
 
   # Make differenced data
-  data_diff <- makeDiffData(data)
+  data_diff <- makeDiffData(data_scaled, modelType)
 
   # Make modelInputs list
   modelInputs <- list(
     call          = call,
     inputs        = inputs,
-    modelType     = "mnl",
-    freq          = getFrequencyCounts(obsID, choice),
+    modelType     = modelType,
+    freq          = getFrequencyCounts(obsID, outcome),
     price         = price,
     data          = data,
     data_diff     = data_diff,
+    scaleFactors  = scaleFactors,
     weightsUsed   = weightsUsed,
     numClusters   = numClusters,
     parSetup      = parSetup,
@@ -137,17 +141,15 @@ getModelInputs <- function(
   )
 
   # Add mixed logit inputs
-  if (isMxlModel(parSetup)) {
-    modelInputs$modelType <- "mxl"
+  if (modelType == "mxl") {
     modelInputs$standardDraws <- makeMxlDraws(modelInputs)
     modelInputs$partials <- makePartials(modelInputs)
   }
 
   # Set logit and eval functions
   modelInputs$logitFuncs <- setLogitFunctions(modelSpace)
-  modelInputs$evalFuncs <- setEvalFunctions(
-    modelInputs$modelType, useAnalyticGrad
-  )
+  modelInputs$evalFuncs <- setEvalFunctions(modelType, useAnalyticGrad)
+
   return(modelInputs)
 }
 
@@ -222,68 +224,105 @@ getParList <- function(parSetup, randParIDs) {
   return(list(mu = names_mu, sigma = names_sigma, all = names_all))
 }
 
-getNumClusters <- function(clusterID) {
-  if (is.null(clusterID)) { return(0) }
-  return(length(unique(clusterID)))
+setupClusters <- function(inputs, panel, robust, weightsUsed) {
+  if (panel & robust) {
+    if (!identical(inputs$clusterID, inputs$panelID)) {
+      message(
+        "Setting clusterID to '", inputs$panelID, "' since robust == TRUE ",
+        "and a panelID is provided")
+      inputs$clusterID <- inputs$panelID
+    }
+  }
+
+  if (robust & is.null(inputs$clusterID)) {
+    message(
+      "Setting clusterID to '", inputs$obsID, "' since robust == TRUE ")
+    inputs$clusterID <- inputs$obsID
+  }
+
+  if (weightsUsed & is.null(inputs$clusterID)) {
+    if (panel) {
+      message(
+        "Setting clusterID to '", inputs$panelID, "' since weights are being ",
+        "used and no clusterID was provided")
+      inputs$clusterID <- inputs$panelID
+    } else {
+      message(
+        "Setting clusterID to '", inputs$obsID, "' since weights are being ",
+        "used and no clusterID was provided")
+      inputs$clusterID <- inputs$obsID
+    }
+  }
+  return(inputs)
 }
 
-# Function that scales all the variables in X to be between 0 and 1:
-scaleData <- function(data, modelSpace, parSetup, parIDs) {
+getScaleFactors <- function(data, modelSpace, modelType, parIDs) {
   price <- data$price
   X <- data$X
-  scaledX <- X
-  scaledPrice <- price
-  # Scale X data
-  scaleFactorsX <- rep(0, ncol(scaledX))
-  for (col in seq_len(ncol(scaledX))) {
-    var <- X[, col]
-    vals <- unique(var)
-    scalingFactor <- abs(max(vals) - min(vals))
-    scaledX[, col] <- var / scalingFactor
-    scaleFactorsX[col] <- scalingFactor
-  }
-  scaleFactors <- scaleFactorsX
-  names(scaleFactors) <- colnames(scaledX)
+  minX <- apply(X, 2, min)
+  maxX <- apply(X, 2, max)
+  scaleFactors <- abs(maxX - minX)
+  scaleFactorNames <- names(scaleFactors)
   # Scale price if WTP space model
   if (modelSpace == "wtp") {
     vals <- unique(price)
     scaleFactorPrice <- abs(max(vals) - min(vals))
-    scaledPrice <- price / scaleFactorPrice # Scale price
-    scaleFactorsX <- scaleFactorsX / scaleFactorPrice # Update scaleFactorsX
-    scaleFactors <- c(scaleFactorPrice, scaleFactorsX)
-    names(scaleFactors) <- c("lambda", colnames(scaledX))
+    scaleFactors <- c(scaleFactorPrice, scaleFactors)
+    names(scaleFactors) <- c("lambda", scaleFactorNames)
   }
   # If MXL model, need to replicate scale factors for sigma pars
-  if (isMxlModel(parSetup)) {
+  if (modelType == "mxl") {
     scaleFactors <- c(scaleFactors, scaleFactors[parIDs$random])
   }
-  data$X <- scaledX
-  data$price <- scaledPrice
-  data$scaleFactors <- scaleFactors
-  return(data)
+  return(scaleFactors)
 }
 
-makeDiffData <- function(data) {
+# Function that scales all the variables in X to be between 0 and 1:
+scaleData <- function(data, scaleFactors, modelSpace) {
+  scaledPrice <- data$price
+  scaledX <- data$X
+  if (modelSpace == "wtp") {
+    scaledPrice <- scaledPrice / scaleFactors[1] # Scale price
+    scaleFactors <- scaleFactors[2:length(scaleFactors)]
+  }
+  for (col in seq_len(ncol(scaledX))) {
+    scaledX[, col] <- scaledX[, col] / scaleFactors[col]
+  }
+  return(list(
+    price     = scaledPrice,
+    X         = scaledX,
+    outcome   = data$outcome,
+    obsID     = data$obsID,
+    panelID   = data$panelID,
+    clusterID = data$clusterID,
+    weights   = data$weights
+  ))
+}
+
+makeDiffData <- function(data, modelType) {
   # Subtracting out the chosen alternative makes things faster
-  X_chosen <- data$X[data$choice == 1,]
-  X_diff <- (data$X - X_chosen[data$obsID,])[data$choice != 1,]
+  X_chosen <- data$X[data$outcome == 1,]
+  X_chosen <- checkMatrix(X_chosen)
+  if (!is.matrix(X_chosen)) { X_chosen <- as.matrix(X_chosen) }
+  X_diff <- (data$X - X_chosen[data$obsID,])[data$outcome != 1,]
+  X_diff <- checkMatrix(X_diff)
   price_diff <- NULL
   if (!is.null(data$price)) {
-    price_chosen <- data$price[data$choice == 1]
-    price_diff <- (data$price - price_chosen[data$obsID])[data$choice != 1]
+    price_chosen <- data$price[data$outcome == 1]
+    price_diff <- (data$price - price_chosen[data$obsID])[data$outcome != 1]
   }
   panelID <- data$panelID
-  weights <- data$weights[data$choice == 1]
-  if (!is.null(panelID)) {
-    panelID <- data$panelID[data$choice == 1]
+  weights <- data$weights[data$outcome == 1]
+  if (!is.null(panelID) & (modelType == "mxl")) {
+    panelID <- data$panelID[data$outcome == 1]
     weights <- unique(data.frame(panelID = panelID, weights = weights))$weights
   }
   return(list(
     price     = price_diff,
     X         = X_diff,
-    obsID     = data$obsID[data$choice != 1],
+    obsID     = data$obsID[data$outcome != 1],
     panelID   = panelID,
-    clusterID = data$clusterID[data$choice != 1],
+    clusterID = data$clusterID[data$outcome != 1],
     weights   = weights
   ))
 }
@@ -367,10 +406,10 @@ setEvalFunctions <- function(modelType, useAnalyticGrad) {
   return(evalFuncs)
 }
 
-getFrequencyCounts <- function(obsID, choice) {
+getFrequencyCounts <- function(obsID, outcome) {
   obsIDCounts <- table(obsID)
   alt <- sequence(obsIDCounts)
-  freq <- table(alt, choice)
+  freq <- table(alt, outcome)
   freq <- freq[, which(colnames(freq) == "1")]
   return(freq)
 }
