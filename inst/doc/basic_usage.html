@@ -199,8 +199,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Interactions between covariates can be entered in the <code>pars</code> vector separated by the <code>*</code> symbol. For example, an interaction between <code>price</code> with <code>feat</code> in the above preference space model could be included by specifying <code>pars = c(&quot;price&quot;, &quot;feat&quot;, &quot;brand&quot;, &quot;price*feat&quot;)</code>, or even more concisely just <code>pars = c(&quot;price*feat&quot;, &quot;brand&quot;)</code> as the interaction between <code>price</code> and <code>feat</code> will produce individual parameters for <code>price</code> and <code>feat</code> in addition to the interaction parameter.</p>
 <p>Both of these examples are multinomial logit models with fixed parameters. See the <a href="mnl_models.html">“Estimating Multinomial Logit Models”</a> vignette for more details.</p>
 </div>
-<div id="multi-start-estimation" class="section level2">
-<h2>Multi-start estimation</h2>
+<div id="parallelized-multi-start-estimation" class="section level2">
+<h2>Parallelized multi-start estimation</h2>
 <p>Since WTP space models have non-convex log-likelihood functions, it is recommended to use a multi-start search to run the optimization loop multiple times to search for different local minima. This is implemented using the <code>numMultiStarts</code> argument, e.g.:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mnl_wtp <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data    =</span> yogurt,</span>
@@ -211,6 +211,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">modelSpace =</span> <span class="st">&quot;wtp&quot;</span>,</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">numMultiStarts =</span> <span class="dv">10</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>The multi-start is parallelized by default for faster estimation, and the number of cores / workers to use can be manually set using the <code>numCores</code> argument. If <code>numCores</code> is not provide, then the number of cores is set to <code>parallel::detectCores() - 1</code> (the max cores allowed is capped at <code>parallel::detectCores()</code>).</p>
 </div>
 <div id="viewing-results" class="section level2">
 <h2>Viewing results</h2>
@@ -286,22 +287,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>For models in the preference space, a summary table of the computed WTP based on the estimated preference space parameters can be obtained with the <code>wtp()</code> function. For example, the computed WTP from the previously estimated fixed parameter model can be obtained with the following command:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wtp</span>(mnl_pref, <span class="at">price =</span> <span class="st">&quot;price&quot;</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda         0.366555   0.024354  15.0509 &lt; 2.2e-16 ***</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat           1.340699   0.359205   3.7324 0.0001897 ***</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland  -10.136219   0.583032 -17.3853 &lt; 2.2e-16 ***</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight   -1.749094   0.181539  -9.6348 &lt; 2.2e-16 ***</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait   2.003848   0.143785  13.9364 &lt; 2.2e-16 ***</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda         0.366555   0.024247  15.1177 &lt; 2.2e-16 ***</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat           1.340699   0.359019   3.7343 0.0001882 ***</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland  -10.136219   0.582951 -17.3878 &lt; 2.2e-16 ***</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight   -1.749094   0.181729  -9.6247 &lt; 2.2e-16 ***</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait   2.003848   0.143186  13.9947 &lt; 2.2e-16 ***</span></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
 <p>The <code>wtp()</code> function divides the non-price parameters by the negative of the price parameter. Standard errors are estimated using the Krinsky and Robb parametric bootstrapping method <span class="citation">[@Krinsky1986]</span>. Similarly, the <code>wtpCompare()</code> function can be used to compare the WTP from a WTP space model with that computed from an equivalent preference space model:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wtpCompare</span>(mnl_pref, mnl_wtp, <span class="at">price =</span> <span class="st">&quot;price&quot;</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                       pref           wtp  difference</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda           0.3665546     0.3665846  0.00003004</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat             1.3406987     1.3405775 -0.00012117</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland    -10.1362190   -10.1357173  0.00050176</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight     -1.7490940    -1.7490732  0.00002075</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait     2.0038476     2.0038296 -0.00001798</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; logLik       -2656.8878790 -2656.8878779  0.00000107</span></span></code></pre></div>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda           0.3665546     0.3665832  0.00002867</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat             1.3406987     1.3405926 -0.00010605</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland    -10.1362190   -10.1357635  0.00045548</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight     -1.7490940    -1.7490826  0.00001133</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait     2.0038476     2.0038208 -0.00002686</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; logLik       -2656.8878790 -2656.8878779  0.00000106</span></span></code></pre></div>
 </div>
 <div id="mixed-logit-models" class="section level2">
 <h2>Mixed logit models</h2>
@@ -346,14 +347,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>probs</span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     obsID predicted_prob predicted_prob_lower predicted_prob_upper</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 49     13     0.43685145           0.41605600           0.45820584</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 50     13     0.03312986           0.02650745           0.04091589</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 51     13     0.19155548           0.17767966           0.20833211</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 52     13     0.33846321           0.31916994           0.35795999</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 165    42     0.60764778           0.57419619           0.63973429</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 166    42     0.02602007           0.01848421           0.03693827</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 167    42     0.17803313           0.16256995           0.19489525</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 168    42     0.18829902           0.16838828           0.20995227</span></span></code></pre></div>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 49     13     0.43685145           0.41607562           0.45697527</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 50     13     0.03312986           0.02627103           0.04149784</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 51     13     0.19155548           0.17635388           0.20813264</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 52     13     0.33846321           0.31897562           0.35780777</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 165    42     0.60764778           0.57370459           0.63939029</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 166    42     0.02602007           0.01827989           0.03581829</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 167    42     0.17803313           0.16291346           0.19540151</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 168    42     0.18829902           0.16829570           0.20989229</span></span></code></pre></div>
 <p>The resulting <code>probs</code> data frame contains the expected probabilities for each alternative. The lower and upper predictions reflect a 95% confidence interval (controlled by the <code>ci</code> argument), which are estimated using the Krinsky and Robb parametric bootstrapping method <span class="citation">[@Krinsky1986]</span>. The default is <code>ci = NULL</code>, in which case no CI predictions are made.</p>
 <p>WTP space models can also be used to predict probabilities, but the <code>price</code> argument must be specified for predictions being made on a new data set:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>probs <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
@@ -365,14 +366,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>probs</span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     obsID predicted_prob</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 49     13     0.43686094</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 50     13     0.03312967</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 51     13     0.19154815</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 52     13     0.33846124</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 165    42     0.60767146</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 49     13     0.43686141</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 50     13     0.03312947</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 51     13     0.19154829</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 52     13     0.33846083</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 165    42     0.60767120</span></span>
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 166    42     0.02601800</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 167    42     0.17802351</span></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 168    42     0.18828704</span></span></code></pre></div>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 167    42     0.17802363</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 168    42     0.18828717</span></span></code></pre></div>
 <p>You can also use the <code>predict()</code> method to predict outcomes by setting <code>type = &quot;outcome&quot;</code> (the default value is <code>&quot;prob&quot;</code> for predicting probabilities). If no new data are provided for the <code>newdata</code> argument, then outcomes will be predicted for every alternative in the original data used to estimate the model. In the example below the <code>returnData</code> argument is also set to <code>TRUE</code> so that the predicted outcomes can be compared to the actual ones.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>outcomes <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  mnl_pref,</span>
@@ -382,17 +383,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(outcomes[<span class="fu">c</span>(<span class="st">&#39;obsID&#39;</span>, <span class="st">&#39;choice&#39;</span>, <span class="st">&#39;predicted_outcome&#39;</span>)])</span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   obsID choice predicted_outcome</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     1      0                 0</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     1      0                 1</span></span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     1      0                 0</span></span>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3     1      1                 0</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4     1      0                 1</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4     1      0                 0</span></span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5     2      1                 0</span></span>
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6     2      0                 0</span></span></code></pre></div>
 <p>You can quickly compute the accuracy by dividing the number of correctly predicted choices by the total number of choices:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>chosen <span class="ot">&lt;-</span> <span class="fu">subset</span>(outcomes, choice <span class="sc">==</span> <span class="dv">1</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>chosen<span class="sc">$</span>correct <span class="ot">&lt;-</span> chosen<span class="sc">$</span>choice <span class="sc">==</span> chosen<span class="sc">$</span>predicted_outcome</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(chosen<span class="sc">$</span>correct) <span class="sc">/</span> <span class="fu">nrow</span>(chosen)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.3801824</span></span></code></pre></div>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.3922056</span></span></code></pre></div>
 <p>See the <a href="predict.html">“Predicting Probabilities and Choices from Estimated Models”</a> vignette for more details about making predictions.</p>
 </div>
 
