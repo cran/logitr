@@ -14,7 +14,19 @@
 
 <title>Estimating Mixed Logit Models</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -24,6 +36,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -38,6 +51,7 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -146,7 +160,187 @@ div.csl-indent {
 }
 </style>
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -162,11 +356,46 @@ div.csl-indent {
 
 
 
-<p>This vignette demonstrates an example of how to use the <code>logitr()</code> function to estimate mixed logit (MXL) models with preference space and WTP space utility parameterizations.</p>
+<p>This vignette demonstrates an example of how to use the
+<code>logitr()</code> function to estimate mixed logit (MXL) models with
+preference space and WTP space utility parameterizations.</p>
+<div id="supported-distributions" class="section level1">
+<h1>Supported distributions</h1>
+<p>In mixed logit models, parameters are assumed to follow a particular
+distribution. This is implemented in <code>logitr</code> with the
+<code>randPars</code> argument, which should be a named vector defining
+which distribution to use for each random parameter. In the example
+below, we set <code>randPars = c(feat = &#39;n&#39;, brand = &#39;n&#39;)</code> so that
+<code>feat</code> and <code>brand</code> are normally distributed. Mixed
+logit models will estimate a mean and standard deviation of the
+underlying normal distribution for each random coefficient.</p>
+<p>The current version of the package includes the following
+distributions:</p>
+<ul>
+<li>Normal: <code>&quot;n&quot;</code></li>
+<li>Log-normal: <code>&quot;ln&quot;</code></li>
+<li>Zero-censored normal: <code>&quot;cn&quot;</code></li>
+</ul>
+<p>Note that log-normal or zero-censored normal parameters force
+positivity, so when using these you may need to use the negative of a
+value. For example, the “price” coefficient is typically negative, so if
+modeling “price” with a log-normal or zero-censored normal distribution
+you should convert “price” to the negative of price in the data prior to
+estimating the model.</p>
+</div>
 <div id="the-data" class="section level1">
 <h1>The data</h1>
-<p>This example uses the <a href="https://jhelvy.github.io/logitr/reference/yogurt.html">yogurt</a> data set from Jain et al. <span class="citation">(1994)</span>. The data set contains 2,412 choice observations from a series of yogurt purchases by a panel of 100 households in Springfield, Missouri, over a roughly two-year period. The data were collected by optical scanners and contain information about the price, brand, and a “feature” variable, which identifies whether a newspaper advertisement was shown to the customer. There are four brands of yogurt: Yoplait, Dannon, Weight Watchers, and Hiland, with market shares of 34%, 40%, 23% and 3%, respectively.</p>
-<p>In the utility models described below, the data variables are represented as follows:</p>
+<p>This example uses the <a href="https://jhelvy.github.io/logitr/reference/yogurt.html">yogurt</a>
+data set from Jain et al. <span class="citation">(1994)</span>. The data
+set contains 2,412 choice observations from a series of yogurt purchases
+by a panel of 100 households in Springfield, Missouri, over a roughly
+two-year period. The data were collected by optical scanners and contain
+information about the price, brand, and a “feature” variable, which
+identifies whether a newspaper advertisement was shown to the customer.
+There are four brands of yogurt: Yoplait, Dannon, Weight Watchers, and
+Hiland, with market shares of 34%, 40%, 23% and 3%, respectively.</p>
+<p>In the utility models described below, the data variables are
+represented as follows:</p>
 <div style="width:550px">
 <table>
 <colgroup>
@@ -186,7 +415,8 @@ div.csl-indent {
 </tr>
 <tr class="even">
 <td><span class="math inline">\(x_{j}^{\mathrm{Feat}}\)</span></td>
-<td>Dummy variable for whether the newspaper advertisement was shown to the customer.</td>
+<td>Dummy variable for whether the newspaper advertisement was shown to
+the customer.</td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(x_{j}^{\mathrm{Hiland}}\)</span></td>
@@ -206,7 +436,8 @@ div.csl-indent {
 </div>
 <div id="preference-space-model" class="section level1">
 <h1>Preference space model</h1>
-<p>This example will estimate the following mixed logit model in the preference space:</p>
+<p>This example will estimate the following mixed logit model in the
+preference space:</p>
 <p><span class="math display">\[\begin{equation}
     u_{j} =
         \alpha p_{j} +
@@ -217,17 +448,31 @@ div.csl-indent {
         \varepsilon_{j}
 \label{eq:mnlPrefExample}
 \end{equation}\]</span></p>
-<p>where the parameters <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span>, <span class="math inline">\(\beta_3\)</span>, and <span class="math inline">\(\beta_4\)</span> have units of utility. In the example below, we will model <span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span>, <span class="math inline">\(\beta_3\)</span>, and <span class="math inline">\(\beta_4\)</span> as normally distributed across the population. As a result, the model will estimate two parameters for each of these coefficients: a mean (<code>par_mu</code>) and a standard deviation (<code>par_sigma</code>).</p>
-<p>Estimate the model using the <code>logitr()</code> function:</p>
+<p>where the parameters <span class="math inline">\(\alpha\)</span>,
+<span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span>, <span class="math inline">\(\beta_3\)</span>, and <span class="math inline">\(\beta_4\)</span> have units of utility. In the
+example below, we will model <span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span>, <span class="math inline">\(\beta_3\)</span>, and <span class="math inline">\(\beta_4\)</span> as <strong>normally
+distributed</strong> across the population. As a result, the model will
+estimate a mean and standard deviation for each of these
+coefficients.</p>
+<p>Note that since the <code>yogurt</code> data has a panel structure
+(i.e. multiple choice observations for each respondent), it is necessary
+to set the <code>panelID</code> argument to the <code>id</code>
+variable, which identifies the individual. This will use the panel
+version of the log-likelihood (see <a href="https://eml.berkeley.edu/books/choice2nd/Ch06_p134-150.pdf">Train
+2009 chapter 6</a>, section 6.7 for details).</p>
+<p>Finally, as with WTP space models, it is recommended to use a
+multistart search for mixed logit models as they are non-convex. This is
+implemented in the example below by setting
+<code>numMultiStarts = 10</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;logitr&quot;</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>mxl_pref <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data     =</span> yogurt,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">choice   =</span> <span class="st">&#39;choice&#39;</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome  =</span> <span class="st">&#39;choice&#39;</span>,</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsID    =</span> <span class="st">&#39;obsID&#39;</span>,</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">pars     =</span> <span class="fu">c</span>(<span class="st">&#39;price&#39;</span>, <span class="st">&#39;feat&#39;</span>, <span class="st">&#39;brand&#39;</span>),</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">randPars =</span> <span class="fu">c</span>(<span class="at">feat =</span> <span class="st">&#39;n&#39;</span>, <span class="at">brand =</span> <span class="st">&#39;n&#39;</span>),</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># You should run a multistart for MXL models since they are non-convex</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">panelID  =</span> <span class="st">&#39;id&#39;</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">pars     =</span> <span class="fu">c</span>(<span class="st">&#39;price&#39;</span>, <span class="st">&#39;feat&#39;</span>, <span class="st">&#39;brand&#39;</span>),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">randPars =</span> <span class="fu">c</span>(<span class="at">feat =</span> <span class="st">&#39;n&#39;</span>, <span class="at">brand =</span> <span class="st">&#39;n&#39;</span>),</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">numMultiStarts =</span> <span class="dv">10</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>#&gt; Running multistart...
@@ -237,94 +482,103 @@ div.csl-indent {
 <p>Print a summary of the results:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mxl_pref)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; logitr(data = yogurt, outcome = &quot;choice&quot;, obsID = &quot;obsID&quot;, pars = c(&quot;price&quot;, </span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     &quot;feat&quot;, &quot;brand&quot;), randPars = c(feat = &quot;n&quot;, brand = &quot;n&quot;), </span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     numMultiStarts = 10)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Fri Jun 03 11:49:52 2022 </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 0.6.0 </span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Frequencies of alternatives:</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        1        2        3        4 </span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.402156 0.029436 0.229270 0.339138 </span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Summary Of Multistart Runs:</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Log Likelihood Iterations Exit Status</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       -2641.243         38           3</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       -2641.501         32           3</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3       -2641.372         38           3</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4       -2641.501         29           3</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5       -2641.245         43           3</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6       -2641.502         35           3</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7       -2641.375         24           3</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8       -2641.371         28           3</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9       -2641.509         31           3</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10      -2642.057         36           3</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Use statusCodes() to view the meaning of each status code</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Exit Status: 3, Optimization stopped because ftol_rel or ftol_abs was reached.</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                              </span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Type:       Mixed Logit</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Space:       Preference</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Run:            1 of 10</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Iterations:                38</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:        0h:0m:2s</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Algorithm:     NLOPT_LD_LBFGS</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Weights Used?:          FALSE</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Robust?                 FALSE</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price              -0.438379   0.038877 -11.2762 &lt; 2.2e-16 ***</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat_mu             0.382304   0.223530   1.7103 0.0872096 .  </span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland_mu     -4.146425   0.215717 -19.2216 &lt; 2.2e-16 ***</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight_mu     -1.306121   0.345491  -3.7805 0.0001565 ***</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait_mu     0.843576   0.125763   6.7076 1.978e-11 ***</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat_sigma          2.426846   0.506472   4.7917 1.654e-06 ***</span></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland_sigma   0.022985   0.886992   0.0259 0.9793267    </span></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight_sigma   2.115097   0.651051   3.2487 0.0011592 ** </span></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait_sigma  0.295287   0.594273   0.4969 0.6192679    </span></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -2641.2433390</span></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Log-Likelihood:    -3343.7419990</span></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AIC:                     5300.4866780</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BIC:                     5352.5806000</span></span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.2100936</span></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.2074020</span></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of Observations:  2412.0000000</span></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Summary of 10k Draws for Random Coefficients: </span></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                             Min.    1st Qu.     Median       Mean    3rd Qu.</span></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat (normal)         -9.0501506 -1.2562283  0.3804493  0.3789060  2.0165682</span></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland (normal)  -4.2344624 -4.1619360 -4.1464324 -4.1464463 -4.1309337</span></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight (normal)  -9.4453960 -2.7338212 -1.3078558 -1.3093844  0.1185107</span></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait (normal) -0.2827217  0.6439945  0.8430701  0.8428169  1.0422049</span></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                            Max.</span></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat (normal)          9.146030</span></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland (normal)  -4.064810</span></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight (normal)   6.083848</span></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait (normal)  1.846463</span></span></code></pre></div>
-<p>The above summary table prints summaries of the estimated coefficients as well as a summary table of the distribution of 10,000 population draws for each normally-distributed model coefficient. The results show that the <code>feat</code> attribute has a significant standard deviation coefficient, suggesting that there is considerable heterogeneity across the population for this attribute. In contrast, the <code>brand</code> coefficients have small and insignificant standard deviation coefficients.</p>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; logitr(data = yogurt, outcome = &quot;choice&quot;, obsID = &quot;obsID&quot;, pars = c(&quot;price&quot;, </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     &quot;feat&quot;, &quot;brand&quot;), randPars = c(feat = &quot;n&quot;, brand = &quot;n&quot;), </span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     panelID = &quot;id&quot;, numMultiStarts = 10)</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Frequencies of alternatives:</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        1        2        3        4 </span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.402156 0.029436 0.229270 0.339138 </span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Summary Of Multistart Runs:</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Log Likelihood Iterations Exit Status</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       -1266.550         34           3</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       -1280.748         52           3</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3       -1265.998         43           3</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4       -1244.641         39           3</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5       -1265.435         64           3</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6       -1287.848         58           3</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7       -1272.385         50           3</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8       -1328.674         71           3</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9       -1274.295         70           3</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10      -1308.966         49           3</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Use statusCodes() to view the meaning of each status code</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Exit Status: 3, Optimization stopped because ftol_rel or ftol_abs was reached.</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                              </span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Type:       Mixed Logit</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Space:       Preference</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Run:            4 of 10</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Iterations:                39</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:        0h:0m:2s</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Algorithm:     NLOPT_LD_LBFGS</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Weights Used?:          FALSE</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Panel ID:                  id</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Robust?                 FALSE</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                  Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price           -0.462115   0.040195 -11.4969 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat             0.872419   0.184992   4.7160 2.405e-06 ***</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland     -5.469771   0.375874 -14.5521 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight     -3.926602   0.365632 -10.7392 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait     2.533334   0.227397  11.1406 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_feat          0.052732   0.228971   0.2303    0.8179    </span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandhiland  -2.000008   0.220070  -9.0880 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandweight   6.337794   0.452727  13.9992 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandyoplait  3.740190   0.232866  16.0615 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -1244.6405356</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Log-Likelihood:    -3343.7419990</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AIC:                     2507.2810711</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BIC:                     2559.3750000</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.6277702</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.6250786</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of Observations:  2412.0000000</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Summary of 10k Draws for Random Coefficients: </span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              Min.      1st Qu.     Median      Mean    3rd Qu. Max.</span></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat         -Inf  0.836816107  0.8723785  0.872345  0.9079289  Inf</span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland  -Inf -6.817749618 -5.4691298 -5.467917 -4.1200815  Inf</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight  -Inf -8.204643354 -3.9318008 -3.936381  0.3422438  Inf</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait -Inf  0.005385916  2.5269304  2.523723  5.0492251  Inf</span></span></code></pre></div>
+<p>The above summary table prints summaries of the estimated
+coefficients as well as a summary table of the distribution of 10,000
+population draws for each normally-distributed model coefficient. The
+results show that the <code>feat</code> attribute has a significant
+standard deviation coefficient, suggesting that there is considerable
+heterogeneity across the population for this attribute. In contrast, the
+<code>brand</code> coefficients have small and insignificant standard
+deviation coefficients.</p>
 <p>Compute the WTP implied from the preference space model:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>wtp_mxl_pref <span class="ot">&lt;-</span> <span class="fu">wtp</span>(mxl_pref, <span class="at">price =</span>  <span class="st">&quot;price&quot;</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>wtp_mxl_pref</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda              0.438379   0.038944  11.2565 &lt; 2.2e-16 ***</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat_mu             0.872085   0.525918   1.6582 0.0972739 .  </span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland_mu     -9.458547   0.675335 -14.0057 &lt; 2.2e-16 ***</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight_mu     -2.979435   0.731220  -4.0746 4.609e-05 ***</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait_mu     1.924308   0.316067   6.0883 1.141e-09 ***</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat_sigma          5.535958   1.329015   4.1655 3.107e-05 ***</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland_sigma   0.052431   2.041600   0.0257 0.9795115    </span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight_sigma   4.824817   1.365110   3.5344 0.0004087 ***</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait_sigma  0.673590   1.422614   0.4735 0.6358654    </span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda            0.462115   0.040301  11.4667 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat              1.887882   0.474753   3.9766 6.992e-05 ***</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland     -11.836382   1.032664 -11.4620 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight      -8.497020   1.087944  -7.8102 5.773e-15 ***</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait      5.482040   0.545519  10.0492 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_feat           0.114109   0.499640   0.2284    0.8193    </span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandhiland   -4.327943   0.572266  -7.5628 3.952e-14 ***</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandweight   13.714750   1.593075   8.6090 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandyoplait   8.093633   0.828784   9.7657 &lt; 2.2e-16 ***</span></span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
 </div>
 <div id="wtp-space-model" class="section level1">
 <h1>WTP space model</h1>
-<p>This example will estimate the following mixed logit model in the WTP space:</p>
+<p>This example will estimate the following mixed logit model in the WTP
+space:</p>
 <p><span class="math display">\[\begin{equation}
     u_{j} =
         \lambda (
@@ -336,22 +590,29 @@ div.csl-indent {
         \varepsilon_{j}
 \label{eq:mnlWtpExample}
 \end{equation}\]</span></p>
-<p>where the parameters <span class="math inline">\(\omega_1\)</span>, <span class="math inline">\(\omega_2\)</span>, <span class="math inline">\(\omega_3\)</span>, and <span class="math inline">\(\omega_4\)</span> have units of dollars and <span class="math inline">\(\lambda\)</span> is the scale parameter. In the example below, we will model <span class="math inline">\(\omega_1\)</span>, <span class="math inline">\(\omega_2\)</span>, <span class="math inline">\(\omega_3\)</span>, and <span class="math inline">\(\omega_4\)</span> as normally distributed across the population. As a result, the model will estimate two parameters for each of these coefficients: a mean (<code>par_mu</code>) and a standard deviation (<code>par_sigma</code>).</p>
-<p>Estimate the model using the <code>logitr()</code> function:</p>
+<p>where the parameters <span class="math inline">\(\omega_1\)</span>,
+<span class="math inline">\(\omega_2\)</span>, <span class="math inline">\(\omega_3\)</span>, and <span class="math inline">\(\omega_4\)</span> have units of dollars and <span class="math inline">\(\lambda\)</span> is the scale parameter. In the
+example below, we will model <span class="math inline">\(\omega_1\)</span>, <span class="math inline">\(\omega_2\)</span>, <span class="math inline">\(\omega_3\)</span>, and <span class="math inline">\(\omega_4\)</span> as normally distributed across
+the population. Note that this is a slightly different assumption than
+in the preference space model. In the WTP space, we are assuming that
+the WTP for these features is normally-distributed (as opposed to the
+preference space model where the utility coefficients are assumed to
+follow a normal distribution).</p>
+<p>In the example below, we also use a 10-iteration multistart. We also
+set the starting values for the first iteration to the computed WTP from
+the preference space model:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mxl_wtp <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data       =</span> yogurt,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">choice     =</span> <span class="st">&#39;choice&#39;</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome    =</span> <span class="st">&#39;choice&#39;</span>,</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsID      =</span> <span class="st">&#39;obsID&#39;</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">pars       =</span> <span class="fu">c</span>(<span class="st">&#39;feat&#39;</span>, <span class="st">&#39;brand&#39;</span>),</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">price      =</span> <span class="st">&#39;price&#39;</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">randPars   =</span> <span class="fu">c</span>(<span class="at">feat =</span> <span class="st">&#39;n&#39;</span>, <span class="at">brand =</span> <span class="st">&#39;n&#39;</span>),</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">modelSpace =</span> <span class="st">&#39;wtp&#39;</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># You should run a multistart for MXL models since they are non-convex</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">panelID    =</span> <span class="st">&#39;id&#39;</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pars       =</span> <span class="fu">c</span>(<span class="st">&#39;feat&#39;</span>, <span class="st">&#39;brand&#39;</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">price      =</span> <span class="st">&#39;price&#39;</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">randPars   =</span> <span class="fu">c</span>(<span class="at">feat =</span> <span class="st">&#39;n&#39;</span>, <span class="at">brand =</span> <span class="st">&#39;n&#39;</span>),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">modelSpace =</span> <span class="st">&#39;wtp&#39;</span>,</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">numMultiStarts =</span> <span class="dv">10</span>,</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use the computed WTP from the preference space model as the starting</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># values for the first run:</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">startVals =</span> wtp_mxl_pref<span class="sc">$</span>Estimate</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">startVals =</span> wtp_mxl_pref<span class="sc">$</span>Estimate</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>#&gt; Running multistart...
 #&gt;   Iterations: 10
 #&gt;   Cores: 3
@@ -360,100 +621,216 @@ div.csl-indent {
 <p>Print a summary of the results:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mxl_wtp)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; logitr(data = yogurt, outcome = &quot;choice&quot;, obsID = &quot;obsID&quot;, pars = c(&quot;feat&quot;, </span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     &quot;brand&quot;), price = &quot;price&quot;, randPars = c(feat = &quot;n&quot;, brand = &quot;n&quot;), </span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     modelSpace = &quot;wtp&quot;, startVals = wtp_mxl_pref$Estimate, numMultiStarts = 10)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Fri Jun 03 11:50:05 2022 </span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 0.6.0 </span></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Frequencies of alternatives:</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        1        2        3        4 </span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.402156 0.029436 0.229270 0.339138 </span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Summary Of Multistart Runs:</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Log Likelihood Iterations Exit Status</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       -2670.953         95           3</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       -2641.501        145           3</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3       -2654.770         94           3</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4       -2658.865         91           3</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5       -2641.243         85           3</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6       -2652.828         77           3</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7       -2643.957         87          -1</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8       -2641.733        112           3</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9       -2641.372         86           3</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10      -2652.458         78           3</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Use statusCodes() to view the meaning of each status code</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Exit Status: 3, Optimization stopped because ftol_rel or ftol_abs was reached.</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                  </span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Type:           Mixed Logit</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Space:   Willingness-to-Pay</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Run:                5 of 10</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Iterations:                    85</span></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:            0h:0m:8s</span></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Algorithm:         NLOPT_LD_LBFGS</span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Weights Used?:              FALSE</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Robust?                     FALSE</span></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda              0.438390   0.038655  11.3411 &lt; 2.2e-16 ***</span></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat_mu             0.876940   0.519094   1.6894 0.0911492 .  </span></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland_mu     -9.458196   0.653132 -14.4813 &lt; 2.2e-16 ***</span></span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight_mu     -2.990549   0.725301  -4.1232 3.737e-05 ***</span></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait_mu     1.927919   0.310703   6.2050 5.469e-10 ***</span></span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat_sigma          5.540046   1.205409   4.5960 4.307e-06 ***</span></span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland_sigma   0.045039   2.026861   0.0222 0.9822718    </span></span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight_sigma   4.842951   1.351538   3.5833 0.0003393 ***</span></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait_sigma  0.656073   1.330646   0.4930 0.6219786    </span></span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -2641.2428565</span></span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Log-Likelihood:    -3343.7419990</span></span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AIC:                     5300.4857129</span></span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BIC:                     5352.5796000</span></span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.2100937</span></span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.2074021</span></span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of Observations:  2412.0000000</span></span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Summary of 10k Draws for Random Coefficients: </span></span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                              Min.   1st Qu.     Median       Mean    3rd Qu.</span></span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat (normal)         -20.6556311 -2.863529  0.8727069  0.8691839  4.6076677</span></span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland (normal)   -9.6307061 -9.488590 -9.4582103 -9.4582376 -9.4278404</span></span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight (normal)  -21.6271020 -6.259564 -2.9945215 -2.9980215  0.2714395</span></span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait (normal)  -0.5745001  1.484488  1.9267957  1.9262331  2.3692354</span></span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                            Max.</span></span>
-<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat (normal)         20.882927</span></span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland (normal)  -9.298271</span></span>
-<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight (normal)  13.930311</span></span>
-<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait (normal)  4.156144</span></span></code></pre></div>
-<p>If you want to compare the WTP from the two different model spaces, use the <code>wtpCompare()</code> function:</p>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; logitr(data = yogurt, outcome = &quot;choice&quot;, obsID = &quot;obsID&quot;, pars = c(&quot;feat&quot;, </span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     &quot;brand&quot;), price = &quot;price&quot;, randPars = c(feat = &quot;n&quot;, brand = &quot;n&quot;), </span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     modelSpace = &quot;wtp&quot;, panelID = &quot;id&quot;, startVals = wtp_mxl_pref$Estimate, </span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     numMultiStarts = 10)</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Frequencies of alternatives:</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        1        2        3        4 </span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.402156 0.029436 0.229270 0.339138 </span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Summary Of Multistart Runs:</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Log Likelihood Iterations Exit Status</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       -1239.294        129           3</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       -1345.266        130           4</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3       -1256.886         70           3</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4       -1267.905         81           3</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5       -1345.497        119           4</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6       -1253.781         72           3</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7       -1255.878         60           3</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8       -1244.640         71           3</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9       -1275.792         90           3</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10      -1258.974         62           3</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Use statusCodes() to view the meaning of each status code</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Exit Status: 3, Optimization stopped because ftol_rel or ftol_abs was reached.</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                  </span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Type:           Mixed Logit</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Space:   Willingness-to-Pay</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Run:                1 of 10</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Iterations:                   129</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:           0h:0m:16s</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Algorithm:         NLOPT_LD_LBFGS</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Weights Used?:              FALSE</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Panel ID:                      id</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Robust?                     FALSE</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda            0.448619   0.040011  11.2123 &lt; 2.2e-16 ***</span></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat              1.732037   0.491936   3.5209 0.0004301 ***</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland     -14.227513   1.366407 -10.4124 &lt; 2.2e-16 ***</span></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight      -8.172564   0.956165  -8.5472 &lt; 2.2e-16 ***</span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait      2.503461   0.407102   6.1495 7.774e-10 ***</span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_feat           1.267864   0.497362   2.5492 0.0107977 *  </span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandhiland   -7.117527   0.944763  -7.5337 4.929e-14 ***</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandweight    9.130796   0.923837   9.8836 &lt; 2.2e-16 ***</span></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandyoplait   7.269277   0.752668   9.6580 &lt; 2.2e-16 ***</span></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -1239.2939893</span></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Log-Likelihood:    -3343.7419990</span></span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AIC:                     2496.5879787</span></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BIC:                     2548.6819000</span></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.6293691</span></span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.6266775</span></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of Observations:  2412.0000000</span></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Summary of 10k Draws for Random Coefficients: </span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              Min.     1st Qu.     Median       Mean   3rd Qu. Max.</span></span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat         -Inf   0.8760138   1.731068   1.730262  2.585831  Inf</span></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland  -Inf -19.0246287 -14.225229 -14.220914 -9.424305  Inf</span></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight  -Inf -14.3358948  -8.180054  -8.186652 -2.022481  Inf</span></span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait -Inf  -2.4097527   2.491015   2.484782  7.393241  Inf</span></span></code></pre></div>
+<p>If you want to compare the WTP from the two different model spaces,
+use the <code>wtpCompare()</code> function:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wtpCompare</span>(mxl_pref, mxl_wtp, <span class="at">price =</span> <span class="st">&#39;price&#39;</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                              pref            wtp  difference</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda                 0.43837864     0.43839031  0.00001167</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat_mu                0.87208545     0.87694005  0.00485460</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland_mu        -9.45854712    -9.45819583  0.00035129</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight_mu        -2.97943538    -2.99054893 -0.01111355</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait_mu        1.92430825     1.92791890  0.00361065</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat_sigma             5.53595796     5.54004578  0.00408782</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland_sigma      0.05243094     0.04503861 -0.00739232</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight_sigma      4.82481684     4.84295105  0.01813421</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait_sigma     0.67359004     0.65607279 -0.01751725</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; logLik             -2641.24333902 -2641.24285646  0.00048257</span></span></code></pre></div>
-<p>Note that the WTP will not necessarily be the same between preference space and WTP space MXL models. This is because the distributional assumptions in MXL models imply different distributions on WTP depending on the model space. See Train and Weeks <span class="citation">(2005)</span> and Sonnier, Ainslie, and Otter <span class="citation">(2007)</span> for details on this topic.</p>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                          pref           wtp  difference</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda              0.4621152     0.4486187 -0.01349647</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat                1.8878818     1.7320369 -0.15584492</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland       -11.8363815   -14.2275126 -2.39113109</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight        -8.4970203    -8.1725639  0.32445647</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait        5.4820400     2.5034609 -2.97857919</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_feat             0.1141091     1.2678643  1.15375514</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandhiland     -4.3279430    -7.1175272 -2.78958420</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandweight     13.7147504     9.1307961 -4.58395432</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandyoplait     8.0936327     7.2692772 -0.82435549</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; logLik          -1244.6405356 -1239.2939893  5.34654621</span></span></code></pre></div>
+<p>Note that the WTP will not necessarily be the same between preference
+space and WTP space MXL models. This is because the distributional
+assumptions in MXL models imply different distributions on WTP depending
+on the model space. See Train and Weeks <span class="citation">(2005)</span> and Sonnier, Ainslie, and Otter <span class="citation">(2007)</span> for details on this topic.</p>
+</div>
+<div id="correlated-heterogeneity" class="section level1">
+<h1>Correlated heterogeneity</h1>
+<p>By default, <code>logitr</code> assumes that mixed logit models have
+uncorrelated heterogeneity. However, correlated heterogeneity can be
+implemented by setting <code>correlation = TRUE</code> for models in
+either space (preference or WTP). The example below shows the results
+for the same mixed logit model in the preference space as above but now
+with correlated heterogeneity:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;logitr&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>mxl_pref_cor <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data     =</span> yogurt,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome  =</span> <span class="st">&#39;choice&#39;</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsID    =</span> <span class="st">&#39;obsID&#39;</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">panelID  =</span> <span class="st">&#39;id&#39;</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">pars     =</span> <span class="fu">c</span>(<span class="st">&#39;price&#39;</span>, <span class="st">&#39;feat&#39;</span>, <span class="st">&#39;brand&#39;</span>),</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">randPars =</span> <span class="fu">c</span>(<span class="at">feat =</span> <span class="st">&#39;n&#39;</span>, <span class="at">brand =</span> <span class="st">&#39;n&#39;</span>),</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">numMultiStarts =</span> <span class="dv">10</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">correlation =</span> <span class="cn">TRUE</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>#&gt; Running multistart...
+#&gt;   Iterations: 10
+#&gt;   Cores: 3
+#&gt; Done!</code></pre>
+<p>Print a summary of the results:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mxl_pref_cor)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Fri Jun 03 11:48:47 2022 </span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 0.6.0 </span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; logitr(data = yogurt, outcome = &quot;choice&quot;, obsID = &quot;obsID&quot;, pars = c(&quot;price&quot;, </span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     &quot;feat&quot;, &quot;brand&quot;), randPars = c(feat = &quot;n&quot;, brand = &quot;n&quot;), </span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     panelID = &quot;id&quot;, correlation = TRUE, numMultiStarts = 10)</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Frequencies of alternatives:</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        1        2        3        4 </span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.402156 0.029436 0.229270 0.339138 </span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Summary Of Multistart Runs:</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Log Likelihood Iterations Exit Status</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       -1244.289         73           3</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       -1277.641         68           3</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3       -1247.568         42           3</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4       -1238.784         45           3</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5       -1243.559         73           3</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6       -1243.559         53           3</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7       -1273.648         59           3</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8       -1235.918         39           3</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9       -1296.580         47           3</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10      -1250.394         63           3</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Use statusCodes() to view the meaning of each status code</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Exit Status: 3, Optimization stopped because ftol_rel or ftol_abs was reached.</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                              </span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Type:       Mixed Logit</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Space:       Preference</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Run:            8 of 10</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Iterations:                39</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:        0h:0m:3s</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Algorithm:     NLOPT_LD_LBFGS</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Weights Used?:          FALSE</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Panel ID:                  id</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Robust?                 FALSE</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; price                        -0.441768   0.038759 -11.3979 &lt; 2.2e-16 ***</span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat                          0.856909   0.193140   4.4367 9.134e-06 ***</span></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland                  -3.670086   0.339633 -10.8060 &lt; 2.2e-16 ***</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight                  -1.359367   0.230555  -5.8961 3.723e-09 ***</span></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait                  1.322356   0.195921   6.7494 1.484e-11 ***</span></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_feat_feat                 -0.156479   0.266773  -0.5866   0.55750    </span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_feat_brandhiland           0.541663   0.216926   2.4970   0.01253 *  </span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_feat_brandweight           0.068207   0.211578   0.3224   0.74717    </span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_feat_brandyoplait          0.323531   0.334673   0.9667   0.33369    </span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandhiland_brandhiland    2.475031   0.355262   6.9668 3.243e-12 ***</span></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandhiland_brandweight    0.234401   0.229237   1.0225   0.30653    </span></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandhiland_brandyoplait   1.527129   0.324500   4.7061 2.525e-06 ***</span></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandweight_brandweight    3.162503   0.238017  13.2869 &lt; 2.2e-16 ***</span></span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandweight_brandyoplait   3.982019   0.378310  10.5258 &lt; 2.2e-16 ***</span></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandyoplait_brandyoplait  4.205531   0.349567  12.0307 &lt; 2.2e-16 ***</span></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -1235.9179290</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Log-Likelihood:    -3343.7419990</span></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AIC:                     2501.8358581</span></span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BIC:                     2588.6590000</span></span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.6303788</span></span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.6258928</span></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of Observations:  2412.0000000</span></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Summary of 10k Draws for Random Coefficients: </span></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              Min.    1st Qu.     Median      Mean   3rd Qu. Max.</span></span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat         -Inf  0.4177968  0.8569074  0.855689  1.297735  Inf</span></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland  -Inf -5.6351796 -3.6684956 -3.676666 -1.706678  Inf</span></span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight  -Inf -4.8111879 -1.3459269 -1.374478  2.063552  Inf</span></span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait -Inf -1.5201097  1.3151560  1.311550  4.151265  Inf</span></span></code></pre></div>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Jain1994" class="csl-entry">
-Jain, Dipak C, Naufel J Vilcassim, and Pradeep K Chintagunta. 1994. <span>“A Random-Coefficients Logit Brand-Choice Model Applied to Panel Data.”</span> <em>Journal of Business &amp; Economic Statistics</em> 12 (3): 317–28.
+Jain, Dipak C, Naufel J Vilcassim, and Pradeep K Chintagunta. 1994.
+<span>“A Random-Coefficients Logit Brand-Choice Model Applied to Panel
+Data.”</span> <em>Journal of Business &amp; Economic Statistics</em> 12
+(3): 317–28.
 </div>
 <div id="ref-Sonnier2007" class="csl-entry">
-Sonnier, Garrett, Andrew Ainslie, and Thomas Otter. 2007. <span>“<span class="nocase">Heterogeneity distributions of willingness-to-pay in choice models</span>.”</span> <em>Quant. Mark. Econ.</em> 5 (3): 313–31. <a href="https://doi.org/10.1007/s11129-007-9024-6">https://doi.org/10.1007/s11129-007-9024-6</a>.
+Sonnier, Garrett, Andrew Ainslie, and Thomas Otter. 2007. <span>“<span class="nocase">Heterogeneity distributions of willingness-to-pay in
+choice models</span>.”</span> <em>Quant. Mark. Econ.</em> 5 (3): 313–31.
+<a href="https://doi.org/10.1007/s11129-007-9024-6">https://doi.org/10.1007/s11129-007-9024-6</a>.
 </div>
 <div id="ref-Train2005" class="csl-entry">
-Train, Kenneth E., and Melvyn Weeks. 2005. <span>“<span class="nocase">Discrete Choice Models in Preference and Willingness-to-Pay Space</span>.”</span> In <em>Appl. Simul. Methods Environ. Resour. Econ.</em>, 1–16.
+Train, Kenneth E., and Melvyn Weeks. 2005. <span>“<span class="nocase">Discrete Choice Models in Preference and
+Willingness-to-Pay Space</span>.”</span> In <em>Appl. Simul. Methods
+Environ. Resour. Econ.</em>, 1–16.
 </div>
 </div>
 </div>

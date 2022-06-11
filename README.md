@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# logitr <a href='https://jhelvy.github.io/logitr/'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# logitr <a href='https://jhelvy.github.io/logitr/'><img src='man/figures/logo.png' align="right" style="height:139px;"/></a>
 
 <!-- badges: start -->
 
@@ -18,11 +18,13 @@ Parameterizations](https://jhelvy.github.io/logitr/articles/utility_models.html)
 
 The latest version includes support for:
 
--   Homogeneous multinomial logit (MNL) models
--   Heterogeneous mixed logit (MXL) models with normal and log-normal
-    parameter distributions.
+-   Multinomial logit (MNL) models
+-   Mixed logit (MXL) models with normal and log-normal parameter
+    distributions.
 -   Preference space and WTP space utility parameterizations.
 -   Weighted models to differentially weight individual observations.
+-   Uncorrelated or correlated heterogeneity covariances for mixed logit
+    models.
 -   Functions for computing WTP from preference space models.
 -   Functions for predicting expected probabilities and outcomes for
     sets of alternatives based on an estimated model.
@@ -31,11 +33,10 @@ The latest version includes support for:
     local minima (useful for non-convex problems like MXL models or
     models with WTP space parameterizations).
 
-Note: MXL models assume uncorrelated heterogeneity covariances and are
-estimated using maximum simulated likelihood based on the algorithms in
-Kenneth Train’s book [*Discrete Choice Methods with Simulation, 2nd
-Edition (New York: Cambridge University Press,
-2009)*](https://eml.berkeley.edu/books/choice2.html).
+Mixed logit models are estimated using maximum simulated likelihood
+based on the algorithms in Kenneth Train’s book [*Discrete Choice
+Methods with Simulation, 2nd Edition (New York: Cambridge University
+Press, 2009)*](https://eml.berkeley.edu/books/choice2.html).
 
 ## Installation
 
@@ -65,6 +66,14 @@ View the [basic
 usage](https://jhelvy.github.io/logitr/articles/basic_usage.html) page
 for details on how to use **logitr** to estimate models.
 
+## Related software
+
+If you are a Python user, [`xlogit`](https://github.com/arteagac/xlogit)
+is a similar package built in Python. It has a similar user interface
+for defining models, and it is even faster than logitr as it uses
+GPU-accelerated estimation for mixed logit models. It is a good resource
+for comparing results with those from logitr.
+
 ## Author, Version, and License Information
 
 -   Author: *John Paul Helveston* <https://www.jhelvy.com/>
@@ -85,7 +94,7 @@ citation("logitr")
 #> 
 #>   John Paul Helveston (2021). logitr: Fast Estimation of Multinomial
 #>   and Mixed Logit Models with Preference Space and Willingness to Pay
-#>   Space Utility Parameterizations. R package version 0.5.0
+#>   Space Utility Parameterizations. R package version 0.6.0
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
@@ -93,7 +102,7 @@ citation("logitr")
 #>     title = {logitr: Fast Estimation of Multinomial and Mixed Logit Models with Preference Space and Willingness to Pay Space Utility Parameterizations},
 #>     author = {John Paul Helveston},
 #>     year = {2021},
-#>     note = {R package version 0.5.0},
+#>     note = {R package version 0.6.0},
 #>     url = {https://jhelvy.github.io/logitr/},
 #>   }
 ```

@@ -1,3 +1,15 @@
+# logitr 0.6.0
+
+- Added the `correlation` argument to include correlated heterogeneity.
+- Added support for new mixed logit distributions: zero-censored normal
+- Added new input checks for the `obsID` and `outcome` arguments.
+- `vcov.logitr()` method now returns `object$vcov` if the user set `vcov = TRUE` during estimation (avoids a redundant calculation of `vcov`, which is more efficient).
+- Added new datasets: `apolloModeChoiceData`, `electricity`
+
+# logitr 0.5.1
+
+- Patched a bug in how standard errors were being computed when clustering. The source of the error was in re-scaling results post-estimation.
+
 # logitr 0.5.0
 
 - The multistart optimization loop is now parallelized.

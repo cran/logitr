@@ -1,29 +1,29 @@
-## ---- child=here::here('man', 'rmdchunks', 'header.Rmd')----------------------
+## ---- child='../man/rmdchunks/header.Rmd'-------------------------------------
 
 
 
 
-## ---- child=here::here('man', 'rmdchunks', 'utility.Rmd')---------------------
+## ---- child='../man/rmdchunks/utility.Rmd'------------------------------------
 
 
 
 
-## ---- child=here::here('man', 'rmdchunks', 'utilityPreferenceScaled.Rmd')-----
+## ---- child='../man/rmdchunks/utilityPreferenceScaled.Rmd'--------------------
 
 
 
 
-## ---- child=here::here('man', 'rmdchunks', 'utilityPreference.Rmd')-----------
+## ---- child='../man/rmdchunks/utilityPreference.Rmd'--------------------------
 
 
 
 
-## ---- child=here::here('man', 'rmdchunks', 'utilityWtpScaled.Rmd')------------
+## ---- child='../man/rmdchunks/utilityWtpScaled.Rmd'---------------------------
 
 
 
 
-## ---- child=here::here('man', 'rmdchunks', 'utilityWtp.Rmd')------------------
+## ---- child='../man/rmdchunks/utilityWtp.Rmd'---------------------------------
 
 
 
