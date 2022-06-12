@@ -562,16 +562,16 @@ deviation coefficients.</p>
 <p>Compute the WTP implied from the preference space model:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>wtp_mxl_pref <span class="ot">&lt;-</span> <span class="fu">wtp</span>(mxl_pref, <span class="at">price =</span>  <span class="st">&quot;price&quot;</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>wtp_mxl_pref</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda            0.462115   0.040301  11.4667 &lt; 2.2e-16 ***</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat              1.887882   0.474753   3.9766 6.992e-05 ***</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland     -11.836382   1.032664 -11.4620 &lt; 2.2e-16 ***</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight      -8.497020   1.087944  -7.8102 5.773e-15 ***</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait      5.482040   0.545519  10.0492 &lt; 2.2e-16 ***</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_feat           0.114109   0.499640   0.2284    0.8193    </span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandhiland   -4.327943   0.572266  -7.5628 3.952e-14 ***</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandweight   13.714750   1.593075   8.6090 &lt; 2.2e-16 ***</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandyoplait   8.093633   0.828784   9.7657 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                  Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lambda            0.46211    0.04039  11.4414 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; feat              1.88788    0.47446   3.9790 6.921e-05 ***</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandhiland     -11.83638    1.03074 -11.4833 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandweight      -8.49702    1.08577  -7.8258 5.107e-15 ***</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; brandyoplait      5.48204    0.54393  10.0786 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_feat           0.11411    0.49970   0.2284    0.8194    </span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandhiland   -4.32794    0.56923  -7.6031 2.887e-14 ***</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandweight   13.71475    1.59186   8.6155 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sd_brandyoplait   8.09363    0.82861   9.7677 &lt; 2.2e-16 ***</span></span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
 </div>
