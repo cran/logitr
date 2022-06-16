@@ -19,24 +19,32 @@ mnl_pref <- logitr(
 
 ## -----------------------------------------------------------------------------
 mnl_wtp <- logitr(
-    data    = yogurt,
-    outcome = "choice",
-    obsID   = "obsID",
-    pars    = c("feat", "brand"),
-    price   = "price",
-    modelSpace = "wtp"
+    data     = yogurt,
+    outcome  = "choice",
+    obsID    = "obsID",
+    pars     = c("feat", "brand"),
+    scalePar = "price"
 )
 
 ## -----------------------------------------------------------------------------
 mnl_wtp <- logitr(
-    data    = yogurt,
-    outcome = "choice",
-    obsID   = "obsID",
-    pars    = c("feat", "brand"),
-    price   = "price",
-    modelSpace = "wtp",
+    data     = yogurt,
+    outcome  = "choice",
+    obsID    = "obsID",
+    pars     = c("feat", "brand"),
+    scalePar = "price",
     numMultiStarts = 10
 )
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  mxl_pref <- logitr(
+#      data     = yogurt,
+#      outcome  = 'choice',
+#      obsID    = 'obsID',
+#      pars     = c('price', 'feat', 'brand'),
+#      randPars = c(feat = 'n', brand = 'n'),
+#      numMultiStarts = 10
+#  )
 
 ## -----------------------------------------------------------------------------
 summary(mnl_pref)
@@ -54,20 +62,10 @@ logLik(mnl_pref)
 vcov(mnl_pref)
 
 ## -----------------------------------------------------------------------------
-wtp(mnl_pref, price = "price")
+wtp(mnl_pref, scalePar = "price")
 
 ## -----------------------------------------------------------------------------
-wtpCompare(mnl_pref, mnl_wtp, price = "price")
-
-## ---- eval=FALSE--------------------------------------------------------------
-#  mxl_pref <- logitr(
-#      data     = yogurt,
-#      outcome  = 'choice',
-#      obsID    = 'obsID',
-#      pars     = c('price', 'feat', 'brand'),
-#      randPars = c(feat = 'n', brand = 'n'),
-#      numMultiStarts = 10
-#  )
+wtpCompare(mnl_pref, mnl_wtp, scalePar = "price")
 
 ## -----------------------------------------------------------------------------
 data <- subset(
@@ -81,8 +79,8 @@ data
 probs <- predict(
   mnl_pref,
   newdata = data,
-  obsID = "obsID", 
-  ci = 0.95
+  obsID   = "obsID",
+  ci      = 0.95
 )
 
 probs
@@ -91,8 +89,8 @@ probs
 probs <- predict(
   mnl_wtp,
   newdata = data,
-  obsID = "obsID",
-  price = "price"
+  obsID   = "obsID",
+  ci      = 0.95
 )
 
 probs

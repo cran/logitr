@@ -52,21 +52,19 @@ probs_mnl_pref
 
 ## -----------------------------------------------------------------------------
 mnl_wtp <- logitr(
-  data    = yogurt,
-  outcome = 'choice',
-  obsID   = 'obsID',
-  pars    = c('feat', 'brand'),
-  price   = 'price',
-  modelSpace = 'wtp',
+  data     = yogurt,
+  outcome  = 'choice',
+  obsID    = 'obsID',
+  pars     = c('feat', 'brand'),
+  scalePar = 'price',
   numMultiStarts = 10
 )
 
 probs_mnl_wtp <- predict(
   mnl_wtp,
   newdata = data,
-  obsID = "obsID",
-  price = "price",
-  ci = 0.95
+  obsID   = "obsID",
+  ci      = 0.95
 )
 
 probs_mnl_wtp

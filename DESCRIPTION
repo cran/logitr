@@ -1,6 +1,6 @@
 Package: logitr
 Title: Logit Models w/Preference & WTP Space Utility Parameterizations
-Version: 0.6.1
+Version: 0.7.0
 Authors@R: c(
     person(given   = "John",
            family  = "Helveston",
@@ -18,15 +18,16 @@ LazyData: true
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
 Depends: R (>= 3.5.0)
-Suggests: dplyr, fastDummies, knitr, rmarkdown, here, ggplot2, testthat
+Suggests: dplyr, fastDummies, ggplot2, ggrepel, here, kableExtra,
+        knitr, rmarkdown, testthat, tidyr
 Imports: nloptr, parallel, stats, randtoolbox, MASS
 URL: https://github.com/jhelvy/logitr
 BugReports: https://github.com/jhelvy/logitr/issues
 NeedsCompilation: no
-Packaged: 2022-06-12 02:12:57 UTC; jhelvy
+Packaged: 2022-06-16 21:36:56 UTC; jhelvy
 Author: John Helveston [aut, cre, cph]
     (<https://orcid.org/0000-0002-2657-9191>),
   Connor Forsythe [ctb]
 Maintainer: John Helveston <john.helveston@gmail.com>
 Repository: CRAN
-Date/Publication: 2022-06-12 15:50:05 UTC
+Date/Publication: 2022-06-16 22:40:07 UTC

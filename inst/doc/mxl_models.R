@@ -31,7 +31,7 @@ mxl_pref_cor <- readRDS(here::here('inst', 'extdata', 'mxl_pref_cor.Rds'))
 summary(mxl_pref)
 
 ## -----------------------------------------------------------------------------
-wtp_mxl_pref <- wtp(mxl_pref, price =  "price")
+wtp_mxl_pref <- wtp(mxl_pref, scalePar =  "price")
 wtp_mxl_pref
 
 ## ----eval=FALSE---------------------------------------------------------------
@@ -41,9 +41,8 @@ wtp_mxl_pref
 #    obsID      = 'obsID',
 #    panelID    = 'id',
 #    pars       = c('feat', 'brand'),
-#    price      = 'price',
+#    scalePar   = 'price',
 #    randPars   = c(feat = 'n', brand = 'n'),
-#    modelSpace = 'wtp',
 #    numMultiStarts = 10,
 #    startVals = wtp_mxl_pref$Estimate
 #  )
@@ -52,7 +51,7 @@ wtp_mxl_pref
 summary(mxl_wtp)
 
 ## -----------------------------------------------------------------------------
-wtpCompare(mxl_pref, mxl_wtp, price = 'price')
+wtpCompare(mxl_pref, mxl_wtp, scalePar = 'price')
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  library("logitr")

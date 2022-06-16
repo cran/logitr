@@ -24,7 +24,7 @@ summary(mnl_pref)
 coef(mnl_pref)
 
 ## -----------------------------------------------------------------------------
-wtp_mnl_pref <- wtp(mnl_pref, price =  "price")
+wtp_mnl_pref <- wtp(mnl_pref, scalePar =  "price")
 wtp_mnl_pref
 
 ## -----------------------------------------------------------------------------
@@ -33,8 +33,7 @@ mnl_wtp <- logitr(
   outcome = 'choice',
   obsID   = 'obsID',
   pars    = c('feat', 'brand'),
-  price   = 'price',
-  modelSpace = 'wtp',
+  scalePar = 'price',
   # Since WTP space models are non-convex, run a multistart
   numMultiStarts = 10,
   # Use the computed WTP from the preference space model as the starting
@@ -49,5 +48,5 @@ summary(mnl_wtp)
 coef(mnl_wtp)
 
 ## -----------------------------------------------------------------------------
-wtpCompare(mnl_pref, mnl_wtp, price = 'price')
+wtpCompare(mnl_pref, mnl_wtp, scalePar = 'price')
 
