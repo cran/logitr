@@ -1,3 +1,20 @@
+# logitr 0.8.0
+
+- Added `tidy()`, `glance()`, and `augment()` methods for use with the {broom} package.
+- Added `model.matrix.logitr()`, `terms.logitr()`, and `model.frame.logitr()` methods for use with {broom.helpers}.
+- Added new vignette comparing convergence issues in WTP space models with other similar packages.
+- Added new vignette on summarizing results from estimated models.
+
+# logitr 0.7.2
+
+- Checks were added to make the `panelID` and `clusterUD` variables a sequentially increasing numeric vector and to stop the program if there are any repeated IDs in these variables.
+- A patch was added to address a bug in the computation of clustered errors where the data in clusters of size 1 needed to be forced into a matrix with correct dimensions.
+
+# logitr 0.7.1
+
+- A patch was added to make the `obsID` variable a sequentially increasing numeric vector (this was previously done but was accidentally removed in prior updates).
+- A patch was added to pass the `modelSpace` variable along inside the `vcov()` method.
+
 # logitr 0.7.0
 
 - A new vignette on benchmarking was added which tests the package speed against other similar packages.

@@ -35,7 +35,7 @@ data <- subset(
 probs_mnl_pref <- predict(
   mnl_pref,
   newdata = data,
-  obsID = "obsID",
+  obsID = "obsID"
 )
 
 probs_mnl_pref
@@ -89,10 +89,20 @@ probs_mnl_wtp
 knitr::include_graphics('probs.png')
 
 ## -----------------------------------------------------------------------------
-outcomes_pref <- predict(mnl_pref, type = "outcome", returnData = TRUE)
+outcomes_pref <- predict(
+    mnl_pref, 
+    type = "outcome", 
+    returnData = TRUE
+)
+
 head(outcomes_pref)
 
-outcomes_wtp <- predict(mnl_wtp, type = "outcome", returnData = TRUE)
+outcomes_wtp <- predict(
+    mnl_wtp, 
+    type = "outcome", 
+    returnData = TRUE
+)
+
 head(outcomes_wtp)
 
 ## -----------------------------------------------------------------------------

@@ -6,16 +6,20 @@ knitr::opts_chunk$set(
   fig.retina = 3,
   comment = "#>"
 )
+
 library(logitr)
-# Read in results from already estimated models  so that the
-# examples aren't actually run when building this page, otherwise it'll
-# take much longer to build
+
+# Read in results from already estimated models so that the
+# examples aren't actually run when building this page,
+# otherwise it'll take much longer to build
 mxl_pref <- readRDS(here::here('inst', 'extdata', 'mxl_pref.Rds'))
 mxl_wtp  <- readRDS(here::here('inst', 'extdata', 'mxl_wtp.Rds'))
 mxl_pref_cor <- readRDS(here::here('inst', 'extdata', 'mxl_pref_cor.Rds'))
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  library("logitr")
+#  
+#  set.seed(456)
 #  
 #  mxl_pref <- logitr(
 #    data     = yogurt,
@@ -35,6 +39,8 @@ wtp_mxl_pref <- wtp(mxl_pref, scalePar =  "price")
 wtp_mxl_pref
 
 ## ----eval=FALSE---------------------------------------------------------------
+#  set.seed(6789)
+#  
 #  mxl_wtp <- logitr(
 #    data       = yogurt,
 #    outcome    = 'choice',
@@ -55,6 +61,8 @@ wtpCompare(mxl_pref, mxl_wtp, scalePar = 'price')
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  library("logitr")
+#  
+#  set.seed(456)
 #  
 #  mxl_pref_cor <- logitr(
 #    data     = yogurt,
