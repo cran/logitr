@@ -127,7 +127,7 @@ predict.logitr <- function(
 formatNewData <- function(object, newdata, obsID) {
   inputs <- object$inputs
   newdata <- as.data.frame(newdata) # tibbles break things
-  newdata <- adjustFactorLevels(object, newdata) # if missing factor levels
+  newdata <- checkFactorLevels(object, newdata)
   recoded <- recodeData(newdata, inputs$pars, inputs$randPars)
   X <- recoded$X
   predictParCheck(object, X) # Check if model pars match those from newdata
@@ -145,16 +145,20 @@ formatNewData <- function(object, newdata, obsID) {
   return(list(X = X, scalePar = scalePar, obsID = obsID))
 }
 
-adjustFactorLevels <- function(object, newdata) {
+# If some factor levels present in the data used to estimate the model
+# are missing, then they need to be added back into the newdata so that
+# the coefficients are correctly interpreted. This function adds back
+# missing factor levels
+checkFactorLevels <- function(object, newdata) {
   levels_orig <- object$data$factorLevels
   factorLevels <- getFactorLevels(newdata, object$inputs$pars)
   if (length(factorLevels) > 0) {
     for (i in 1:length(factorLevels)) {
       par <- names(factorLevels)[[i]]
       levels_new <- factorLevels[[i]]
-      levels_orig <- levels_orig[[par]]
-      if (! identical(levels_new, levels_orig)) {
-        newdata[[par]] <- factor(newdata[[par]], levels = levels_orig)
+      levels_old <- levels_orig[[par]]
+      if (! identical(levels_new, levels_old)) {
+        newdata[[par]] <- factor(newdata[[par]], levels = levels_old)
       }
     }
   }

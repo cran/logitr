@@ -1,3 +1,11 @@
+# logitr (development version)
+
+# logitr 1.0.1
+
+- Fixed bug in `adjustFactorLevels()` where the `levels_orig` object was being accidentally overwritten.
+- Changed the name of `adjustFactorLevels()` to `checkFactorLevels()`.
+- Added a startup message when the package is loaded.
+
 # logitr 1.0.0
 
 - Added JSS article DOI throughout package documentation.
