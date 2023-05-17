@@ -438,28 +438,31 @@ dataset:</p>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6    42     0.02602007</span></span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7    42     0.17803313</span></span>
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8    42     0.18829902</span></span></code></pre></div>
-<p>The <code>ci</code> argument can be used to obtain upper and lower
-bounds of a confidence interval for predicted probabilities, which are
-estimated using the Krinsky and Robb parametric bootstrapping method
-<span class="citation">(Krinsky and Robb 1986)</span>. For example, a
-95% CI is obtained with <code>ci = 0.95</code>:</p>
+<p>Upper and lower bounds of a confidence interval for predicted
+probabilities can be obtained by setting
+<code>interval = &quot;confidence&quot;</code>, and the tolerance level (0 to 1)
+is set with the <code>level</code> argument (defaults to 0.95).
+Intervals are estimated using the Krinsky and Robb parametric
+bootstrapping method <span class="citation">(Krinsky and Robb
+1986)</span>. For example, a 95% CI is obtained with the following:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>probs_mnl_pref <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  mnl_pref,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> data,</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsID =</span> <span class="st">&quot;obsID&quot;</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci =</span> <span class="fl">0.95</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>probs_mnl_pref</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   obsID predicted_prob predicted_prob_lower predicted_prob_upper</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    13     0.43685145           0.41490293           0.45807457</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    13     0.03312986           0.02605820           0.04220765</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    13     0.19155548           0.17660037           0.20716517</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4    13     0.33846321           0.31736913           0.35773877</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5    42     0.60764778           0.57204770           0.64057358</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6    42     0.02602007           0.01872655           0.03732723</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7    42     0.17803313           0.16220968           0.19451696</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8    42     0.18829902           0.16778560           0.20931234</span></span></code></pre></div>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">level =</span> <span class="fl">0.95</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>probs_mnl_pref</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   obsID predicted_prob predicted_prob_lower predicted_prob_upper</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    13     0.43685145           0.41531882           0.45781528</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    13     0.03312986           0.02641062           0.04145166</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    13     0.19155548           0.17631579           0.20767134</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4    13     0.33846321           0.31843584           0.35880858</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5    42     0.60764778           0.57215830           0.64005061</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6    42     0.02602007           0.01839510           0.03687359</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7    42     0.17803313           0.16214868           0.19488167</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8    42     0.18829902           0.16837249           0.20967085</span></span></code></pre></div>
 </div>
 <div id="wtp-space-models" class="section level2">
 <h2>WTP space models</h2>
@@ -478,21 +481,21 @@ previous examples:</p>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>probs_mnl_wtp <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  mnl_wtp,</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> data,</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsID   =</span> <span class="st">&quot;obsID&quot;</span>,</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci      =</span> <span class="fl">0.95</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata  =</span> data,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">obsID    =</span> <span class="st">&quot;obsID&quot;</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span></span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>probs_mnl_wtp</span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   obsID predicted_prob predicted_prob_lower predicted_prob_upper</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    13     0.43686141           0.41626125           0.45759058</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    13     0.03312947           0.02631329           0.04204450</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    13     0.19154829           0.17587351           0.20824388</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4    13     0.33846083           0.31824968           0.35810533</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5    42     0.60767120           0.57426109           0.63738465</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6    42     0.02601800           0.01817677           0.03564045</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7    42     0.17802363           0.16251472           0.19536331</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8    42     0.18828717           0.16746411           0.20889147</span></span></code></pre></div>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    13     0.43686141           0.41551327           0.45747039</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    13     0.03312947           0.02641714           0.04231684</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    13     0.19154829           0.17587927           0.20730602</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4    13     0.33846083           0.31857077           0.35854611</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5    42     0.60767120           0.57326014           0.63983775</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6    42     0.02601800           0.01853595           0.03664343</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7    42     0.17802363           0.16178241           0.19419803</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8    42     0.18828717           0.16779265           0.20839887</span></span></code></pre></div>
 <p>Here is a bar chart comparing the predicted probabilities from the
 preference space and WTP space models. Since both models are equivalent
 except in different spaces, the predicted probabilities are
@@ -531,11 +534,11 @@ can be compared to the actual choices made:</p>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(outcomes_pref)</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   obsID predicted_outcome price feat brandhiland brandweight brandyoplait</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     1                 1   8.1    0           0           0            0</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     1                 0   8.1    0           0           0            0</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     1                 0   6.1    0           1           0            0</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3     1                 0   7.9    0           0           1            0</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3     1                 1   7.9    0           0           1            0</span></span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4     1                 0  10.8    0           0           0            1</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5     2                 0   9.8    0           0           0            0</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5     2                 1   9.8    0           0           0            0</span></span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6     2                 0   6.4    0           1           0            0</span></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   choice</span></span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1      0</span></span>
@@ -572,13 +575,13 @@ correctly predicted choices by the total number of choices:</p>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>chosen_pref<span class="sc">$</span>correct <span class="ot">&lt;-</span> chosen_pref<span class="sc">$</span>choice <span class="sc">==</span> chosen_pref<span class="sc">$</span>predicted_outcome</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>accuracy_pref <span class="ot">&lt;-</span> <span class="fu">sum</span>(chosen_pref<span class="sc">$</span>correct) <span class="sc">/</span> <span class="fu">nrow</span>(chosen_pref)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>accuracy_pref</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.3888889</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.3909619</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>chosen_wtp <span class="ot">&lt;-</span> <span class="fu">subset</span>(outcomes_wtp, choice <span class="sc">==</span> <span class="dv">1</span>)</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>chosen_wtp<span class="sc">$</span>correct <span class="ot">&lt;-</span> chosen_wtp<span class="sc">$</span>choice <span class="sc">==</span> chosen_wtp<span class="sc">$</span>predicted_outcome</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>accuracy_wtp <span class="ot">&lt;-</span> <span class="fu">sum</span>(chosen_wtp<span class="sc">$</span>correct) <span class="sc">/</span> <span class="fu">nrow</span>(chosen_wtp)</span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>accuracy_wtp</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.3909619</span></span></code></pre></div>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.356136</span></span></code></pre></div>
 <p>These results show that both models correctly predicted choice for
 approximately 39% of the observations in the <code>yogurt</code> data
 frame, which is significantly better than random (25%).</p>

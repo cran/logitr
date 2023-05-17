@@ -45,7 +45,8 @@ probs_mnl_pref <- predict(
   mnl_pref,
   newdata = data,
   obsID = "obsID",
-  ci = 0.95
+  interval = "confidence",
+  level = 0.95
 )
 
 probs_mnl_pref
@@ -62,9 +63,9 @@ mnl_wtp <- logitr(
 
 probs_mnl_wtp <- predict(
   mnl_wtp,
-  newdata = data,
-  obsID   = "obsID",
-  ci      = 0.95
+  newdata  = data,
+  obsID    = "obsID",
+  interval = "confidence"
 )
 
 probs_mnl_wtp
