@@ -1,6 +1,6 @@
 Package: logitr
 Title: Logit Models w/Preference & WTP Space Utility Parameterizations
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: c(
     person(given   = "John",
            family  = "Helveston",
@@ -25,10 +25,10 @@ Imports: generics, MASS, nloptr, parallel, randtoolbox, stats, tibble
 URL: https://github.com/jhelvy/logitr
 BugReports: https://github.com/jhelvy/logitr/issues
 NeedsCompilation: no
-Packaged: 2023-05-17 19:27:30 UTC; jhelvy
+Packaged: 2023-09-27 15:04:25 UTC; jhelvy
 Author: John Helveston [aut, cre, cph]
     (<https://orcid.org/0000-0002-2657-9191>),
   Connor Forsythe [ctb]
 Maintainer: John Helveston <john.helveston@gmail.com>
 Repository: CRAN
-Date/Publication: 2023-05-17 22:00:02 UTC
+Date/Publication: 2023-09-29 15:40:02 UTC

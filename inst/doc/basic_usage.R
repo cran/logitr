@@ -36,7 +36,7 @@ mnl_wtp <- logitr(
     numMultiStarts = 10
 )
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  mxl_pref <- logitr(
 #      data     = yogurt,
 #      outcome  = 'choice',

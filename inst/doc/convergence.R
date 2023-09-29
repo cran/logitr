@@ -1,3 +1,10 @@
+## ----include=FALSE------------------------------------------------------------
+# Unfortunately, because not all these packages are available on CRAN 
+# for all platforms, this vignette causes errors that will lead to {logitr}
+# being taken off CRAN. So instead of actually running all of this code, 
+# I just hard-code the results that print out here. You can run it yourself
+# to verify that the results are accurate.
+
 ## ----setup, include=FALSE-----------------------------------------------------
 knitr::opts_chunk$set(
   warning = FALSE,
@@ -9,29 +16,27 @@ knitr::opts_chunk$set(
   fig.retina = 3
 )
 
-# library(logitr)
-
 # Read in results from already estimated models so that the
 # examples aren't actually run when building this page,
 # otherwise it'll take much longer to build
-model_logitr <- readRDS(here::here('inst', 'extdata', 'model_logitr.Rds'))
-model_logitr10 <- readRDS(here::here('inst', 'extdata', 'model_logitr10.Rds'))
-model_mixl1 <- readRDS(here::here('inst', 'extdata', 'model_mixl1.Rds'))
-model_mixl2 <- readRDS(here::here('inst', 'extdata', 'model_mixl2.Rds'))
-model_gmnl1 <- readRDS(here::here('inst', 'extdata', 'model_gmnl1.Rds'))
-model_apollo1 <- readRDS(here::here('inst', 'extdata', 'model_apollo1.Rds'))
-model_apollo2 <- readRDS(here::here('inst', 'extdata', 'model_apollo2.Rds'))
+# model_logitr <- readRDS(here::here('inst', 'extdata', 'model_logitr.Rds'))
+# model_logitr10 <- readRDS(here::here('inst', 'extdata', 'model_logitr10.Rds'))
+# model_mixl1 <- readRDS(here::here('inst', 'extdata', 'model_mixl1.Rds'))
+# model_mixl2 <- readRDS(here::here('inst', 'extdata', 'model_mixl2.Rds'))
+# model_gmnl1 <- readRDS(here::here('inst', 'extdata', 'model_gmnl1.Rds'))
+# model_apollo1 <- readRDS(here::here('inst', 'extdata', 'model_apollo1.Rds'))
+# model_apollo2 <- readRDS(here::here('inst', 'extdata', 'model_apollo2.Rds'))
 
-## ---- message=FALSE, eval=TRUE------------------------------------------------
-library(logitr)
-library(mlogit)
-library(gmnl)
-library(apollo)
-library(mixl)
-library(dplyr)
-library(tidyr)
-
-set.seed(1234)
+## -----------------------------------------------------------------------------
+#  library(logitr)
+#  library(mlogit)
+#  library(gmnl)
+#  library(apollo)
+#  library(mixl)
+#  library(dplyr)
+#  library(tidyr)
+#  
+#  set.seed(1234)
 
 ## -----------------------------------------------------------------------------
 #  numDraws_wtp <- 50
@@ -215,9 +220,8 @@ set.seed(1234)
 #      startVals = start_wtp,
 #      numDraws  = numDraws_wtp
 #  )
-
-## ---- eval=TRUE---------------------------------------------------------------
-summary(model_logitr)
+#  
+#  summary(model_logitr)
 
 ## -----------------------------------------------------------------------------
 #  model_logitr <- logitr(
@@ -232,9 +236,8 @@ summary(model_logitr)
 #      numDraws  = numDraws_wtp,
 #      numMultiStarts = 10
 #  )
-
-## ---- eval=TRUE---------------------------------------------------------------
-summary(model_logitr)
+#  
+#  summary(model_logitr)
 
 ## -----------------------------------------------------------------------------
 #  model_mixl <- estimate(
@@ -243,12 +246,11 @@ summary(model_logitr)
 #      nDraws = numDraws_wtp
 #  )
 
-## ---- eval=TRUE, echo=FALSE---------------------------------------------------
-model_mixl <- model_mixl1
+## -----------------------------------------------------------------------------
+#  c(logLik(model_logitr), logLik(model_mixl))
 
-## ---- eval=TRUE---------------------------------------------------------------
-c(logLik(model_logitr), logLik(model_mixl))
-cbind(coef(model_logitr), coef(model_mixl))
+## -----------------------------------------------------------------------------
+#  cbind(coef(model_logitr), coef(model_mixl))
 
 ## -----------------------------------------------------------------------------
 #  model_mixl <- estimate(
@@ -257,12 +259,11 @@ cbind(coef(model_logitr), coef(model_mixl))
 #      nDraws = numDraws_wtp
 #  )
 
-## ---- include=FALSE-----------------------------------------------------------
-#  model_mixl <- model_mixl2
+## -----------------------------------------------------------------------------
+#  c(logLik(model_logitr), logLik(model_mixl))
 
-## ---- eval=TRUE---------------------------------------------------------------
-c(logLik(model_logitr), logLik(model_mixl))
-cbind(coef(model_logitr), coef(model_mixl))
+## -----------------------------------------------------------------------------
+#  cbind(coef(model_logitr), coef(model_mixl))
 
 ## -----------------------------------------------------------------------------
 #  model_gmnl <- gmnl(
@@ -280,12 +281,11 @@ cbind(coef(model_logitr), coef(model_mixl))
 #      R = numDraws_wtp
 #  )
 
-## ---- eval=TRUE, echo=FALSE---------------------------------------------------
-model_gmnl <- model_gmnl1
+## -----------------------------------------------------------------------------
+#  c(logLik(model_logitr), logLik(model_gmnl))
 
-## ---- eval=TRUE---------------------------------------------------------------
-c(logLik(model_logitr), logLik(model_gmnl))
-cbind(coef(model_logitr), coef(model_gmnl))
+## -----------------------------------------------------------------------------
+#  cbind(coef(model_logitr), coef(model_gmnl))
 
 ## -----------------------------------------------------------------------------
 #  model_gmnl <- gmnl(
@@ -304,6 +304,12 @@ cbind(coef(model_logitr), coef(model_gmnl))
 #  )
 
 ## -----------------------------------------------------------------------------
+#  c(logLik(model_logitr), logLik(model_gmnl))
+
+## -----------------------------------------------------------------------------
+#  cbind(coef(model_logitr), coef(model_gmnl))
+
+## -----------------------------------------------------------------------------
 #  model_apollo <- apollo_estimate(
 #      apollo_beta          = start_wtp,
 #      apollo_fixed         = NULL,
@@ -312,12 +318,11 @@ cbind(coef(model_logitr), coef(model_gmnl))
 #      estimate_settings    = list(printLevel = 0)
 #  )
 
-## ---- eval=TRUE, echo=FALSE---------------------------------------------------
-model_apollo <- model_apollo1
+## -----------------------------------------------------------------------------
+#  c(logLik(model_logitr), model_apollo$LLout)
 
-## ---- eval=TRUE---------------------------------------------------------------
-c(logLik(model_logitr), logLik(model_apollo))
-cbind(coef(model_logitr), coef(model_apollo))
+## -----------------------------------------------------------------------------
+#  cbind(coef(model_logitr), coef(model_apollo))
 
 ## -----------------------------------------------------------------------------
 #  model_apollo <- apollo_estimate(
@@ -328,10 +333,9 @@ cbind(coef(model_logitr), coef(model_apollo))
 #      estimate_settings    = list(printLevel = 0)
 #  )
 
-## ---- eval=TRUE, echo=FALSE---------------------------------------------------
-model_apollo <- model_apollo2
+## -----------------------------------------------------------------------------
+#  c(logLik(model_logitr), model_apollo$LLout)
 
-## ---- eval=TRUE---------------------------------------------------------------
-c(logLik(model_logitr), logLik(model_apollo))
-cbind(coef(model_logitr), coef(model_apollo))
+## -----------------------------------------------------------------------------
+#  cbind(coef(model_logitr), model_apollo$betaStop)
 

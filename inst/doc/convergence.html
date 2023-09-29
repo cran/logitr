@@ -369,31 +369,31 @@ consistently converge to a solution.</p>
 <div id="basic-settings" class="section level2">
 <h2>Basic settings</h2>
 <p>First load the required packages:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(logitr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mlogit)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gmnl)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(apollo)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mixl)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(logitr)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(mlogit)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(gmnl)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">library</span>(apollo)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">library</span>(mixl)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span></code></pre></div>
 <p>Now set the starting parameters for each package as well as the
 number of draws to use for the simulated log-likelihood:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>numDraws_wtp <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>start_wtp <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">scalePar        =</span> <span class="dv">1</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">feat            =</span> <span class="dv">0</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">brandhiland     =</span> <span class="dv">0</span>,</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">brandweight     =</span> <span class="dv">0</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">brandyoplait    =</span> <span class="dv">0</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_feat         =</span> <span class="fl">0.1</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_brandhiland  =</span> <span class="fl">0.1</span>,</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_brandweight  =</span> <span class="fl">0.1</span>,</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_brandyoplait =</span> <span class="fl">0.1</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>numDraws_wtp <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>start_wtp <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>    <span class="at">scalePar        =</span> <span class="dv">1</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>    <span class="at">feat            =</span> <span class="dv">0</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>    <span class="at">brandhiland     =</span> <span class="dv">0</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>    <span class="at">brandweight     =</span> <span class="dv">0</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>    <span class="at">brandyoplait    =</span> <span class="dv">0</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>    <span class="at">sd_feat         =</span> <span class="fl">0.1</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>    <span class="at">sd_brandhiland  =</span> <span class="fl">0.1</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>    <span class="at">sd_brandweight  =</span> <span class="fl">0.1</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>    <span class="at">sd_brandyoplait =</span> <span class="fl">0.1</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>)</span></code></pre></div>
 <p>Take only half of the yogurt data to speed things up:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>yogurt <span class="ot">&lt;-</span> <span class="fu">subset</span>(logitr<span class="sc">::</span>yogurt, logitr<span class="sc">::</span>yogurt<span class="sc">$</span>id <span class="sc">&lt;=</span> <span class="dv">50</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>yogurt <span class="ot">&lt;-</span> <span class="fu">subset</span>(logitr<span class="sc">::</span>yogurt, logitr<span class="sc">::</span>yogurt<span class="sc">$</span>id <span class="sc">&lt;=</span> <span class="dv">50</span>)</span></code></pre></div>
 </div>
 <div id="package-specific-settings" class="section level2">
 <h2>Package-specific settings</h2>
@@ -403,179 +403,182 @@ provided here.</p>
 <div id="prep-for-gmnl" class="section level3">
 <h3>Prep for {gmnl}</h3>
 <p>Convert the yogurt data for into the format required for {gmnl}</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data_gmnl <span class="ot">&lt;-</span> <span class="fu">mlogit.data</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data     =</span> yogurt,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape    =</span> <span class="st">&quot;long&quot;</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">choice   =</span> <span class="st">&quot;choice&quot;</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">id.var   =</span> <span class="st">&#39;id&#39;</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">alt.var  =</span> <span class="st">&#39;alt&#39;</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">chid.var =</span> <span class="st">&#39;obsID&#39;</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>data_gmnl <span class="ot">&lt;-</span> <span class="fu">mlogit.data</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>    <span class="at">data     =</span> yogurt,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    <span class="at">shape    =</span> <span class="st">&quot;long&quot;</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>    <span class="at">choice   =</span> <span class="st">&quot;choice&quot;</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>    <span class="at">id.var   =</span> <span class="st">&#39;id&#39;</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    <span class="at">alt.var  =</span> <span class="st">&#39;alt&#39;</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>    <span class="at">chid.var =</span> <span class="st">&#39;obsID&#39;</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 <div id="prep-for-apollo" class="section level3">
 <h3>Prep for {apollo}</h3>
 <p>Format the <code>yogurt</code> data to a “wide” format for
 {apollo}</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>yogurt_price <span class="ot">&lt;-</span> yogurt <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(id, obsID, price, brand) <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">price =</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>price) <span class="sc">%&gt;%</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">names_from  =</span> <span class="st">&#39;brand&#39;</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">values_from =</span> <span class="st">&#39;price&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">price_dannon  =</span> dannon,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">price_hiland  =</span> hiland,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">price_weight  =</span> weight,</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">price_yoplait =</span> yoplait)</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>yogurt_feat <span class="ot">&lt;-</span> yogurt <span class="sc">%&gt;%</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(id, obsID, feat, brand) <span class="sc">%&gt;%</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">names_from =</span> <span class="st">&#39;brand&#39;</span>,</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">values_from =</span> <span class="st">&#39;feat&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">feat_dannon  =</span> dannon,</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">feat_hiland  =</span> hiland,</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">feat_weight  =</span> weight,</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">feat_yoplait =</span> yoplait)</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>yogurt_choice <span class="ot">&lt;-</span> yogurt <span class="sc">%&gt;%</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(choice <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(id, obsID, <span class="at">choice =</span> alt)</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>data_apollo <span class="ot">&lt;-</span> yogurt_price <span class="sc">%&gt;%</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(yogurt_feat, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&#39;id&#39;</span>, <span class="st">&#39;obsID&#39;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(yogurt_choice, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&#39;id&#39;</span>, <span class="st">&#39;obsID&#39;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(id, obsID) <span class="sc">%&gt;%</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">av_dannon  =</span> <span class="dv">1</span>,</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">av_hiland  =</span> <span class="dv">1</span>,</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">av_weight  =</span> <span class="dv">1</span>,</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">av_yoplait =</span> <span class="dv">1</span></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>yogurt_price <span class="ot">&lt;-</span> yogurt <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>    <span class="fu">select</span>(id, obsID, price, brand) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">price =</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>price) <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>        <span class="at">names_from  =</span> <span class="st">&#39;brand&#39;</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>        <span class="at">values_from =</span> <span class="st">&#39;price&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>    <span class="fu">rename</span>(</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>        <span class="at">price_dannon  =</span> dannon,</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>        <span class="at">price_hiland  =</span> hiland,</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>        <span class="at">price_weight  =</span> weight,</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>        <span class="at">price_yoplait =</span> yoplait)</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>yogurt_feat <span class="ot">&lt;-</span> yogurt <span class="sc">%&gt;%</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>    <span class="fu">select</span>(id, obsID, feat, brand) <span class="sc">%&gt;%</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>        <span class="at">names_from =</span> <span class="st">&#39;brand&#39;</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>        <span class="at">values_from =</span> <span class="st">&#39;feat&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>    <span class="fu">rename</span>(</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>        <span class="at">feat_dannon  =</span> dannon,</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>        <span class="at">feat_hiland  =</span> hiland,</span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>        <span class="at">feat_weight  =</span> weight,</span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>        <span class="at">feat_yoplait =</span> yoplait)</span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>yogurt_choice <span class="ot">&lt;-</span> yogurt <span class="sc">%&gt;%</span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>    <span class="fu">filter</span>(choice <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>    <span class="fu">select</span>(id, obsID, <span class="at">choice =</span> alt)</span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>data_apollo <span class="ot">&lt;-</span> yogurt_price <span class="sc">%&gt;%</span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>    <span class="fu">left_join</span>(yogurt_feat, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&#39;id&#39;</span>, <span class="st">&#39;obsID&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a>    <span class="fu">left_join</span>(yogurt_choice, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&#39;id&#39;</span>, <span class="st">&#39;obsID&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>    <span class="fu">arrange</span>(id, obsID) <span class="sc">%&gt;%</span></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a>      <span class="at">av_dannon  =</span> <span class="dv">1</span>,</span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>      <span class="at">av_hiland  =</span> <span class="dv">1</span>,</span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a>      <span class="at">av_weight  =</span> <span class="dv">1</span>,</span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a>      <span class="at">av_yoplait =</span> <span class="dv">1</span></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a>    )</span></code></pre></div>
 <p>Define the {apollo} probabilities function</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>apollo_probabilities_wtp <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  apollo_beta, apollo_inputs, <span class="at">functionality =</span> <span class="st">&quot;estimate&quot;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>) {</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="do">### Attach inputs and detach after function exit</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">apollo_attach</span>(apollo_beta, apollo_inputs)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">on.exit</span>(<span class="fu">apollo_detach</span>(apollo_beta, apollo_inputs))</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="do">### Create list of probabilities P</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    P <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="do">### List of utilities: these must use the same names as in mnl_settings,</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   order is irrelevant</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    V <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    V[[<span class="st">&quot;dannon&quot;</span>]] <span class="ot">&lt;-</span> scalePar <span class="sc">*</span> (b_feat <span class="sc">*</span> feat_dannon <span class="sc">-</span> price_dannon)</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    V[[<span class="st">&quot;hiland&quot;</span>]] <span class="ot">&lt;-</span> scalePar <span class="sc">*</span> (b_brandhiland <span class="sc">+</span> b_feat <span class="sc">*</span> feat_hiland <span class="sc">-</span> price_hiland)</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    V[[<span class="st">&quot;weight&quot;</span>]] <span class="ot">&lt;-</span> scalePar <span class="sc">*</span> (b_brandweight <span class="sc">+</span> b_feat <span class="sc">*</span> feat_weight <span class="sc">-</span> price_weight)</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    V[[<span class="st">&quot;yoplait&quot;</span>]] <span class="ot">&lt;-</span> scalePar <span class="sc">*</span> (b_brandyoplait <span class="sc">+</span> b_feat <span class="sc">*</span> feat_yoplait <span class="sc">-</span> price_yoplait)</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="do">### Define settings for MNL model component</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    mnl_settings <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">alternatives =</span> <span class="fu">c</span>(<span class="at">dannon =</span> <span class="dv">1</span>, <span class="at">hiland =</span> <span class="dv">2</span>, <span class="at">weight =</span> <span class="dv">3</span>, <span class="at">yoplait =</span> <span class="dv">4</span>),</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">avail =</span> <span class="fu">list</span>(</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>          <span class="at">dannon =</span> av_dannon,</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>          <span class="at">hiland =</span> av_hiland,</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>          <span class="at">weight =</span> av_weight,</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>          <span class="at">yoplait =</span> av_yoplait),</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">choiceVar =</span> choice,</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">utilities =</span> V</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    <span class="do">### Compute probabilities using MNL model</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    P[[<span class="st">&quot;model&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">apollo_mnl</span>(mnl_settings, functionality)</span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="do">### Take product across observation for same individual</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    P <span class="ot">&lt;-</span> <span class="fu">apollo_panelProd</span>(P, apollo_inputs, functionality)</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    <span class="do">### Average across inter-individual draws</span></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    P <span class="ot">=</span> <span class="fu">apollo_avgInterDraws</span>(P, apollo_inputs, functionality)</span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    <span class="do">### Prepare and return outputs of function</span></span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    P <span class="ot">&lt;-</span> <span class="fu">apollo_prepareProb</span>(P, apollo_inputs, functionality)</span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(P)</span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>apollo_probabilities_wtp <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  apollo_beta, apollo_inputs, <span class="at">functionality =</span> <span class="st">&quot;estimate&quot;</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>) {</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="do">### Attach inputs and detach after function exit</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    <span class="fu">apollo_attach</span>(apollo_beta, apollo_inputs)</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>    <span class="fu">on.exit</span>(<span class="fu">apollo_detach</span>(apollo_beta, apollo_inputs))</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>    <span class="do">### Create list of probabilities P</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>    P <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>    <span class="do">### List of utilities: these must use the same names as in mnl_settings,</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>    <span class="co">#   order is irrelevant</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>    V <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>    V[[<span class="st">&quot;dannon&quot;</span>]] <span class="ot">&lt;-</span> scalePar <span class="sc">*</span> (b_feat <span class="sc">*</span> feat_dannon <span class="sc">-</span> price_dannon)</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>    V[[<span class="st">&quot;hiland&quot;</span>]] <span class="ot">&lt;-</span> scalePar <span class="sc">*</span> (b_brandhiland <span class="sc">+</span> b_feat <span class="sc">*</span> feat_hiland <span class="sc">-</span> price_hiland)</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>    V[[<span class="st">&quot;weight&quot;</span>]] <span class="ot">&lt;-</span> scalePar <span class="sc">*</span> (b_brandweight <span class="sc">+</span> b_feat <span class="sc">*</span> feat_weight <span class="sc">-</span> price_weight)</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>    V[[<span class="st">&quot;yoplait&quot;</span>]] <span class="ot">&lt;-</span> scalePar <span class="sc">*</span> (b_brandyoplait <span class="sc">+</span> b_feat <span class="sc">*</span> feat_yoplait <span class="sc">-</span> price_yoplait)</span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>    <span class="do">### Define settings for MNL model component</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>    mnl_settings <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>        <span class="at">alternatives =</span> <span class="fu">c</span>(<span class="at">dannon =</span> <span class="dv">1</span>, <span class="at">hiland =</span> <span class="dv">2</span>, <span class="at">weight =</span> <span class="dv">3</span>, <span class="at">yoplait =</span> <span class="dv">4</span>),</span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>        <span class="at">avail =</span> <span class="fu">list</span>(</span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>          <span class="at">dannon =</span> av_dannon,</span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>          <span class="at">hiland =</span> av_hiland,</span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>          <span class="at">weight =</span> av_weight,</span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>          <span class="at">yoplait =</span> av_yoplait),</span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>        <span class="at">choiceVar =</span> choice,</span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>        <span class="at">utilities =</span> V</span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>    )</span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a></span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>    <span class="do">### Compute probabilities using MNL model</span></span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a>    P[[<span class="st">&quot;model&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">apollo_mnl</span>(mnl_settings, functionality)</span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a>    <span class="do">### Take product across observation for same individual</span></span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a>    P <span class="ot">&lt;-</span> <span class="fu">apollo_panelProd</span>(P, apollo_inputs, functionality)</span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a>    <span class="do">### Average across inter-individual draws</span></span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a>    P <span class="ot">=</span> <span class="fu">apollo_avgInterDraws</span>(P, apollo_inputs, functionality)</span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a>    <span class="do">### Prepare and return outputs of function</span></span>
+<span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a>    P <span class="ot">&lt;-</span> <span class="fu">apollo_prepareProb</span>(P, apollo_inputs, functionality)</span>
+<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a></span>
+<span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a>    <span class="fu">return</span>(P)</span>
+<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a>}</span></code></pre></div>
 <p>Define random parameters function</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>apollo_randCoeff <span class="ot">&lt;-</span> <span class="cf">function</span>(apollo_beta, apollo_inputs) {</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    randcoeff <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    randcoeff[[<span class="st">&#39;b_feat&#39;</span>]] <span class="ot">&lt;-</span> feat <span class="sc">+</span> d_feat <span class="sc">*</span> sd_feat</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    randcoeff[[<span class="st">&#39;b_brandhiland&#39;</span>]] <span class="ot">&lt;-</span> brandhiland <span class="sc">+</span> d_brandhiland <span class="sc">*</span> sd_brandhiland</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    randcoeff[[<span class="st">&#39;b_brandweight&#39;</span>]] <span class="ot">&lt;-</span> brandweight <span class="sc">+</span> d_brandweight <span class="sc">*</span> sd_brandweight</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    randcoeff[[<span class="st">&#39;b_brandyoplait&#39;</span>]] <span class="ot">&lt;-</span> brandyoplait <span class="sc">+</span> d_brandyoplait <span class="sc">*</span> sd_brandyoplait</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(randcoeff)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>apollo_randCoeff <span class="ot">&lt;-</span> <span class="cf">function</span>(apollo_beta, apollo_inputs) {</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>    randcoeff <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>    randcoeff[[<span class="st">&#39;b_feat&#39;</span>]] <span class="ot">&lt;-</span> feat <span class="sc">+</span> d_feat <span class="sc">*</span> sd_feat</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>    randcoeff[[<span class="st">&#39;b_brandhiland&#39;</span>]] <span class="ot">&lt;-</span> brandhiland <span class="sc">+</span> d_brandhiland <span class="sc">*</span> sd_brandhiland</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>    randcoeff[[<span class="st">&#39;b_brandweight&#39;</span>]] <span class="ot">&lt;-</span> brandweight <span class="sc">+</span> d_brandweight <span class="sc">*</span> sd_brandweight</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>    randcoeff[[<span class="st">&#39;b_brandyoplait&#39;</span>]] <span class="ot">&lt;-</span> brandyoplait <span class="sc">+</span> d_brandyoplait <span class="sc">*</span> sd_brandyoplait</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>    <span class="fu">return</span>(randcoeff)</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>}</span></code></pre></div>
 <p>Main control settings for {apollo}</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>apollo_control_wtp <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">modelName       =</span> <span class="st">&quot;MXL_WTP_space&quot;</span>,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">modelDescr      =</span> <span class="st">&quot;MXL model on yogurt choice SP data, in WTP space&quot;</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">indivID         =</span> <span class="st">&quot;id&quot;</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mixing          =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">analyticGrad    =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">panelData       =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">nCores          =</span> <span class="dv">1</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Set parameters for generating draws</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>apollo_draws_n <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">interDrawsType =</span> <span class="st">&quot;halton&quot;</span>,</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">interNDraws    =</span> numDraws_wtp,</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">interUnifDraws =</span> <span class="fu">c</span>(),</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">interNormDraws =</span> <span class="fu">c</span>(</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;d_feat&quot;</span>, <span class="st">&quot;d_brandhiland&quot;</span>, <span class="st">&quot;d_brandweight&quot;</span>, <span class="st">&quot;d_brandyoplait&quot;</span>),</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">intraDrawsType =</span> <span class="st">&quot;halton&quot;</span>,</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">intraNDraws    =</span> <span class="dv">0</span>,</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">intraUnifDraws =</span> <span class="fu">c</span>(),</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">intraNormDraws =</span> <span class="fu">c</span>()</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Set input</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>apollo_inputs_wtp <span class="ot">&lt;-</span> <span class="fu">apollo_validateInputs</span>(</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">apollo_beta      =</span> start_wtp,</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">apollo_fixed     =</span> <span class="cn">NULL</span>,</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">database         =</span> data_apollo,</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">apollo_draws     =</span> apollo_draws_n,</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">apollo_randCoeff =</span> apollo_randCoeff,</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">apollo_control   =</span> apollo_control_wtp</span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>apollo_control_wtp <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>    <span class="at">modelName       =</span> <span class="st">&quot;MXL_WTP_space&quot;</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>    <span class="at">modelDescr      =</span> <span class="st">&quot;MXL model on yogurt choice SP data, in WTP space&quot;</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>    <span class="at">indivID         =</span> <span class="st">&quot;id&quot;</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    <span class="at">mixing          =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>    <span class="at">analyticGrad    =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>    <span class="at">panelData       =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>    <span class="at">nCores          =</span> <span class="dv">1</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>)</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co"># Set parameters for generating draws</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>apollo_draws_n <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>    <span class="at">interDrawsType =</span> <span class="st">&quot;halton&quot;</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>    <span class="at">interNDraws    =</span> numDraws_wtp,</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>    <span class="at">interUnifDraws =</span> <span class="fu">c</span>(),</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>    <span class="at">interNormDraws =</span> <span class="fu">c</span>(</span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>        <span class="st">&quot;d_feat&quot;</span>, <span class="st">&quot;d_brandhiland&quot;</span>, <span class="st">&quot;d_brandweight&quot;</span>, <span class="st">&quot;d_brandyoplait&quot;</span>),</span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>    <span class="at">intraDrawsType =</span> <span class="st">&quot;halton&quot;</span>,</span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>    <span class="at">intraNDraws    =</span> <span class="dv">0</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a>    <span class="at">intraUnifDraws =</span> <span class="fu">c</span>(),</span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a>    <span class="at">intraNormDraws =</span> <span class="fu">c</span>()</span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a>)</span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co"># Set input</span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a>apollo_inputs_wtp <span class="ot">&lt;-</span> <span class="fu">apollo_validateInputs</span>(</span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a>    <span class="at">apollo_beta      =</span> start_wtp,</span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a>    <span class="at">apollo_fixed     =</span> <span class="cn">NULL</span>,</span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a>    <span class="at">database         =</span> data_apollo,</span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a>    <span class="at">apollo_draws     =</span> apollo_draws_n,</span>
+<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a>    <span class="at">apollo_randCoeff =</span> apollo_randCoeff,</span>
+<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a>    <span class="at">apollo_control   =</span> apollo_control_wtp</span>
+<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 <div id="prep-for-mixl" class="section level3">
 <h3>Prep for {mixl}</h3>
 <p>Format the <code>yogurt</code> data to a “wide” format for {mixl}</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data_mixl <span class="ot">&lt;-</span> data_apollo <span class="co"># Uses the same &quot;wide&quot; format as {apollo}</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>data_mixl<span class="sc">$</span>ID <span class="ot">&lt;-</span> data_mixl<span class="sc">$</span>id</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>data_mixl<span class="sc">$</span>CHOICE <span class="ot">&lt;-</span> data_mixl<span class="sc">$</span>choice</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>data_mixl <span class="ot">&lt;-</span> data_apollo <span class="co"># Uses the same &quot;wide&quot; format as {apollo}</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>data_mixl<span class="sc">$</span>ID <span class="ot">&lt;-</span> data_mixl<span class="sc">$</span>id</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>data_mixl<span class="sc">$</span>CHOICE <span class="ot">&lt;-</span> data_mixl<span class="sc">$</span>choice</span></code></pre></div>
 <p>Define the {mixl} utility function</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mixl_wtp <span class="ot">&lt;-</span> <span class="st">&quot;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="st">    feat_RND = @feat + draw_1 * @sd_feat;</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="st">    brandhiland_RND = @brandhiland + draw_2 * @sd_brandhiland;</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="st">    brandweight_RND = @brandweight + draw_3 * @sd_brandweight;</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="st">    brandyoplait_RND = @brandyoplait + draw_4 * @sd_brandyoplait;</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">    U_1 = @scalePar * (feat_RND * $feat_dannon - $price_dannon);</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="st">    U_2 = @scalePar * (brandhiland_RND + feat_RND * $feat_hiland - $price_hiland);</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">    U_3 = @scalePar * (brandweight_RND + feat_RND * $feat_weight - $price_weight);</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="st">    U_4 = @scalePar * (brandyoplait_RND + feat_RND * $feat_yoplait - $price_yoplait);</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>mixl_spec_wtp <span class="ot">&lt;-</span> <span class="fu">specify_model</span>(mixl_wtp, data_mixl)</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>availabilities <span class="ot">&lt;-</span> <span class="fu">generate_default_availabilities</span>(data_mixl, <span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>mixl_wtp <span class="ot">&lt;-</span> <span class="st">&quot;</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="st">    feat_RND = @feat + draw_1 * @sd_feat;</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="st">    brandhiland_RND = @brandhiland + draw_2 * @sd_brandhiland;</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="st">    brandweight_RND = @brandweight + draw_3 * @sd_brandweight;</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="st">    brandyoplait_RND = @brandyoplait + draw_4 * @sd_brandyoplait;</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="st">    U_1 = @scalePar * (feat_RND * $feat_dannon - $price_dannon);</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="st">    U_2 = @scalePar * (brandhiland_RND + feat_RND * $feat_hiland - $price_hiland);</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="st">    U_3 = @scalePar * (brandweight_RND + feat_RND * $feat_weight - $price_weight);</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="st">    U_4 = @scalePar * (brandyoplait_RND + feat_RND * $feat_yoplait - $price_yoplait);</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="st">&quot;</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>mixl_spec_wtp <span class="ot">&lt;-</span> <span class="fu">specify_model</span>(mixl_wtp, data_mixl)</span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>availabilities <span class="ot">&lt;-</span> <span class="fu">generate_default_availabilities</span>(data_mixl, <span class="dv">4</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
 <div id="estimate-wtp-space-models" class="section level1">
 <h1>Estimate WTP space models</h1>
-<p>The same model is now estimated using all five packages.</p>
+<p>The same model is now estimated using all five packages. We will see
+that only {logitr} is able to converge to a solution, while all other
+package either fail to converge or converge to only a local minimum.</p>
 <div id="logitr" class="section level2">
 <h2>{logitr}</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model_logitr <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data      =</span> yogurt,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">outcome   =</span> <span class="st">&#39;choice&#39;</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">obsID     =</span> <span class="st">&#39;obsID&#39;</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">panelID   =</span> <span class="st">&#39;id&#39;</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">pars      =</span> <span class="fu">c</span>(<span class="st">&#39;feat&#39;</span>, <span class="st">&#39;brand&#39;</span>),</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">scalePar  =</span> <span class="st">&#39;price&#39;</span>,</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">randPars  =</span> <span class="fu">c</span>(<span class="at">feat =</span> <span class="st">&quot;n&quot;</span>, <span class="at">brand =</span> <span class="st">&quot;n&quot;</span>),</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">startVals =</span> start_wtp,</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">numDraws  =</span> numDraws_wtp</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>{logitr} converges, even without running a multi-start:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_logitr)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>model_logitr <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>    <span class="at">data      =</span> yogurt,</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>    <span class="at">outcome   =</span> <span class="st">&#39;choice&#39;</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>    <span class="at">obsID     =</span> <span class="st">&#39;obsID&#39;</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>    <span class="at">panelID   =</span> <span class="st">&#39;id&#39;</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>    <span class="at">pars      =</span> <span class="fu">c</span>(<span class="st">&#39;feat&#39;</span>, <span class="st">&#39;brand&#39;</span>),</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>    <span class="at">scalePar  =</span> <span class="st">&#39;price&#39;</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>    <span class="at">randPars  =</span> <span class="fu">c</span>(<span class="at">feat =</span> <span class="st">&quot;n&quot;</span>, <span class="at">brand =</span> <span class="st">&quot;n&quot;</span>),</span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>    <span class="at">startVals =</span> start_wtp,</span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>    <span class="at">numDraws  =</span> numDraws_wtp</span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>)</span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="fu">summary</span>(model_logitr)</span></code></pre></div>
 <pre><code>#&gt; =================================================
 #&gt; 
 #&gt; Model estimated on: Sat Oct 01 16:46:57 2022 
@@ -632,44 +635,60 @@ provided here.</p>
 #&gt; brandhiland  -Inf -17.4039453 -13.538553 -13.542027 -9.674388  Inf
 #&gt; brandweight  -Inf -12.2189602  -4.519436  -4.527690  3.182253  Inf
 #&gt; brandyoplait -Inf   0.6670773   6.648678   6.641070 12.632059  Inf</code></pre>
-<p>Including a multi-start helps build confidence in the solution
+<p>Including a 10-run multi-start helps build confidence in the solution
 reached:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model_logitr <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data      =</span> yogurt,</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">outcome   =</span> <span class="st">&#39;choice&#39;</span>,</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">obsID     =</span> <span class="st">&#39;obsID&#39;</span>,</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">panelID   =</span> <span class="st">&#39;id&#39;</span>,</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">pars      =</span> <span class="fu">c</span>(<span class="st">&#39;feat&#39;</span>, <span class="st">&#39;brand&#39;</span>),</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">scalePar  =</span> <span class="st">&#39;price&#39;</span>,</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">randPars  =</span> <span class="fu">c</span>(<span class="at">feat =</span> <span class="st">&quot;n&quot;</span>, <span class="at">brand =</span> <span class="st">&quot;n&quot;</span>),</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">startVals =</span> start_wtp,</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">numDraws  =</span> numDraws_wtp,</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">numMultiStarts =</span> <span class="dv">10</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_logitr)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>model_logitr <span class="ot">&lt;-</span> <span class="fu">logitr</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>    <span class="at">data      =</span> yogurt,</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>    <span class="at">outcome   =</span> <span class="st">&#39;choice&#39;</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>    <span class="at">obsID     =</span> <span class="st">&#39;obsID&#39;</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>    <span class="at">panelID   =</span> <span class="st">&#39;id&#39;</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>    <span class="at">pars      =</span> <span class="fu">c</span>(<span class="st">&#39;feat&#39;</span>, <span class="st">&#39;brand&#39;</span>),</span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>    <span class="at">scalePar  =</span> <span class="st">&#39;price&#39;</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>    <span class="at">randPars  =</span> <span class="fu">c</span>(<span class="at">feat =</span> <span class="st">&quot;n&quot;</span>, <span class="at">brand =</span> <span class="st">&quot;n&quot;</span>),</span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>    <span class="at">startVals =</span> start_wtp,</span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>    <span class="at">numDraws  =</span> numDraws_wtp,</span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>    <span class="at">numMultiStarts =</span> <span class="dv">10</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a>)</span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="fu">summary</span>(model_logitr)</span></code></pre></div>
 <pre><code>#&gt; =================================================
 #&gt; 
-#&gt; Model estimated on: Sat Oct 01 16:46:57 2022 
+#&gt; Model estimated on: Sun Sep 24 14:02:07 2023 
 #&gt; 
-#&gt; Using logitr version: 0.8.0 
+#&gt; Using logitr version: 1.1.0 
 #&gt; 
 #&gt; Call:
 #&gt; logitr(data = yogurt, outcome = &quot;choice&quot;, obsID = &quot;obsID&quot;, pars = c(&quot;feat&quot;, 
 #&gt;     &quot;brand&quot;), scalePar = &quot;price&quot;, randPars = c(feat = &quot;n&quot;, brand = &quot;n&quot;), 
-#&gt;     panelID = &quot;id&quot;, startVals = start_wtp, numDraws = numDraws_wtp, 
-#&gt;     numCores = numCores)
+#&gt;     panelID = &quot;id&quot;, startVals = start_wtp, numMultiStarts = 10, 
+#&gt;     numDraws = numDraws_wtp)
 #&gt; 
 #&gt; Frequencies of alternatives:
 #&gt;        1        2        3        4 
 #&gt; 0.415721 0.029984 0.170989 0.383306 
 #&gt; 
+#&gt; Summary Of Multistart Runs:
+#&gt;    Log Likelihood Iterations Exit Status
+#&gt; 1       -732.2132         86           3
+#&gt; 2       -728.0567         50           3
+#&gt; 3       -734.7358         67           3
+#&gt; 4       -725.4327         68           3
+#&gt; 5       -731.0111         71           3
+#&gt; 6       -731.3684         58           3
+#&gt; 7       -749.7861         72           3
+#&gt; 8       -718.0862         95           3
+#&gt; 9       -745.6384         50           3
+#&gt; 10      -722.1385         68           3
+#&gt; 
+#&gt; Use statusCodes() to view the meaning of each status code
+#&gt; 
 #&gt; Exit Status: 3, Optimization stopped because ftol_rel or ftol_abs was reached.
 #&gt;                                  
 #&gt; Model Type:           Mixed Logit
 #&gt; Model Space:   Willingness-to-Pay
-#&gt; Model Run:                 1 of 1
-#&gt; Iterations:                    85
-#&gt; Elapsed Time:            0h:0m:4s
+#&gt; Model Run:                8 of 10
+#&gt; Iterations:                    95
+#&gt; Elapsed Time:            0h:0m:2s
 #&gt; Algorithm:         NLOPT_LD_LBFGS
 #&gt; Weights Used?:              FALSE
 #&gt; Panel ID:                      id
@@ -677,176 +696,191 @@ reached:</p>
 #&gt; 
 #&gt; Model Coefficients: 
 #&gt;                   Estimate Std. Error z-value  Pr(&gt;|z|)    
-#&gt; scalePar          0.388098   0.050706  7.6538 1.954e-14 ***
-#&gt; feat              1.738832   0.725107  2.3980   0.01648 *  
-#&gt; brandhiland     -13.536714   1.810701 -7.4760 7.661e-14 ***
-#&gt; brandweight      -4.510068   1.015856 -4.4397 9.010e-06 ***
-#&gt; brandyoplait      6.663869   0.929658  7.1681 7.605e-13 ***
-#&gt; sd_feat           0.491225   1.072013  0.4582   0.64679    
-#&gt; sd_brandhiland    5.730571   1.125803  5.0902 3.577e-07 ***
-#&gt; sd_brandweight   11.420500   1.727799  6.6099 3.847e-11 ***
-#&gt; sd_brandyoplait   8.872470   1.366376  6.4934 8.390e-11 ***
+#&gt; scalePar          0.378986   0.048908  7.7490 9.326e-15 ***
+#&gt; feat              1.746832   0.725116  2.4090   0.01599 *  
+#&gt; brandhiland     -13.708716   1.788570 -7.6646 1.799e-14 ***
+#&gt; brandweight      -9.382873   1.543072 -6.0806 1.197e-09 ***
+#&gt; brandyoplait      4.251573   0.628295  6.7668 1.316e-11 ***
+#&gt; sd_feat          -0.930817   0.828995 -1.1228   0.26151    
+#&gt; sd_brandhiland   -4.841849   0.901030 -5.3737 7.715e-08 ***
+#&gt; sd_brandweight   10.849573   1.583590  6.8513 7.321e-12 ***
+#&gt; sd_brandyoplait   7.813052   1.129764  6.9157 4.657e-12 ***
 #&gt; ---
-#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #&gt;                                      
-#&gt; Log-Likelihood:          -732.2132421
+#&gt; Log-Likelihood:          -718.0862026
 #&gt; Null Log-Likelihood:    -1710.6872416
-#&gt; AIC:                     1482.4264842
-#&gt; BIC:                     1528.4886000
-#&gt; McFadden R2:                0.5719771
-#&gt; Adj McFadden R2:            0.5667161
+#&gt; AIC:                     1454.1724052
+#&gt; BIC:                     1500.2346000
+#&gt; McFadden R2:                0.5802352
+#&gt; Adj McFadden R2:            0.5749742
 #&gt; Number of Observations:  1234.0000000
 #&gt; 
 #&gt; Summary of 10k Draws for Random Coefficients: 
-#&gt;              Min.     1st Qu.     Median       Mean   3rd Qu. Max.
-#&gt; feat         -Inf   1.4071720   1.738457   1.738145  2.069629  Inf
-#&gt; brandhiland  -Inf -17.4039453 -13.538553 -13.542027 -9.674388  Inf
-#&gt; brandweight  -Inf -12.2189602  -4.519436  -4.527690  3.182253  Inf
-#&gt; brandyoplait -Inf   0.6670773   6.648678   6.641070 12.632059  Inf</code></pre>
+#&gt;              Min.    1st Qu.     Median       Mean    3rd Qu. Max.
+#&gt; feat         -Inf   1.120009   1.747543   1.748135   2.375291  Inf
+#&gt; brandhiland  -Inf -16.972056 -13.707162 -13.704227 -10.441231  Inf
+#&gt; brandweight  -Inf -16.706387  -9.391773  -9.399614  -2.075102  Inf
+#&gt; brandyoplait -Inf  -1.029171   4.238197   4.231497   9.507132  Inf</code></pre>
 </div>
 <div id="mixl" class="section level2">
 <h2>{mixl}</h2>
 <p>First attempt using same starting points as {logitr}</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>model_mixl <span class="ot">&lt;-</span> <span class="fu">estimate</span>(</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    mixl_spec_wtp, start_wtp,</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    data_mixl, availabilities,</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">nDraws =</span> numDraws_wtp</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>model_mixl <span class="ot">&lt;-</span> <span class="fu">estimate</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>    mixl_spec_wtp, start_wtp,</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>    data_mixl, availabilities,</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>    <span class="at">nDraws =</span> numDraws_wtp</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>)</span></code></pre></div>
 <p>{mixl} converges to a local minimum:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">logLik</span>(model_logitr), <span class="fu">logLik</span>(model_mixl))</span></code></pre></div>
-<pre><code>#&gt; [1]  -732.2132 -1544.8531</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">coef</span>(model_logitr), <span class="fu">coef</span>(model_mixl))</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">logLik</span>(model_logitr), <span class="fu">logLik</span>(model_mixl))</span></code></pre></div>
+<pre><code>#&gt; [1]  -718.0862 -1544.8531</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">coef</span>(model_logitr), <span class="fu">coef</span>(model_mixl))</span></code></pre></div>
 <pre><code>#&gt;                        [,1]        [,2]
-#&gt; scalePar          0.3880976 -2270.55731
-#&gt; feat              1.7388324    42.24281
-#&gt; brandhiland     -13.5367140    24.36731
-#&gt; brandweight      -4.5100684   110.99687
-#&gt; brandyoplait      6.6638687  -492.36959
-#&gt; sd_feat           0.4912255    10.81470
-#&gt; sd_brandhiland    5.7305708    10.23414
-#&gt; sd_brandweight   11.4204997   334.92761
-#&gt; sd_brandyoplait   8.8724698   915.14924</code></pre>
+#&gt; scalePar          0.3789865 -2270.55731
+#&gt; feat              1.7468317    42.24281
+#&gt; brandhiland     -13.7087157    24.36731
+#&gt; brandweight      -9.3828735   110.99687
+#&gt; brandyoplait      4.2515734  -492.36959
+#&gt; sd_feat          -0.9308170    10.81470
+#&gt; sd_brandhiland   -4.8418491    10.23414
+#&gt; sd_brandweight   10.8495725   334.92761
+#&gt; sd_brandyoplait   7.8130522   915.14924</code></pre>
 <p>Second attempt using {logitr} solution as starting points</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>model_mixl <span class="ot">&lt;-</span> <span class="fu">estimate</span>(</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    mixl_spec_wtp, <span class="fu">coef</span>(model_logitr),</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    data_mixl, availabilities,</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">nDraws =</span> numDraws_wtp</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>Again, {mixl} converges to a local minimum:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">logLik</span>(model_logitr), <span class="fu">logLik</span>(model_mixl))</span></code></pre></div>
-<pre><code>#&gt; [1]  -732.2132 -1544.8531</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">coef</span>(model_logitr), <span class="fu">coef</span>(model_mixl))</span></code></pre></div>
-<pre><code>#&gt;                        [,1]        [,2]
-#&gt; scalePar          0.3880976 -2270.55731
-#&gt; feat              1.7388324    42.24281
-#&gt; brandhiland     -13.5367140    24.36731
-#&gt; brandweight      -4.5100684   110.99687
-#&gt; brandyoplait      6.6638687  -492.36959
-#&gt; sd_feat           0.4912255    10.81470
-#&gt; sd_brandhiland    5.7305708    10.23414
-#&gt; sd_brandweight   11.4204997   334.92761
-#&gt; sd_brandyoplait   8.8724698   915.14924</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>model_mixl <span class="ot">&lt;-</span> <span class="fu">estimate</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>    mixl_spec_wtp, <span class="fu">coef</span>(model_logitr),</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>    data_mixl, availabilities,</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>    <span class="at">nDraws =</span> numDraws_wtp</span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>)</span></code></pre></div>
+<p>Again, {mixl} converges to a local minimum (though it’s closer than
+the previous solution):</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">logLik</span>(model_logitr), <span class="fu">logLik</span>(model_mixl))</span></code></pre></div>
+<pre><code>#&gt; [1] -718.0862 -761.5228</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">coef</span>(model_logitr), <span class="fu">coef</span>(model_mixl))</span></code></pre></div>
+<pre><code>#&gt;                        [,1]          [,2]
+#&gt; scalePar          0.3789865    0.01959803
+#&gt; feat              1.7468317   66.46247619
+#&gt; brandhiland     -13.7087157 -172.32720627
+#&gt; brandweight      -9.3828735 -114.92946558
+#&gt; brandyoplait      4.2515734    6.24519288
+#&gt; sd_feat          -0.9308170  -36.14686337
+#&gt; sd_brandhiland   -4.8418491 -227.05348964
+#&gt; sd_brandweight   10.8495725  198.52035799
+#&gt; sd_brandyoplait   7.8130522  173.44727278</code></pre>
 </div>
 <div id="gmnl" class="section level2">
 <h2>{gmnl}</h2>
 <p>First attempt using same starting points as {logitr}. Note that
 additional starting parameters must be added as the {gmnl} approach to
 estimating WTP is a slightly different model.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>model_gmnl <span class="ot">&lt;-</span> <span class="fu">gmnl</span>(</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> data_gmnl,</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> choice <span class="sc">~</span> price <span class="sc">+</span> feat <span class="sc">+</span> brand <span class="sc">|</span> <span class="dv">0</span> <span class="sc">|</span> <span class="dv">0</span> <span class="sc">|</span> <span class="dv">0</span> <span class="sc">|</span> <span class="dv">1</span>,</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">ranp =</span> <span class="fu">c</span>(</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">feat =</span> <span class="st">&quot;n&quot;</span>, <span class="at">brandhiland =</span> <span class="st">&quot;n&quot;</span>, <span class="at">brandweight =</span> <span class="st">&quot;n&quot;</span>,</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">brandyoplait =</span> <span class="st">&quot;n&quot;</span>),</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fixed =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="fu">rep</span>(<span class="cn">FALSE</span>, <span class="dv">10</span>), <span class="cn">TRUE</span>),</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">model =</span> <span class="st">&quot;gmnl&quot;</span>,</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;bfgs&quot;</span>,</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">haltons =</span> <span class="cn">NA</span>,</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">start =</span> <span class="fu">c</span>(start_wtp, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="dv">0</span>),</span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">R =</span> numDraws_wtp</span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>model_gmnl <span class="ot">&lt;-</span> <span class="fu">gmnl</span>(</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>    <span class="at">data =</span> data_gmnl,</span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>    <span class="at">formula =</span> choice <span class="sc">~</span> price <span class="sc">+</span> feat <span class="sc">+</span> brand <span class="sc">|</span> <span class="dv">0</span> <span class="sc">|</span> <span class="dv">0</span> <span class="sc">|</span> <span class="dv">0</span> <span class="sc">|</span> <span class="dv">1</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>    <span class="at">ranp =</span> <span class="fu">c</span>(</span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>        <span class="at">feat =</span> <span class="st">&quot;n&quot;</span>, <span class="at">brandhiland =</span> <span class="st">&quot;n&quot;</span>, <span class="at">brandweight =</span> <span class="st">&quot;n&quot;</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a>        <span class="at">brandyoplait =</span> <span class="st">&quot;n&quot;</span>),</span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a>    <span class="at">fixed =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="fu">rep</span>(<span class="cn">FALSE</span>, <span class="dv">10</span>), <span class="cn">TRUE</span>),</span>
+<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a>    <span class="at">model =</span> <span class="st">&quot;gmnl&quot;</span>,</span>
+<span id="cb25-9"><a href="#cb25-9" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;bfgs&quot;</span>,</span>
+<span id="cb25-10"><a href="#cb25-10" tabindex="-1"></a>    <span class="at">haltons =</span> <span class="cn">NA</span>,</span>
+<span id="cb25-11"><a href="#cb25-11" tabindex="-1"></a>    <span class="at">panel =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb25-12"><a href="#cb25-12" tabindex="-1"></a>    <span class="at">start =</span> <span class="fu">c</span>(start_wtp, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="dv">0</span>),</span>
+<span id="cb25-13"><a href="#cb25-13" tabindex="-1"></a>    <span class="at">R =</span> numDraws_wtp</span>
+<span id="cb25-14"><a href="#cb25-14" tabindex="-1"></a>)</span></code></pre></div>
 <p>{gmnl} converges to a local minimum:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">logLik</span>(model_logitr), <span class="fu">logLik</span>(model_gmnl))</span></code></pre></div>
-<pre><code>#&gt; [1]  -732.2132 -1710.6872</code></pre>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">coef</span>(model_logitr), <span class="fu">coef</span>(model_gmnl))</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">logLik</span>(model_logitr), <span class="fu">logLik</span>(model_gmnl))</span></code></pre></div>
+<pre><code>#&gt; [1]  -718.0862 -1710.6872</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">coef</span>(model_logitr), <span class="fu">coef</span>(model_gmnl))</span></code></pre></div>
 <pre><code>#&gt;                        [,1]         [,2]
-#&gt; feat              0.3880976    8.1540692
-#&gt; brandhiland       1.7388324    4.4266391
-#&gt; brandweight     -13.5367140   20.9581382
-#&gt; brandyoplait     -4.5100684  -93.0969112
-#&gt; het.(Intercept)   6.6638687 -440.5183170
-#&gt; sd.feat           0.4912255    2.4208585
-#&gt; sd.brandhiland    5.7305708    0.1085233
-#&gt; sd.brandweight   11.4204997   53.2376327
-#&gt; sd.brandyoplait   8.8724698   95.0008933
-#&gt; tau               0.3880976  653.9956379</code></pre>
+#&gt; feat              0.3789865    8.1540692
+#&gt; brandhiland       1.7468317    4.4266391
+#&gt; brandweight     -13.7087157   20.9581382
+#&gt; brandyoplait     -9.3828735  -93.0969112
+#&gt; het.(Intercept)   4.2515734 -440.5183170
+#&gt; sd.feat          -0.9308170    2.4208585
+#&gt; sd.brandhiland   -4.8418491    0.1085233
+#&gt; sd.brandweight   10.8495725   53.2376327
+#&gt; sd.brandyoplait   7.8130522   95.0008933
+#&gt; tau               0.3789865  653.9956379</code></pre>
 <p>Second attempt using {logitr} solution as starting points:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>model_gmnl <span class="ot">&lt;-</span> <span class="fu">gmnl</span>(</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> data_gmnl,</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> choice <span class="sc">~</span> price <span class="sc">+</span> feat <span class="sc">+</span> brand <span class="sc">|</span> <span class="dv">0</span> <span class="sc">|</span> <span class="dv">0</span> <span class="sc">|</span> <span class="dv">0</span> <span class="sc">|</span> <span class="dv">1</span>,</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">ranp =</span> <span class="fu">c</span>(</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">feat =</span> <span class="st">&quot;n&quot;</span>, <span class="at">brandhiland =</span> <span class="st">&quot;n&quot;</span>, <span class="at">brandweight =</span> <span class="st">&quot;n&quot;</span>,</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">brandyoplait =</span> <span class="st">&quot;n&quot;</span>),</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fixed =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="fu">rep</span>(<span class="cn">FALSE</span>, <span class="dv">10</span>), <span class="cn">TRUE</span>),</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">model =</span> <span class="st">&quot;gmnl&quot;</span>,</span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;bfgs&quot;</span>,</span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">haltons =</span> <span class="cn">NA</span>,</span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">start =</span> <span class="fu">c</span>(<span class="fu">coef</span>(model_logitr), <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="dv">0</span>),</span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">R =</span> numDraws_wtp</span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<pre><code>#&gt; Error in optim(par = c(feat = 1.74, brandhiland = -13.54, brandweight = -4.51,  :
-#&gt; initial value in &#39;vmmin&#39; is not finite</code></pre>
-<p>In this case, {gmnl} fails due to an error with the starting values
-provided.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>model_gmnl <span class="ot">&lt;-</span> <span class="fu">gmnl</span>(</span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>    <span class="at">data =</span> data_gmnl,</span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>    <span class="at">formula =</span> choice <span class="sc">~</span> price <span class="sc">+</span> feat <span class="sc">+</span> brand <span class="sc">|</span> <span class="dv">0</span> <span class="sc">|</span> <span class="dv">0</span> <span class="sc">|</span> <span class="dv">0</span> <span class="sc">|</span> <span class="dv">1</span>,</span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a>    <span class="at">ranp =</span> <span class="fu">c</span>(</span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a>        <span class="at">feat =</span> <span class="st">&quot;n&quot;</span>, <span class="at">brandhiland =</span> <span class="st">&quot;n&quot;</span>, <span class="at">brandweight =</span> <span class="st">&quot;n&quot;</span>,</span>
+<span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a>        <span class="at">brandyoplait =</span> <span class="st">&quot;n&quot;</span>),</span>
+<span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a>    <span class="at">fixed =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="fu">rep</span>(<span class="cn">FALSE</span>, <span class="dv">10</span>), <span class="cn">TRUE</span>),</span>
+<span id="cb30-8"><a href="#cb30-8" tabindex="-1"></a>    <span class="at">model =</span> <span class="st">&quot;gmnl&quot;</span>,</span>
+<span id="cb30-9"><a href="#cb30-9" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;bfgs&quot;</span>,</span>
+<span id="cb30-10"><a href="#cb30-10" tabindex="-1"></a>    <span class="at">haltons =</span> <span class="cn">NA</span>,</span>
+<span id="cb30-11"><a href="#cb30-11" tabindex="-1"></a>    <span class="at">panel =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb30-12"><a href="#cb30-12" tabindex="-1"></a>    <span class="at">start =</span> <span class="fu">c</span>(<span class="fu">coef</span>(model_logitr), <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="dv">0</span>),</span>
+<span id="cb30-13"><a href="#cb30-13" tabindex="-1"></a>    <span class="at">R =</span> numDraws_wtp</span>
+<span id="cb30-14"><a href="#cb30-14" tabindex="-1"></a>)</span></code></pre></div>
+<p>Again, {gmnl} converges to a local minimum:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">logLik</span>(model_logitr), <span class="fu">logLik</span>(model_gmnl))</span></code></pre></div>
+<pre><code>#&gt; [1] -718.0862 -944.3339</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">coef</span>(model_logitr), <span class="fu">coef</span>(model_gmnl))</span></code></pre></div>
+<pre><code>#&gt;                        [,1]       [,2]
+#&gt; feat              0.3789865   2.321317
+#&gt; brandhiland       1.7468317 -18.785933
+#&gt; brandweight     -13.7087157  -5.977394
+#&gt; brandyoplait     -9.3828735   1.761744
+#&gt; het.(Intercept)   4.2515734   6.168432
+#&gt; sd.feat          -0.9308170   2.830422
+#&gt; sd.brandhiland   -4.8418491   6.358857
+#&gt; sd.brandweight   10.8495725  10.600978
+#&gt; sd.brandyoplait   7.8130522   5.455189
+#&gt; tau               0.3789865   8.230516</code></pre>
 </div>
 <div id="apollo" class="section level2">
 <h2>{apollo}</h2>
 <p>First attempt using same starting points as {logitr}:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>model_apollo <span class="ot">&lt;-</span> <span class="fu">apollo_estimate</span>(</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">apollo_beta          =</span> start_wtp,</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">apollo_fixed         =</span> <span class="cn">NULL</span>,</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">apollo_probabilities =</span> apollo_probabilities_wtp,</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">apollo_inputs        =</span> apollo_inputs_wtp,</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate_settings    =</span> <span class="fu">list</span>(<span class="at">printLevel =</span> <span class="dv">0</span>)</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>{apollo} converges to a local minimum:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">logLik</span>(model_logitr), <span class="fu">logLik</span>(model_apollo))</span></code></pre></div>
-<pre><code>#&gt; [1] -732.2132 -776.5525</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">coef</span>(model_logitr), <span class="fu">coef</span>(model_apollo))</span></code></pre></div>
-<pre><code>#&gt;                        [,1]          [,2]
-#&gt; scalePar          0.3880976    0.02264706
-#&gt; feat              1.7388324   52.92881692
-#&gt; brandhiland     -13.5367140 -129.27886303
-#&gt; brandweight      -4.5100684 -104.76878544
-#&gt; brandyoplait      6.6638687   23.77062341
-#&gt; sd_feat           0.4912255   11.06432598
-#&gt; sd_brandhiland    5.7305708  -86.57222932
-#&gt; sd_brandweight   11.4204997  164.38217567
-#&gt; sd_brandyoplait   8.8724698  156.45076147</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a>model_apollo <span class="ot">&lt;-</span> <span class="fu">apollo_estimate</span>(</span>
+<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a>    <span class="at">apollo_beta          =</span> start_wtp,</span>
+<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a>    <span class="at">apollo_fixed         =</span> <span class="cn">NULL</span>,</span>
+<span id="cb35-4"><a href="#cb35-4" tabindex="-1"></a>    <span class="at">apollo_probabilities =</span> apollo_probabilities_wtp,</span>
+<span id="cb35-5"><a href="#cb35-5" tabindex="-1"></a>    <span class="at">apollo_inputs        =</span> apollo_inputs_wtp,</span>
+<span id="cb35-6"><a href="#cb35-6" tabindex="-1"></a>    <span class="at">estimate_settings    =</span> <span class="fu">list</span>(<span class="at">printLevel =</span> <span class="dv">0</span>)</span>
+<span id="cb35-7"><a href="#cb35-7" tabindex="-1"></a>)</span></code></pre></div>
+<p>{apollo} fails to converge and just returns the starting
+coefficients:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">logLik</span>(model_logitr), model_apollo<span class="sc">$</span>LLout)</span></code></pre></div>
+<pre><code>#&gt;                 model 
+#&gt;  -718.0862 -2928.4048 </code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">coef</span>(model_logitr), <span class="fu">coef</span>(model_apollo))</span></code></pre></div>
+<pre><code>#&gt;                        [,1]
+#&gt; scalePar          0.3789865
+#&gt; feat              1.7468317
+#&gt; brandhiland     -13.7087157
+#&gt; brandweight      -9.3828735
+#&gt; brandyoplait      4.2515734
+#&gt; sd_feat          -0.9308170
+#&gt; sd_brandhiland   -4.8418491
+#&gt; sd_brandweight   10.8495725
+#&gt; sd_brandyoplait   7.8130522</code></pre>
 <p>Second attempt using {logitr} solution as starting points:</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>model_apollo <span class="ot">&lt;-</span> <span class="fu">apollo_estimate</span>(</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">apollo_beta          =</span> <span class="fu">coef</span>(model_logitr),</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">apollo_fixed         =</span> <span class="cn">NULL</span>,</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">apollo_probabilities =</span> apollo_probabilities_wtp,</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">apollo_inputs        =</span> apollo_inputs_wtp,</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate_settings    =</span> <span class="fu">list</span>(<span class="at">printLevel =</span> <span class="dv">0</span>)</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>Again, {apollo} converges to a local minimum:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">logLik</span>(model_logitr), <span class="fu">logLik</span>(model_apollo))</span></code></pre></div>
-<pre><code>#&gt; [1] -732.2132 -772.6268</code></pre>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">coef</span>(model_logitr), <span class="fu">coef</span>(model_apollo))</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a>model_apollo <span class="ot">&lt;-</span> <span class="fu">apollo_estimate</span>(</span>
+<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a>    <span class="at">apollo_beta          =</span> <span class="fu">coef</span>(model_logitr),</span>
+<span id="cb40-3"><a href="#cb40-3" tabindex="-1"></a>    <span class="at">apollo_fixed         =</span> <span class="cn">NULL</span>,</span>
+<span id="cb40-4"><a href="#cb40-4" tabindex="-1"></a>    <span class="at">apollo_probabilities =</span> apollo_probabilities_wtp,</span>
+<span id="cb40-5"><a href="#cb40-5" tabindex="-1"></a>    <span class="at">apollo_inputs        =</span> apollo_inputs_wtp,</span>
+<span id="cb40-6"><a href="#cb40-6" tabindex="-1"></a>    <span class="at">estimate_settings    =</span> <span class="fu">list</span>(<span class="at">printLevel =</span> <span class="dv">0</span>)</span>
+<span id="cb40-7"><a href="#cb40-7" tabindex="-1"></a>)</span></code></pre></div>
+<p>This time {apollo} converges to a local minimum:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">logLik</span>(model_logitr), model_apollo<span class="sc">$</span>LLout)</span></code></pre></div>
+<pre><code>#&gt;               model 
+#&gt; -718.0862 -769.7493 </code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">coef</span>(model_logitr), model_apollo<span class="sc">$</span>betaStop)</span></code></pre></div>
 <pre><code>#&gt;                        [,1]          [,2]
-#&gt; scalePar          0.3880976  2.180707e-03
-#&gt; feat              1.7388324  7.365495e+02
-#&gt; brandhiland     -13.5367140 -2.378832e+03
-#&gt; brandweight      -4.5100684 -1.382908e+03
-#&gt; brandyoplait      6.6638687  1.571897e+02
-#&gt; sd_feat           0.4912255 -3.484523e+02
-#&gt; sd_brandhiland    5.7305708  9.805109e+02
-#&gt; sd_brandweight   11.4204997  1.899130e+03
-#&gt; sd_brandyoplait   8.8724698  1.211976e+03</code></pre>
+#&gt; scalePar          0.3789865  2.376434e-04
+#&gt; feat              1.7468317  5.213661e+03
+#&gt; brandhiland     -13.7087157 -1.622643e+04
+#&gt; brandweight      -9.3828735 -1.529634e+04
+#&gt; brandyoplait      4.2515734  4.573893e+03
+#&gt; sd_feat          -0.9308170  6.131294e+02
+#&gt; sd_brandhiland   -4.8418491 -9.461200e+03
+#&gt; sd_brandweight   10.8495725  1.260092e+04
+#&gt; sd_brandyoplait   7.8130522  1.347027e+04</code></pre>
 </div>
 </div>
 

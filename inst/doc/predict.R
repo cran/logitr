@@ -70,7 +70,7 @@ probs_mnl_wtp <- predict(
 
 probs_mnl_wtp
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  library("ggplot2")
 #  
 #  probs <- rbind(probs_mnl_pref, probs_mnl_wtp)

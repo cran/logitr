@@ -33,7 +33,7 @@ time_compare %>%
     pivot_wider(names_from = numDraws, values_from = mult) %>% 
     kbl()
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  library(ggplot2)
 #  library(ggrepel)
 #  
@@ -72,7 +72,7 @@ time_compare %>%
 #  
 #  benchmark
 
-## ---- eval=FALSE, echo=FALSE--------------------------------------------------
+## ----eval=FALSE, echo=FALSE---------------------------------------------------
 #  ggsave('benchmark.png', benchmark, width = 8.5, height = 6)
 
 ## ----probabilities, echo=FALSE------------------------------------------------
