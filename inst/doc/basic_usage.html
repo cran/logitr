@@ -511,9 +511,9 @@ results from an estimated model, e.g.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">summary</span>(mnl_pref)</span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Wed Sep 27 11:04:12 2023 </span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Wed Jul 24 05:46:50 2024 </span></span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.1.1 </span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.1.2 </span></span>
 <span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
 <span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; logitr(data = yogurt, outcome = &quot;choice&quot;, obsID = &quot;obsID&quot;, pars = c(&quot;price&quot;, </span></span>
@@ -590,11 +590,11 @@ the previously estimated fixed parameter model can be obtained with the
 following command:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">wtp</span>(mnl_pref, <span class="at">scalePar =</span> <span class="st">&quot;price&quot;</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co">#&gt;                Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt; scalePar       0.366555   0.024303  15.0829 &lt; 2.2e-16 ***</span></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt; feat           1.340699   0.359506   3.7293  0.000192 ***</span></span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt; brandhiland  -10.136219   0.583277 -17.3781 &lt; 2.2e-16 ***</span></span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt; brandweight   -1.749094   0.181899  -9.6157 &lt; 2.2e-16 ***</span></span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt; brandyoplait   2.003848   0.143587  13.9556 &lt; 2.2e-16 ***</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt; scalePar       0.366555   0.024269  15.1039 &lt; 2.2e-16 ***</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt; feat           1.340699   0.358593   3.7388 0.0001849 ***</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt; brandhiland  -10.136219   0.579772 -17.4831 &lt; 2.2e-16 ***</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt; brandweight   -1.749094   0.181214  -9.6521 &lt; 2.2e-16 ***</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt; brandyoplait   2.003848   0.142886  14.0241 &lt; 2.2e-16 ***</span></span>
 <span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
 <span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
 <p>The <code>wtp()</code> function divides the non-price parameters by
@@ -606,11 +606,11 @@ the WTP from a WTP space model with that computed from an equivalent
 preference space model:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">wtpCompare</span>(mnl_pref, mnl_wtp, <span class="at">scalePar =</span> <span class="st">&quot;price&quot;</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">#&gt;                       pref           wtp  difference</span></span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt; scalePar         0.3665546     0.3665832  0.00002867</span></span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt; feat             1.3406987     1.3405926 -0.00010605</span></span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; brandhiland    -10.1362190   -10.1357635  0.00045548</span></span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; brandweight     -1.7490940    -1.7490826  0.00001133</span></span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt; brandyoplait     2.0038476     2.0038208 -0.00002686</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt; scalePar         0.3665546     0.3665851  0.00003059</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt; feat             1.3406987     1.3405540 -0.00014474</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; brandhiland    -10.1362190   -10.1357118  0.00050726</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; brandweight     -1.7490940    -1.7490741  0.00001990</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt; brandyoplait     2.0038476     2.0038228 -0.00002484</span></span>
 <span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt; logLik       -2656.8878790 -2656.8878779  0.00000106</span></span></code></pre></div>
 </div>
 <div id="predicting-probabilities-and-outcomes" class="section level2">
@@ -646,14 +646,14 @@ alternatives are computed using the fixed parameter
 <span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a></span>
 <span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>probs</span>
 <span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt;     obsID predicted_prob predicted_prob_lower predicted_prob_upper</span></span>
-<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; 49     13     0.43685145           0.41580934           0.45803740</span></span>
-<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt; 50     13     0.03312986           0.02636021           0.04197999</span></span>
-<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt; 51     13     0.19155548           0.17602439           0.20770662</span></span>
-<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt; 52     13     0.33846321           0.31857078           0.35946412</span></span>
-<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co">#&gt; 165    42     0.60764778           0.57335369           0.64022657</span></span>
-<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt; 166    42     0.02602007           0.01845996           0.03691431</span></span>
-<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a><span class="co">#&gt; 167    42     0.17803313           0.16188761           0.19446345</span></span>
-<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a><span class="co">#&gt; 168    42     0.18829902           0.16834070           0.20991056</span></span></code></pre></div>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; 49     13     0.43685145           0.41536351           0.45785691</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt; 50     13     0.03312986           0.02620072           0.04180344</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt; 51     13     0.19155548           0.17623557           0.20799620</span></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt; 52     13     0.33846321           0.31821976           0.35833636</span></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co">#&gt; 165    42     0.60764778           0.57298708           0.64065373</span></span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt; 166    42     0.02602007           0.01831963           0.03657099</span></span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a><span class="co">#&gt; 167    42     0.17803313           0.16193999           0.19500380</span></span>
+<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a><span class="co">#&gt; 168    42     0.18829902           0.16841310           0.20956454</span></span></code></pre></div>
 <p>The resulting <code>probs</code> data frame contains the expected
 probabilities for each alternative. The lower and upper predictions
 reflect a 95% confidence interval (controlled by the <code>ci</code>
@@ -671,14 +671,14 @@ made.</p>
 <span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a></span>
 <span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>probs</span>
 <span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co">#&gt;     obsID predicted_prob predicted_prob_lower predicted_prob_upper</span></span>
-<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="co">#&gt; 49     13     0.43686141           0.41530533           0.45773467</span></span>
-<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="co">#&gt; 50     13     0.03312947           0.02665784           0.04235128</span></span>
-<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="co">#&gt; 51     13     0.19154829           0.17599418           0.20769889</span></span>
-<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt; 52     13     0.33846083           0.31840801           0.35873023</span></span>
-<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt; 165    42     0.60767120           0.57288962           0.63962690</span></span>
-<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a><span class="co">#&gt; 166    42     0.02601800           0.01832345           0.03658472</span></span>
-<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a><span class="co">#&gt; 167    42     0.17802363           0.16205293           0.19472531</span></span>
-<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a><span class="co">#&gt; 168    42     0.18828717           0.16777372           0.20881799</span></span></code></pre></div>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="co">#&gt; 49     13     0.43686152           0.41534643           0.45835189</span></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="co">#&gt; 50     13     0.03312966           0.02642879           0.04184610</span></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="co">#&gt; 51     13     0.19154811           0.17581854           0.20766125</span></span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt; 52     13     0.33846071           0.31852296           0.35848769</span></span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt; 165    42     0.60767236           0.57246893           0.64023349</span></span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a><span class="co">#&gt; 166    42     0.02601774           0.01844276           0.03634875</span></span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a><span class="co">#&gt; 167    42     0.17802339           0.16155396           0.19468915</span></span>
+<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a><span class="co">#&gt; 168    42     0.18828651           0.16748839           0.20872161</span></span></code></pre></div>
 <p>You can also use the <code>predict()</code> method to predict
 outcomes by setting <code>type = &quot;outcome&quot;</code> (the default value is
 <code>&quot;prob&quot;</code> for predicting probabilities). If no new data are
@@ -695,10 +695,10 @@ actual ones.</p>
 <span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a></span>
 <span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="fu">head</span>(outcomes[<span class="fu">c</span>(<span class="st">&#39;obsID&#39;</span>, <span class="st">&#39;choice&#39;</span>, <span class="st">&#39;predicted_outcome&#39;</span>)])</span>
 <span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="co">#&gt;   obsID choice predicted_outcome</span></span>
-<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co">#&gt; 1     1      0                 0</span></span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co">#&gt; 1     1      0                 1</span></span>
 <span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a><span class="co">#&gt; 2     1      0                 0</span></span>
 <span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="co">#&gt; 3     1      1                 0</span></span>
-<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a><span class="co">#&gt; 4     1      0                 1</span></span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a><span class="co">#&gt; 4     1      0                 0</span></span>
 <span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a><span class="co">#&gt; 5     2      1                 1</span></span>
 <span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a><span class="co">#&gt; 6     2      0                 0</span></span></code></pre></div>
 <p>You can quickly compute the accuracy by dividing the number of
@@ -706,7 +706,7 @@ correctly predicted choices by the total number of choices:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>chosen <span class="ot">&lt;-</span> <span class="fu">subset</span>(outcomes, choice <span class="sc">==</span> <span class="dv">1</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>chosen<span class="sc">$</span>correct <span class="ot">&lt;-</span> chosen<span class="sc">$</span>choice <span class="sc">==</span> chosen<span class="sc">$</span>predicted_outcome</span>
 <span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="fu">sum</span>(chosen<span class="sc">$</span>correct) <span class="sc">/</span> <span class="fu">nrow</span>(chosen)</span>
-<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co">#&gt; [1] 0.3830846</span></span></code></pre></div>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co">#&gt; [1] 0.3818408</span></span></code></pre></div>
 <p>See the <a href="predict.html">“Predicting Probabilities and Choices
 from Estimated Models”</a> vignette for more details about making
 predictions.</p>
