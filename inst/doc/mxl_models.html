@@ -48,6 +48,7 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -148,6 +149,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 div.csl-bib-body { }
 div.csl-entry {
 clear: both;
+margin-bottom: 0em;
 }
 .hanging div.csl-entry {
 margin-left:2em;
@@ -572,15 +574,15 @@ deviation coefficients.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>wtp_mxl_pref <span class="ot">&lt;-</span> <span class="fu">wtp</span>(mxl_pref, <span class="at">scalePar =</span>  <span class="st">&quot;price&quot;</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>wtp_mxl_pref</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt;                   Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; scalePar          0.448338   0.040028  11.2007 &lt; 2.2e-16 ***</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; feat              1.733046   0.500485   3.4627 0.0005347 ***</span></span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; brandhiland     -14.202148   1.387149 -10.2384 &lt; 2.2e-16 ***</span></span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; brandweight      -8.182853   0.981243  -8.3393 &lt; 2.2e-16 ***</span></span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; brandyoplait      2.503674   0.411273   6.0876 1.146e-09 ***</span></span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; sd_feat           1.265776   0.504117   2.5109 0.0120431 *  </span></span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; sd_brandhiland   -7.096979   0.958478  -7.4044 1.317e-13 ***</span></span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; sd_brandweight    9.138487   0.951085   9.6085 &lt; 2.2e-16 ***</span></span>
-<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt; sd_brandyoplait   7.274160   0.774577   9.3911 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; scalePar          0.448338   0.040186  11.1566 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; feat              1.733046   0.501552   3.4554 0.0005495 ***</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; brandhiland     -14.202148   1.391217 -10.2084 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; brandweight      -8.182853   0.984403  -8.3125 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; brandyoplait      2.503674   0.412692   6.0667 1.306e-09 ***</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; sd_feat           1.265776   0.503558   2.5137 0.0119485 *  </span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; sd_brandhiland   -7.096979   0.960544  -7.3885 1.485e-13 ***</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; sd_brandweight    9.138487   0.955722   9.5619 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt; sd_brandyoplait   7.274160   0.774443   9.3928 &lt; 2.2e-16 ***</span></span>
 <span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
 <span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
 </div>
@@ -819,7 +821,7 @@ with correlated heterogeneity:</p>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-Jain1994" class="csl-entry">
 Jain, Dipak C, Naufel J Vilcassim, and Pradeep K Chintagunta. 1994.
 <span>“A Random-Coefficients Logit Brand-Choice Model Applied to Panel
@@ -828,7 +830,7 @@ Data.”</span> <em>Journal of Business &amp; Economic Statistics</em> 12
 </div>
 <div id="ref-McFadden2000" class="csl-entry">
 McFadden, Daniel, and Kenneth E. Train. 2000. <span>“<span class="nocase">Mixed MNL models for discrete response</span>.”</span>
-<em>J. Appl. Econom.</em> 15 (5): 447–70. <a href="https://doi.org/10.1002/1099-1255(200009/10)15:5&lt;447::AID-JAE570&gt;3.0.CO;2-1">https://doi.org/10.1002/1099-1255(200009/10)15:5&lt;447::AID-JAE570&gt;3.0.CO;2-1</a>.
+<em>J. Appl. Econom.</em> 15 (5): 447–70. <a href="https://doi.org/10.1002/1099-1255(200009/10)15:5%3C447::AID-JAE570%3E3.0.CO;2-1">https://doi.org/10.1002/1099-1255(200009/10)15:5&lt;447::AID-JAE570&gt;3.0.CO;2-1</a>.
 </div>
 <div id="ref-Sonnier2007" class="csl-entry">
 Sonnier, Garrett, Andrew Ainslie, and Thomas Otter. 2007. <span>“<span class="nocase">Heterogeneity distributions of willingness-to-pay in

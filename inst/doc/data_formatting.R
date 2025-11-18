@@ -36,3 +36,46 @@ mnl_pref_dummies <- logitr(
 
 summary(mnl_pref_dummies)
 
+## -----------------------------------------------------------------------------
+validation <- validate_data(
+  data = yogurt,
+  outcome = "choice",
+  obsID = "obsID"
+)
+
+validation
+
+## -----------------------------------------------------------------------------
+validation <- validate_data(
+  data = yogurt,
+  outcome = "choice",
+  obsID = "obsID",
+  pars = c("price", "feat", "brand")
+)
+
+validation
+
+## -----------------------------------------------------------------------------
+validation <- validate_data(
+  data = yogurt,
+  outcome = "choice",
+  obsID = "obsID",
+  pars = c("price", "feat", "brand"),
+  panelID = "id"
+)
+
+validation
+
+## -----------------------------------------------------------------------------
+# Create problematic data with multiple choices in one observation
+bad_data <- yogurt
+bad_data$choice[1:2] <- 1
+
+validation <- validate_data(
+  data = bad_data,
+  outcome = "choice",
+  obsID = "obsID"
+)
+
+validation
+

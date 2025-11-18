@@ -37,14 +37,14 @@ mnl_wtp <- logitr(
 )
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  mxl_pref <- logitr(
-#      data     = yogurt,
-#      outcome  = 'choice',
-#      obsID    = 'obsID',
-#      pars     = c('price', 'feat', 'brand'),
-#      randPars = c(feat = 'n', brand = 'n'),
-#      numMultiStarts = 10
-#  )
+# mxl_pref <- logitr(
+#     data     = yogurt,
+#     outcome  = 'choice',
+#     obsID    = 'obsID',
+#     pars     = c('price', 'feat', 'brand'),
+#     randPars = c(feat = 'n', brand = 'n'),
+#     numMultiStarts = 10
+# )
 
 ## -----------------------------------------------------------------------------
 summary(mnl_pref)

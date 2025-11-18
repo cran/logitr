@@ -71,20 +71,20 @@ probs_mnl_wtp <- predict(
 probs_mnl_wtp
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  library("ggplot2")
-#  
-#  probs <- rbind(probs_mnl_pref, probs_mnl_wtp)
-#  probs$model <- c(rep("mnl_pref", 8), rep("mnl_wtp", 8))
-#  probs$alt <- rep(c("dannon", "hiland", "weight", "yoplait"), 4)
-#  probs$obs <- paste0("Observation ID: ", probs$obsID)
-#  ggplot(probs, aes(x = alt, y = predicted_prob, fill = model)) +
-#      geom_bar(stat = 'identity', width = 0.7, position = "dodge") +
-#      geom_errorbar(aes(ymin = predicted_prob_lower, ymax = predicted_prob_upper),
-#                    width = 0.2, position = position_dodge(width = 0.7)) +
-#      facet_wrap(vars(obs)) +
-#      scale_y_continuous(limits = c(0, 1)) +
-#      labs(x = 'Alternative', y = 'Expected Choice Probabilities') +
-#      theme_bw()
+# library("ggplot2")
+# 
+# probs <- rbind(probs_mnl_pref, probs_mnl_wtp)
+# probs$model <- c(rep("mnl_pref", 8), rep("mnl_wtp", 8))
+# probs$alt <- rep(c("dannon", "hiland", "weight", "yoplait"), 4)
+# probs$obs <- paste0("Observation ID: ", probs$obsID)
+# ggplot(probs, aes(x = alt, y = predicted_prob, fill = model)) +
+#     geom_bar(stat = 'identity', width = 0.7, position = "dodge") +
+#     geom_errorbar(aes(ymin = predicted_prob_lower, ymax = predicted_prob_upper),
+#                   width = 0.2, position = position_dodge(width = 0.7)) +
+#     facet_wrap(vars(obs)) +
+#     scale_y_continuous(limits = c(0, 1)) +
+#     labs(x = 'Alternative', y = 'Expected Choice Probabilities') +
+#     theme_bw()
 
 ## ----probabilities, echo=FALSE------------------------------------------------
 knitr::include_graphics('probs.png')
