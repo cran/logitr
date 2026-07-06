@@ -369,9 +369,9 @@ For example, let’s say we want to interact <code>price</code> with
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">summary</span>(model_price_feat)</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Sat Nov 15 19:07:03 2025 </span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Mon Jul 06 06:51:07 2026 </span></span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.1.3 </span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.2.0 </span></span>
 <span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
 <span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; logitr(data = yogurt, outcome = &quot;choice&quot;, obsID = &quot;obsID&quot;, pars = c(&quot;price&quot;, </span></span>
@@ -386,29 +386,29 @@ For example, let’s say we want to interact <code>price</code> with
 <span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; Model Type:    Multinomial Logit</span></span>
 <span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt; Model Space:          Preference</span></span>
 <span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt; Model Run:                1 of 1</span></span>
-<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt; Iterations:                   19</span></span>
-<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:        0h:0m:0.01s</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt; Iterations:                   28</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:        0h:0m:0.02s</span></span>
 <span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#&gt; Algorithm:        NLOPT_LD_LBFGS</span></span>
 <span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="co">#&gt; Weights Used?:             FALSE</span></span>
 <span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="co">#&gt; Robust?                    FALSE</span></span>
 <span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
 <span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#&gt;               Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a><span class="co">#&gt; price        -0.356909   0.024696 -14.4522 &lt; 2.2e-16 ***</span></span>
-<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a><span class="co">#&gt; feat          1.155206   0.378237   3.0542  0.002257 ** </span></span>
-<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="co">#&gt; brandhiland  -3.724702   0.146520 -25.4212 &lt; 2.2e-16 ***</span></span>
-<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="co">#&gt; brandweight  -0.640221   0.054543 -11.7380 &lt; 2.2e-16 ***</span></span>
-<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a><span class="co">#&gt; brandyoplait  0.724315   0.080317   9.0182 &lt; 2.2e-16 ***</span></span>
-<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a><span class="co">#&gt; price:feat   -0.086381   0.047275  -1.8272  0.067672 .  </span></span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a><span class="co">#&gt; price        -0.358469   0.024733 -14.4936 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a><span class="co">#&gt; feat          1.090155   0.378956   2.8767  0.004018 ** </span></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="co">#&gt; brandhiland  -3.725143   0.146424 -25.4407 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="co">#&gt; brandweight  -0.640131   0.054541 -11.7368 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a><span class="co">#&gt; brandyoplait  0.727363   0.080410   9.0457 &lt; 2.2e-16 ***</span></span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a><span class="co">#&gt; price:feat   -0.078128   0.047287  -1.6522  0.098491 .  </span></span>
 <span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
 <span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
 <span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
-<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -2655.5403770</span></span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -2655.5245489</span></span>
 <span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a><span class="co">#&gt; Null Log-Likelihood:    -3343.7419990</span></span>
-<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a><span class="co">#&gt; AIC:                     5323.0807540</span></span>
-<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a><span class="co">#&gt; BIC:                     5357.8100000</span></span>
-<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.2058178</span></span>
-<span id="cb3-43"><a href="#cb3-43" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.2040234</span></span>
+<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a><span class="co">#&gt; AIC:                     5323.0490978</span></span>
+<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a><span class="co">#&gt; BIC:                     5357.7784000</span></span>
+<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.2058225</span></span>
+<span id="cb3-43"><a href="#cb3-43" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.2040281</span></span>
 <span id="cb3-44"><a href="#cb3-44" tabindex="-1"></a><span class="co">#&gt; Number of Observations:  2412.0000000</span></span></code></pre></div>
 </div>
 <div id="interactions-with-discrete-variables" class="section level1">
@@ -433,9 +433,9 @@ except the first reference level:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">summary</span>(model_price_brand)</span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Sat Nov 15 19:07:03 2025 </span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Mon Jul 06 06:51:07 2026 </span></span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.1.3 </span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.2.0 </span></span>
 <span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
 <span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; logitr(data = yogurt, outcome = &quot;choice&quot;, obsID = &quot;obsID&quot;, pars = c(&quot;price&quot;, </span></span>
@@ -450,31 +450,31 @@ except the first reference level:</p>
 <span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; Model Type:    Multinomial Logit</span></span>
 <span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; Model Space:          Preference</span></span>
 <span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; Model Run:                1 of 1</span></span>
-<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; Iterations:                   42</span></span>
-<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:        0h:0m:0.03s</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; Iterations:                   47</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:        0h:0m:0.04s</span></span>
 <span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt; Algorithm:        NLOPT_LD_LBFGS</span></span>
 <span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt; Weights Used?:             FALSE</span></span>
 <span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co">#&gt; Robust?                    FALSE</span></span>
 <span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
 <span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="co">#&gt;                     Estimate Std. Error z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a><span class="co">#&gt; price              -0.389813   0.045256 -8.6135 &lt; 2.2e-16 ***</span></span>
-<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="co">#&gt; feat                0.422188   0.122588  3.4440 0.0005732 ***</span></span>
-<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a><span class="co">#&gt; brandhiland        -1.692896   0.623122 -2.7168 0.0065917 ** </span></span>
-<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="co">#&gt; brandweight        -2.226187   0.561605 -3.9640 7.371e-05 ***</span></span>
-<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a><span class="co">#&gt; brandyoplait        0.441559   0.450562  0.9800 0.3270779    </span></span>
-<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a><span class="co">#&gt; price:brandhiland  -0.434214   0.115521 -3.7587 0.0001708 ***</span></span>
-<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a><span class="co">#&gt; price:brandweight   0.199624   0.069825  2.8589 0.0042512 ** </span></span>
-<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a><span class="co">#&gt; price:brandyoplait  0.033040   0.050385  0.6558 0.5119777    </span></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a><span class="co">#&gt; price              -0.389508   0.045247 -8.6086 &lt; 2.2e-16 ***</span></span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="co">#&gt; feat                0.421869   0.122578  3.4416 0.0005782 ***</span></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a><span class="co">#&gt; brandhiland        -1.691734   0.623149 -2.7148 0.0066313 ** </span></span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="co">#&gt; brandweight        -2.228264   0.561636 -3.9675 7.265e-05 ***</span></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a><span class="co">#&gt; brandyoplait        0.438708   0.450425  0.9740 0.3300636    </span></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a><span class="co">#&gt; price:brandhiland  -0.434287   0.115531 -3.7590 0.0001706 ***</span></span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a><span class="co">#&gt; price:brandweight   0.199893   0.069829  2.8626 0.0042019 ** </span></span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a><span class="co">#&gt; price:brandyoplait  0.033236   0.050372  0.6598 0.5093835    </span></span>
 <span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
 <span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
 <span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
-<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -2643.2048908</span></span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -2643.2046773</span></span>
 <span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a><span class="co">#&gt; Null Log-Likelihood:    -3343.7419990</span></span>
-<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a><span class="co">#&gt; AIC:                     5302.4097816</span></span>
-<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a><span class="co">#&gt; BIC:                     5348.7155000</span></span>
-<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.2095069</span></span>
-<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.2071144</span></span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a><span class="co">#&gt; AIC:                     5302.4093546</span></span>
+<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a><span class="co">#&gt; BIC:                     5348.7150000</span></span>
+<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.2095070</span></span>
+<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.2071145</span></span>
 <span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a><span class="co">#&gt; Number of Observations:  2412.0000000</span></span></code></pre></div>
 </div>
 <div id="interactions-with-individual-specific-variables" class="section level1">
@@ -521,9 +521,9 @@ between the <code>group</code> and <code>price</code>:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">summary</span>(model_price_group)</span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Sat Nov 15 19:07:03 2025 </span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Mon Jul 06 06:51:07 2026 </span></span>
 <span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.1.3 </span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.2.0 </span></span>
 <span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
 <span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; logitr(data = yogurt, outcome = &quot;choice&quot;, obsID = &quot;obsID&quot;, pars = c(&quot;price&quot;, </span></span>
@@ -538,7 +538,7 @@ between the <code>group</code> and <code>price</code>:</p>
 <span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt; Model Type:    Multinomial Logit</span></span>
 <span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; Model Space:          Preference</span></span>
 <span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt; Model Run:                1 of 1</span></span>
-<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; Iterations:                   26</span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; Iterations:                   28</span></span>
 <span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:        0h:0m:0.02s</span></span>
 <span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt; Algorithm:        NLOPT_LD_LBFGS</span></span>
 <span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt; Weights Used?:             FALSE</span></span>
@@ -546,18 +546,18 @@ between the <code>group</code> and <code>price</code>:</p>
 <span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
 <span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a><span class="co">#&gt;                Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a><span class="co">#&gt; price        -0.3680634  0.0273911 -13.4373 &lt; 2.2e-16 ***</span></span>
-<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a><span class="co">#&gt; feat          0.4915271  0.1200725   4.0936 4.248e-05 ***</span></span>
-<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a><span class="co">#&gt; brandhiland  -3.7155231  0.1454216 -25.5500 &lt; 2.2e-16 ***</span></span>
-<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a><span class="co">#&gt; brandweight  -0.6411384  0.0544999 -11.7640 &lt; 2.2e-16 ***</span></span>
-<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a><span class="co">#&gt; brandyoplait  0.7345568  0.0806444   9.1086 &lt; 2.2e-16 ***</span></span>
-<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a><span class="co">#&gt; price_groupA  0.0030007  0.0254484   0.1179    0.9061    </span></span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a><span class="co">#&gt; price        -0.3680606  0.0273909 -13.4373 &lt; 2.2e-16 ***</span></span>
+<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a><span class="co">#&gt; feat          0.4915364  0.1200722   4.0937 4.246e-05 ***</span></span>
+<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a><span class="co">#&gt; brandhiland  -3.7154892  0.1454204 -25.5500 &lt; 2.2e-16 ***</span></span>
+<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a><span class="co">#&gt; brandweight  -0.6411357  0.0544998 -11.7640 &lt; 2.2e-16 ***</span></span>
+<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a><span class="co">#&gt; brandyoplait  0.7345308  0.0806438   9.1083 &lt; 2.2e-16 ***</span></span>
+<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a><span class="co">#&gt; price_groupA  0.0030067  0.0254483   0.1182    0.9059    </span></span>
 <span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
 <span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
 <span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
-<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -2656.8808982</span></span>
+<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -2656.8808981</span></span>
 <span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a><span class="co">#&gt; Null Log-Likelihood:    -3343.7419990</span></span>
-<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a><span class="co">#&gt; AIC:                     5325.7617965</span></span>
+<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a><span class="co">#&gt; AIC:                     5325.7617963</span></span>
 <span id="cb8-41"><a href="#cb8-41" tabindex="-1"></a><span class="co">#&gt; BIC:                     5360.4911000</span></span>
 <span id="cb8-42"><a href="#cb8-42" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.2054169</span></span>
 <span id="cb8-43"><a href="#cb8-43" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.2036225</span></span>
@@ -585,9 +585,9 @@ parameter and <code>price</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">summary</span>(model_price_feat_mxl)</span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
 <span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Sat Nov 15 19:07:03 2025 </span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Mon Jul 06 06:51:07 2026 </span></span>
 <span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.1.3 </span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.2.0 </span></span>
 <span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
 <span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt; logitr(data = yogurt, outcome = &quot;choice&quot;, obsID = &quot;obsID&quot;, pars = c(&quot;price&quot;, </span></span>
@@ -602,35 +602,35 @@ parameter and <code>price</code>:</p>
 <span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="co">#&gt; Model Type:       Mixed Logit</span></span>
 <span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="co">#&gt; Model Space:       Preference</span></span>
 <span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="co">#&gt; Model Run:             1 of 1</span></span>
-<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co">#&gt; Iterations:                34</span></span>
-<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:     0h:0m:0.74s</span></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co">#&gt; Iterations:                41</span></span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:     0h:0m:0.31s</span></span>
 <span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="co">#&gt; Algorithm:     NLOPT_LD_LBFGS</span></span>
 <span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co">#&gt; Weights Used?:          FALSE</span></span>
 <span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a><span class="co">#&gt; Robust?                 FALSE</span></span>
 <span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
 <span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a><span class="co">#&gt;               Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a><span class="co">#&gt; price        -0.388123   0.027026 -14.3612 &lt; 2.2e-16 ***</span></span>
-<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a><span class="co">#&gt; feat          0.829004   0.552278   1.5011    0.1333    </span></span>
-<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a><span class="co">#&gt; brandhiland  -3.991559   0.165894 -24.0609 &lt; 2.2e-16 ***</span></span>
-<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a><span class="co">#&gt; brandweight  -0.662086   0.055779 -11.8698 &lt; 2.2e-16 ***</span></span>
-<span id="cb10-33"><a href="#cb10-33" tabindex="-1"></a><span class="co">#&gt; brandyoplait  0.787718   0.086232   9.1348 &lt; 2.2e-16 ***</span></span>
-<span id="cb10-34"><a href="#cb10-34" tabindex="-1"></a><span class="co">#&gt; price:feat   -0.076733   0.071069  -1.0797    0.2803    </span></span>
-<span id="cb10-35"><a href="#cb10-35" tabindex="-1"></a><span class="co">#&gt; sd_feat      -2.341507   0.493413  -4.7455  2.08e-06 ***</span></span>
+<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a><span class="co">#&gt; price        -0.387921   0.027020 -14.3570 &lt; 2.2e-16 ***</span></span>
+<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a><span class="co">#&gt; feat          0.925402   0.551395   1.6783   0.09329 .  </span></span>
+<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a><span class="co">#&gt; brandhiland  -3.990058   0.165873 -24.0549 &lt; 2.2e-16 ***</span></span>
+<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a><span class="co">#&gt; brandweight  -0.662270   0.055784 -11.8721 &lt; 2.2e-16 ***</span></span>
+<span id="cb10-33"><a href="#cb10-33" tabindex="-1"></a><span class="co">#&gt; brandyoplait  0.787062   0.086223   9.1282 &lt; 2.2e-16 ***</span></span>
+<span id="cb10-34"><a href="#cb10-34" tabindex="-1"></a><span class="co">#&gt; price:feat   -0.077777   0.070896  -1.0971   0.27262    </span></span>
+<span id="cb10-35"><a href="#cb10-35" tabindex="-1"></a><span class="co">#&gt; sd_feat       2.263118   0.499054   4.5348 5.765e-06 ***</span></span>
 <span id="cb10-36"><a href="#cb10-36" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
 <span id="cb10-37"><a href="#cb10-37" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
 <span id="cb10-38"><a href="#cb10-38" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
-<span id="cb10-39"><a href="#cb10-39" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -2645.2196929</span></span>
+<span id="cb10-39"><a href="#cb10-39" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -2645.3108884</span></span>
 <span id="cb10-40"><a href="#cb10-40" tabindex="-1"></a><span class="co">#&gt; Null Log-Likelihood:    -3343.7419990</span></span>
-<span id="cb10-41"><a href="#cb10-41" tabindex="-1"></a><span class="co">#&gt; AIC:                     5304.4393858</span></span>
-<span id="cb10-42"><a href="#cb10-42" tabindex="-1"></a><span class="co">#&gt; BIC:                     5344.9569000</span></span>
-<span id="cb10-43"><a href="#cb10-43" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.2089044</span></span>
-<span id="cb10-44"><a href="#cb10-44" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.2068109</span></span>
+<span id="cb10-41"><a href="#cb10-41" tabindex="-1"></a><span class="co">#&gt; AIC:                     5304.6217768</span></span>
+<span id="cb10-42"><a href="#cb10-42" tabindex="-1"></a><span class="co">#&gt; BIC:                     5345.1393000</span></span>
+<span id="cb10-43"><a href="#cb10-43" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.2088771</span></span>
+<span id="cb10-44"><a href="#cb10-44" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.2067836</span></span>
 <span id="cb10-45"><a href="#cb10-45" tabindex="-1"></a><span class="co">#&gt; Number of Observations:  2412.0000000</span></span>
 <span id="cb10-46"><a href="#cb10-46" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb10-47"><a href="#cb10-47" tabindex="-1"></a><span class="co">#&gt; Summary of 10k Draws for Random Coefficients: </span></span>
 <span id="cb10-48"><a href="#cb10-48" tabindex="-1"></a><span class="co">#&gt;      Min.   1st Qu.    Median      Mean  3rd Qu. Max.</span></span>
-<span id="cb10-49"><a href="#cb10-49" tabindex="-1"></a><span class="co">#&gt; feat -Inf -0.747793 0.8307929 0.8322819 2.409918  Inf</span></span></code></pre></div>
+<span id="cb10-49"><a href="#cb10-49" tabindex="-1"></a><span class="co">#&gt; feat -Inf -0.602586 0.9236728 0.9222336 2.449411  Inf</span></span></code></pre></div>
 </div>
 
 

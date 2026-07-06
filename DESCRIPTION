@@ -1,6 +1,6 @@
 Package: logitr
 Title: Logit Models w/Preference & WTP Space Utility Parameterizations
-Version: 1.1.3
+Version: 1.2.0
 Authors@R: c(
     person(given   = "John",
            family  = "Helveston",
@@ -21,14 +21,17 @@ Depends: R (>= 3.5.0)
 Suggests: apollo, broom, broom.helpers (>= 1.15.0), dplyr, fastDummies,
         ggplot2, ggrepel, gmnl, gtsummary (>= 2.0.0), here, kableExtra,
         knitr, mixl, mlogit, rmarkdown, testthat, texreg, tidyr
-Imports: generics, MASS, nloptr, parallel, randtoolbox, stats, tibble
-URL: https://github.com/jhelvy/logitr
+Imports: generics, MASS, mirai, nloptr, parallel, randtoolbox, Rcpp,
+        RcppParallel, stats, tibble
+LinkingTo: Rcpp, RcppParallel
+SystemRequirements: GNU make
+URL: https://github.com/jhelvy/logitr, https://jhelvy.github.io/logitr/
 BugReports: https://github.com/jhelvy/logitr/issues
-NeedsCompilation: no
-Packaged: 2025-11-16 00:07:15 UTC; jhelvy
+NeedsCompilation: yes
+Packaged: 2026-07-06 10:51:22 UTC; jhelvy
 Author: John Helveston [aut, cre, cph] (ORCID:
     <https://orcid.org/0000-0002-2657-9191>),
   Connor Forsythe [ctb]
 Maintainer: John Helveston <john.helveston@gmail.com>
 Repository: CRAN
-Date/Publication: 2025-11-18 06:10:21 UTC
+Date/Publication: 2026-07-06 15:20:02 UTC

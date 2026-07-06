@@ -149,7 +149,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 div.csl-bib-body { }
 div.csl-entry {
 clear: both;
-margin-bottom: 0em;
 }
 .hanging div.csl-entry {
 margin-left:2em;
@@ -448,9 +447,9 @@ logit model in the preference space:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">summary</span>(mnl_pref)</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Sat Nov 15 19:07:05 2025 </span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Mon Jul 06 06:51:08 2026 </span></span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.1.3 </span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.2.0 </span></span>
 <span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
 <span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt; logitr(data = yogurt, outcome = &quot;choice&quot;, obsID = &quot;obsID&quot;, pars = c(&quot;price&quot;, </span></span>
@@ -465,7 +464,7 @@ logit model in the preference space:</p>
 <span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; Model Type:    Multinomial Logit</span></span>
 <span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; Model Space:          Preference</span></span>
 <span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt; Model Run:                1 of 1</span></span>
-<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt; Iterations:                   21</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt; Iterations:                   24</span></span>
 <span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:        0h:0m:0.01s</span></span>
 <span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; Algorithm:        NLOPT_LD_LBFGS</span></span>
 <span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; Weights Used?:             FALSE</span></span>
@@ -473,17 +472,17 @@ logit model in the preference space:</p>
 <span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
 <span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt;               Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; price        -0.366555   0.024365 -15.0441 &lt; 2.2e-16 ***</span></span>
-<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; feat          0.491439   0.120062   4.0932 4.254e-05 ***</span></span>
-<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="co">#&gt; brandhiland  -3.715477   0.145417 -25.5506 &lt; 2.2e-16 ***</span></span>
-<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co">#&gt; brandweight  -0.641138   0.054498 -11.7645 &lt; 2.2e-16 ***</span></span>
-<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co">#&gt; brandyoplait  0.734519   0.080642   9.1084 &lt; 2.2e-16 ***</span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; price        -0.366584   0.024366 -15.0449 &lt; 2.2e-16 ***</span></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; feat          0.491434   0.120063   4.0931 4.256e-05 ***</span></span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="co">#&gt; brandhiland  -3.715600   0.145419 -25.5510 &lt; 2.2e-16 ***</span></span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co">#&gt; brandweight  -0.641184   0.054498 -11.7652 &lt; 2.2e-16 ***</span></span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co">#&gt; brandyoplait  0.734571   0.080644   9.1088 &lt; 2.2e-16 ***</span></span>
 <span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
 <span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
 <span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
-<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -2656.8878790</span></span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -2656.8878779</span></span>
 <span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="co">#&gt; Null Log-Likelihood:    -3343.7419990</span></span>
-<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="co">#&gt; AIC:                     5323.7757580</span></span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="co">#&gt; AIC:                     5323.7757559</span></span>
 <span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="co">#&gt; BIC:                     5352.7168000</span></span>
 <span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.2054148</span></span>
 <span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.2039195</span></span>
@@ -491,16 +490,16 @@ logit model in the preference space:</p>
 <p>View the estimated model coefficients:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">coef</span>(mnl_pref)</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt;        price         feat  brandhiland  brandweight brandyoplait </span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt;   -0.3665546    0.4914392   -3.7154773   -0.6411384    0.7345195</span></span></code></pre></div>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt;   -0.3665845    0.4914335   -3.7156002   -0.6411843    0.7345712</span></span></code></pre></div>
 <p>Compute the WTP implied from the preference space model:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>wtp_mnl_pref <span class="ot">&lt;-</span> <span class="fu">wtp</span>(mnl_pref, <span class="at">scalePar =</span>  <span class="st">&quot;price&quot;</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>wtp_mnl_pref</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt;                Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; scalePar       0.366555   0.024329  15.0666 &lt; 2.2e-16 ***</span></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; feat           1.340699   0.358927   3.7353 0.0001875 ***</span></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; brandhiland  -10.136219   0.585020 -17.3263 &lt; 2.2e-16 ***</span></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; brandweight   -1.749094   0.181874  -9.6171 &lt; 2.2e-16 ***</span></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; brandyoplait   2.003848   0.143773  13.9376 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; scalePar       0.366584   0.024365  15.0454 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; feat           1.340574   0.359857   3.7253 0.0001951 ***</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; brandhiland  -10.135727   0.584287 -17.3472 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; brandweight   -1.749077   0.181596  -9.6317 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; brandyoplait   2.003825   0.143039  14.0089 &lt; 2.2e-16 ***</span></span>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
 <span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
 </div>
@@ -538,9 +537,9 @@ logit model in the WTP space:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">summary</span>(mnl_wtp)</span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Sat Nov 15 19:07:05 2025 </span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Mon Jul 06 06:51:09 2026 </span></span>
 <span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.1.3 </span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.2.0 </span></span>
 <span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
 <span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; logitr(data = yogurt, outcome = &quot;choice&quot;, obsID = &quot;obsID&quot;, pars = c(&quot;feat&quot;, </span></span>
@@ -553,16 +552,16 @@ logit model in the WTP space:</p>
 <span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; Summary Of Multistart Runs:</span></span>
 <span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt;    Log Likelihood Iterations Exit Status</span></span>
-<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt; 1       -2656.888         84           3</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt; 1       -2656.888         96           3</span></span>
 <span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; 2       -2656.888         43           3</span></span>
-<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; 3       -2656.888         36           3</span></span>
-<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#&gt; 4       -2656.888         44           3</span></span>
-<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt; 5       -2656.888         47           3</span></span>
-<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="co">#&gt; 6       -2656.888         40           3</span></span>
-<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a><span class="co">#&gt; 7       -2656.888         43           3</span></span>
-<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a><span class="co">#&gt; 8       -2656.888         46           3</span></span>
-<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a><span class="co">#&gt; 9       -2656.888         38           3</span></span>
-<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a><span class="co">#&gt; 10      -2656.888         38           3</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; 3       -2656.888         38           3</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#&gt; 4       -2656.888         46           4</span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt; 5       -2656.888         38           3</span></span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="co">#&gt; 6       -2656.888         42           3</span></span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a><span class="co">#&gt; 7       -2656.888         47           3</span></span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a><span class="co">#&gt; 8       -2656.888         45           3</span></span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a><span class="co">#&gt; 9       -2656.888         39           3</span></span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a><span class="co">#&gt; 10      -2656.888         61           3</span></span>
 <span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a><span class="co">#&gt; Use statusCodes() to view the meaning of each status code</span></span>
 <span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
@@ -570,20 +569,20 @@ logit model in the WTP space:</p>
 <span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a><span class="co">#&gt;                                  </span></span>
 <span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a><span class="co">#&gt; Model Type:     Multinomial Logit</span></span>
 <span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a><span class="co">#&gt; Model Space:   Willingness-to-Pay</span></span>
-<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a><span class="co">#&gt; Model Run:                1 of 10</span></span>
-<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a><span class="co">#&gt; Iterations:                    84</span></span>
-<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:         0h:0m:0.11s</span></span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a><span class="co">#&gt; Model Run:                2 of 10</span></span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a><span class="co">#&gt; Iterations:                    43</span></span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:         0h:0m:0.05s</span></span>
 <span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a><span class="co">#&gt; Algorithm:         NLOPT_LD_LBFGS</span></span>
 <span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a><span class="co">#&gt; Weights Used?:              FALSE</span></span>
 <span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a><span class="co">#&gt; Robust?                     FALSE</span></span>
 <span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb6-43"><a href="#cb6-43" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
 <span id="cb6-44"><a href="#cb6-44" tabindex="-1"></a><span class="co">#&gt;                Estimate Std. Error  z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb6-45"><a href="#cb6-45" tabindex="-1"></a><span class="co">#&gt; scalePar       0.366585   0.024366  15.0450 &lt; 2.2e-16 ***</span></span>
-<span id="cb6-46"><a href="#cb6-46" tabindex="-1"></a><span class="co">#&gt; feat           1.340566   0.355864   3.7671 0.0001652 ***</span></span>
-<span id="cb6-47"><a href="#cb6-47" tabindex="-1"></a><span class="co">#&gt; brandhiland  -10.135707   0.576078 -17.5943 &lt; 2.2e-16 ***</span></span>
-<span id="cb6-48"><a href="#cb6-48" tabindex="-1"></a><span class="co">#&gt; brandweight   -1.749066   0.179896  -9.7227 &lt; 2.2e-16 ***</span></span>
-<span id="cb6-49"><a href="#cb6-49" tabindex="-1"></a><span class="co">#&gt; brandyoplait   2.003824   0.142377  14.0741 &lt; 2.2e-16 ***</span></span>
+<span id="cb6-45"><a href="#cb6-45" tabindex="-1"></a><span class="co">#&gt; scalePar       0.366584   0.024366  15.0449 &lt; 2.2e-16 ***</span></span>
+<span id="cb6-46"><a href="#cb6-46" tabindex="-1"></a><span class="co">#&gt; feat           1.340574   0.355865   3.7671 0.0001652 ***</span></span>
+<span id="cb6-47"><a href="#cb6-47" tabindex="-1"></a><span class="co">#&gt; brandhiland  -10.135727   0.576083 -17.5942 &lt; 2.2e-16 ***</span></span>
+<span id="cb6-48"><a href="#cb6-48" tabindex="-1"></a><span class="co">#&gt; brandweight   -1.749077   0.179897  -9.7227 &lt; 2.2e-16 ***</span></span>
+<span id="cb6-49"><a href="#cb6-49" tabindex="-1"></a><span class="co">#&gt; brandyoplait   2.003825   0.142377  14.0741 &lt; 2.2e-16 ***</span></span>
 <span id="cb6-50"><a href="#cb6-50" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
 <span id="cb6-51"><a href="#cb6-51" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
 <span id="cb6-52"><a href="#cb6-52" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
@@ -597,7 +596,7 @@ logit model in the WTP space:</p>
 <p>View the estimated model coefficients:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">coef</span>(mnl_wtp)</span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt;     scalePar         feat  brandhiland  brandweight brandyoplait </span></span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt;    0.3665849    1.3405656  -10.1357075   -1.7490664    2.0038243</span></span></code></pre></div>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt;    0.3665845    1.3405736  -10.1357270   -1.7490765    2.0038252</span></span></code></pre></div>
 </div>
 <div id="compare-wtp-from-both-models" class="section level1">
 <h1>Compare WTP from both models</h1>
@@ -614,16 +613,16 @@ space and WTP space models, use the <code>wtpCompare()</code>
 function:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">wtpCompare</span>(mnl_pref, mnl_wtp, <span class="at">scalePar =</span> <span class="st">&#39;price&#39;</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt;                       pref           wtp  difference</span></span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; scalePar         0.3665546     0.3665849  0.00003030</span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; feat             1.3406987     1.3405656 -0.00013309</span></span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; brandhiland    -10.1362190   -10.1357075  0.00051155</span></span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; brandweight     -1.7490940    -1.7490664  0.00002759</span></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; brandyoplait     2.0038476     2.0038243 -0.00002336</span></span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; logLik       -2656.8878790 -2656.8878779  0.00000106</span></span></code></pre></div>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; scalePar         0.3665845     0.3665845  0.00000001</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; feat             1.3405737     1.3405736 -0.00000019</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; brandhiland    -10.1357272   -10.1357270  0.00000027</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; brandweight     -1.7490765    -1.7490765 -0.00000001</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; brandyoplait     2.0038253     2.0038252 -0.00000009</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; logLik       -2656.8878779 -2656.8878779  0.00000000</span></span></code></pre></div>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Jain1994" class="csl-entry">
 Jain, Dipak C, Naufel J Vilcassim, and Pradeep K Chintagunta. 1994.
 <span>“A Random-Coefficients Logit Brand-Choice Model Applied to Panel

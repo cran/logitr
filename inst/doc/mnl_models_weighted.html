@@ -149,7 +149,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 div.csl-bib-body { }
 div.csl-entry {
 clear: both;
-margin-bottom: 0em;
 }
 .hanging div.csl-entry {
 margin-left:2em;
@@ -514,9 +513,9 @@ it will also be <code>TRUE</code> in the weighted model:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">summary</span>(mnl_wtp_unweighted)</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Sat Nov 15 19:07:06 2025 </span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Mon Jul 06 06:51:10 2026 </span></span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.1.3 </span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.2.0 </span></span>
 <span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
 <span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt; logitr(data = cars_us, outcome = &quot;choice&quot;, obsID = &quot;obsnum&quot;, </span></span>
@@ -531,16 +530,16 @@ it will also be <code>TRUE</code> in the weighted model:</p>
 <span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; Summary Of Multistart Runs:</span></span>
 <span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt;    Log Likelihood Iterations Exit Status</span></span>
-<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt; 1       -4616.952         26           3</span></span>
-<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; 2       -4616.952         31           3</span></span>
-<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; 3       -4616.952         30           3</span></span>
-<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; 4       -4616.952         36           3</span></span>
-<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; 5       -4616.952         32           3</span></span>
-<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; 6       -4616.952         32           3</span></span>
-<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; 7       -4616.952         33           3</span></span>
-<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; 8       -4616.952         34           3</span></span>
-<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; 9       -4616.952         32           3</span></span>
-<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; 10      -4616.952         33           3</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt; 1       -4616.952         30           3</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; 2       -4616.952         37           3</span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; 3       -4616.952         37           3</span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; 4       -4616.952         39           3</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; 5       -4616.952         38           3</span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; 6       -4616.952         37           3</span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; 7       -4616.952         34           3</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; 8       -4616.952         38           3</span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; 9       -4616.952         59           3</span></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; 10      -4616.952         40           3</span></span>
 <span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co">#&gt; Use statusCodes() to view the meaning of each status code</span></span>
 <span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co">#&gt; </span></span>
@@ -548,9 +547,9 @@ it will also be <code>TRUE</code> in the weighted model:</p>
 <span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="co">#&gt;                                  </span></span>
 <span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="co">#&gt; Model Type:     Multinomial Logit</span></span>
 <span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt; Model Space:   Willingness-to-Pay</span></span>
-<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="co">#&gt; Model Run:                1 of 10</span></span>
-<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="co">#&gt; Iterations:                    26</span></span>
-<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:         0h:0m:0.16s</span></span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="co">#&gt; Model Run:                2 of 10</span></span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="co">#&gt; Iterations:                    37</span></span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:         0h:0m:0.13s</span></span>
 <span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a><span class="co">#&gt; Algorithm:         NLOPT_LD_LBFGS</span></span>
 <span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a><span class="co">#&gt; Weights Used?:              FALSE</span></span>
 <span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a><span class="co">#&gt; Cluster ID:                obsnum</span></span>
@@ -558,28 +557,28 @@ it will also be <code>TRUE</code> in the weighted model:</p>
 <span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
 <span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a><span class="co">#&gt;                   Estimate  Std. Error  z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a><span class="co">#&gt; scalePar         0.0738778   0.0021929  33.6898 &lt; 2.2e-16 ***</span></span>
-<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a><span class="co">#&gt; hev              0.8068260   0.9990687   0.8076 0.4193335    </span></span>
-<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a><span class="co">#&gt; phev10           1.1649982   1.0615103   1.0975 0.2724267    </span></span>
-<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a><span class="co">#&gt; phev20           1.6473977   1.0617543   1.5516 0.1207625    </span></span>
-<span id="cb2-52"><a href="#cb2-52" tabindex="-1"></a><span class="co">#&gt; phev40           2.5795310   1.0499377   2.4568 0.0140164 *  </span></span>
-<span id="cb2-53"><a href="#cb2-53" tabindex="-1"></a><span class="co">#&gt; bev75          -16.0458997   1.2541305 -12.7944 &lt; 2.2e-16 ***</span></span>
-<span id="cb2-54"><a href="#cb2-54" tabindex="-1"></a><span class="co">#&gt; bev100         -13.0033090   1.2388653 -10.4961 &lt; 2.2e-16 ***</span></span>
-<span id="cb2-55"><a href="#cb2-55" tabindex="-1"></a><span class="co">#&gt; bev150          -9.5736990   1.1641920  -8.2235 2.220e-16 ***</span></span>
-<span id="cb2-56"><a href="#cb2-56" tabindex="-1"></a><span class="co">#&gt; american         2.3429451   0.7979690   2.9361 0.0033233 ** </span></span>
-<span id="cb2-57"><a href="#cb2-57" tabindex="-1"></a><span class="co">#&gt; japanese        -0.3756939   0.7998368  -0.4697 0.6385600    </span></span>
-<span id="cb2-58"><a href="#cb2-58" tabindex="-1"></a><span class="co">#&gt; chinese        -10.2706045   0.8859927 -11.5922 &lt; 2.2e-16 ***</span></span>
-<span id="cb2-59"><a href="#cb2-59" tabindex="-1"></a><span class="co">#&gt; skorean         -6.0320195   0.8514460  -7.0844 1.396e-12 ***</span></span>
-<span id="cb2-60"><a href="#cb2-60" tabindex="-1"></a><span class="co">#&gt; phevFastcharge   2.8797097   0.8028928   3.5867 0.0003349 ***</span></span>
-<span id="cb2-61"><a href="#cb2-61" tabindex="-1"></a><span class="co">#&gt; bevFastcharge    2.9187141   0.9181393   3.1789 0.0014781 ** </span></span>
-<span id="cb2-62"><a href="#cb2-62" tabindex="-1"></a><span class="co">#&gt; opCost          -1.6360512   0.0686316 -23.8382 &lt; 2.2e-16 ***</span></span>
-<span id="cb2-63"><a href="#cb2-63" tabindex="-1"></a><span class="co">#&gt; accelTime       -1.6970892   0.1638118 -10.3600 &lt; 2.2e-16 ***</span></span>
+<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a><span class="co">#&gt; scalePar         0.0738776   0.0021929  33.6898 &lt; 2.2e-16 ***</span></span>
+<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a><span class="co">#&gt; hev              0.8068369   0.9990699   0.8076 0.4193278    </span></span>
+<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a><span class="co">#&gt; phev10           1.1660583   1.0615084   1.0985 0.2719898    </span></span>
+<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a><span class="co">#&gt; phev20           1.6478763   1.0617545   1.5520 0.1206547    </span></span>
+<span id="cb2-52"><a href="#cb2-52" tabindex="-1"></a><span class="co">#&gt; phev40           2.5798015   1.0499375   2.4571 0.0140064 *  </span></span>
+<span id="cb2-53"><a href="#cb2-53" tabindex="-1"></a><span class="co">#&gt; bev75          -16.0465590   1.2541584 -12.7947 &lt; 2.2e-16 ***</span></span>
+<span id="cb2-54"><a href="#cb2-54" tabindex="-1"></a><span class="co">#&gt; bev100         -13.0036966   1.2388778 -10.4964 &lt; 2.2e-16 ***</span></span>
+<span id="cb2-55"><a href="#cb2-55" tabindex="-1"></a><span class="co">#&gt; bev150          -9.5739123   1.1641998  -8.2236 2.220e-16 ***</span></span>
+<span id="cb2-56"><a href="#cb2-56" tabindex="-1"></a><span class="co">#&gt; american         2.3440841   0.7979780   2.9375 0.0033084 ** </span></span>
+<span id="cb2-57"><a href="#cb2-57" tabindex="-1"></a><span class="co">#&gt; japanese        -0.3746759   0.7998393  -0.4684 0.6394707    </span></span>
+<span id="cb2-58"><a href="#cb2-58" tabindex="-1"></a><span class="co">#&gt; chinese        -10.2689085   0.8859536 -11.5908 &lt; 2.2e-16 ***</span></span>
+<span id="cb2-59"><a href="#cb2-59" tabindex="-1"></a><span class="co">#&gt; skorean         -6.0310403   0.8514392  -7.0833 1.407e-12 ***</span></span>
+<span id="cb2-60"><a href="#cb2-60" tabindex="-1"></a><span class="co">#&gt; phevFastcharge   2.8790894   0.8028862   3.5859 0.0003359 ***</span></span>
+<span id="cb2-61"><a href="#cb2-61" tabindex="-1"></a><span class="co">#&gt; bevFastcharge    2.9190770   0.9181470   3.1793 0.0014762 ** </span></span>
+<span id="cb2-62"><a href="#cb2-62" tabindex="-1"></a><span class="co">#&gt; opCost          -1.6360677   0.0686324 -23.8381 &lt; 2.2e-16 ***</span></span>
+<span id="cb2-63"><a href="#cb2-63" tabindex="-1"></a><span class="co">#&gt; accelTime       -1.6970474   0.1638110 -10.3598 &lt; 2.2e-16 ***</span></span>
 <span id="cb2-64"><a href="#cb2-64" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
 <span id="cb2-65"><a href="#cb2-65" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
 <span id="cb2-66"><a href="#cb2-66" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
-<span id="cb2-67"><a href="#cb2-67" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -4616.9517826</span></span>
+<span id="cb2-67"><a href="#cb2-67" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -4616.9517791</span></span>
 <span id="cb2-68"><a href="#cb2-68" tabindex="-1"></a><span class="co">#&gt; Null Log-Likelihood:    -6328.0067827</span></span>
-<span id="cb2-69"><a href="#cb2-69" tabindex="-1"></a><span class="co">#&gt; AIC:                     9265.9035652</span></span>
+<span id="cb2-69"><a href="#cb2-69" tabindex="-1"></a><span class="co">#&gt; AIC:                     9265.9035583</span></span>
 <span id="cb2-70"><a href="#cb2-70" tabindex="-1"></a><span class="co">#&gt; BIC:                     9372.4426000</span></span>
 <span id="cb2-71"><a href="#cb2-71" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.2703940</span></span>
 <span id="cb2-72"><a href="#cb2-72" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.2678655</span></span>
@@ -614,9 +613,9 @@ example, the weights used in the <code>weights</code> column range from
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">summary</span>(mnl_wtp_weighted)</span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; =================================================</span></span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Sat Nov 15 19:07:07 2025 </span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; Model estimated on: Mon Jul 06 06:51:12 2026 </span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.1.3 </span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; Using logitr version: 1.2.0 </span></span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; logitr(data = cars_us, outcome = &quot;choice&quot;, obsID = &quot;obsnum&quot;, </span></span>
@@ -631,16 +630,16 @@ example, the weights used in the <code>weights</code> column range from
 <span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; Summary Of Multistart Runs:</span></span>
 <span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt;    Log Likelihood Iterations Exit Status</span></span>
-<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; 1       -3425.633         19           3</span></span>
-<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt; 2       -3425.630         35           3</span></span>
-<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; 3       -3425.630         38           3</span></span>
-<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co">#&gt; 4       -3425.630         32           3</span></span>
-<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co">#&gt; 5       -3425.630         30           3</span></span>
-<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co">#&gt; 6       -3425.630         29           3</span></span>
-<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co">#&gt; 7       -3425.630         32           3</span></span>
-<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a><span class="co">#&gt; 8       -3425.630         30           3</span></span>
-<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co">#&gt; 9       -3425.630         33           3</span></span>
-<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a><span class="co">#&gt; 10      -3425.630         28           3</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; 1        -3425.63         27           3</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt; 2        -3425.63         37           3</span></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; 3        -3425.63         36           3</span></span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co">#&gt; 4        -3425.63         36           3</span></span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co">#&gt; 5        -3425.63         39           3</span></span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co">#&gt; 6        -3425.63         35           3</span></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co">#&gt; 7        -3425.63         35           3</span></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a><span class="co">#&gt; 8        -3425.63         33           3</span></span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co">#&gt; 9        -3425.63         36           3</span></span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a><span class="co">#&gt; 10       -3425.63         36           3</span></span>
 <span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a><span class="co">#&gt; Use statusCodes() to view the meaning of each status code</span></span>
 <span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a><span class="co">#&gt; </span></span>
@@ -648,7 +647,7 @@ example, the weights used in the <code>weights</code> column range from
 <span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="co">#&gt;                                  </span></span>
 <span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a><span class="co">#&gt; Model Type:     Multinomial Logit</span></span>
 <span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a><span class="co">#&gt; Model Space:   Willingness-to-Pay</span></span>
-<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a><span class="co">#&gt; Model Run:                2 of 10</span></span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a><span class="co">#&gt; Model Run:                7 of 10</span></span>
 <span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a><span class="co">#&gt; Iterations:                    35</span></span>
 <span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a><span class="co">#&gt; Elapsed Time:         0h:0m:0.12s</span></span>
 <span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co">#&gt; Algorithm:         NLOPT_LD_LBFGS</span></span>
@@ -657,29 +656,29 @@ example, the weights used in the <code>weights</code> column range from
 <span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="co">#&gt; Robust?                      TRUE</span></span>
 <span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a><span class="co">#&gt; Model Coefficients: </span></span>
-<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a><span class="co">#&gt;                   Estimate  Std. Error z-value  Pr(&gt;|z|)    </span></span>
-<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a><span class="co">#&gt; scalePar         0.0522790   0.0040689 12.8485 &lt; 2.2e-16 ***</span></span>
-<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a><span class="co">#&gt; hev             -1.1760322   2.9133817 -0.4037 0.6864586    </span></span>
-<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a><span class="co">#&gt; phev10           0.0289128   3.1280694  0.0092 0.9926252    </span></span>
-<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a><span class="co">#&gt; phev20           1.6963604   3.0997730  0.5473 0.5842048    </span></span>
-<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a><span class="co">#&gt; phev40           2.6500089   2.9852443  0.8877 0.3747008    </span></span>
-<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a><span class="co">#&gt; bev75          -20.1376341   3.6673396 -5.4911 3.995e-08 ***</span></span>
-<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a><span class="co">#&gt; bev100         -19.4975106   3.6257393 -5.3775 7.552e-08 ***</span></span>
-<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a><span class="co">#&gt; bev150         -13.6943949   3.4930224 -3.9205 8.837e-05 ***</span></span>
-<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a><span class="co">#&gt; american         8.1873881   2.4053418  3.4038 0.0006645 ***</span></span>
-<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a><span class="co">#&gt; japanese         0.9336507   2.3604050  0.3955 0.6924394    </span></span>
-<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a><span class="co">#&gt; chinese        -19.0077467   2.8541078 -6.6598 2.742e-11 ***</span></span>
-<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a><span class="co">#&gt; skorean         -9.5100856   2.5234703 -3.7687 0.0001641 ***</span></span>
-<span id="cb4-60"><a href="#cb4-60" tabindex="-1"></a><span class="co">#&gt; phevFastcharge   3.9431408   2.3624277  1.6691 0.0950965 .  </span></span>
-<span id="cb4-61"><a href="#cb4-61" tabindex="-1"></a><span class="co">#&gt; bevFastcharge    3.3448264   2.8088037  1.1908 0.2337177    </span></span>
-<span id="cb4-62"><a href="#cb4-62" tabindex="-1"></a><span class="co">#&gt; opCost          -1.5975793   0.1948559 -8.1988 2.220e-16 ***</span></span>
-<span id="cb4-63"><a href="#cb4-63" tabindex="-1"></a><span class="co">#&gt; accelTime       -1.1718925   0.4834829 -2.4239 0.0153567 *  </span></span>
+<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a><span class="co">#&gt;                  Estimate Std. Error z-value  Pr(&gt;|z|)    </span></span>
+<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a><span class="co">#&gt; scalePar         0.052281   0.004069 12.8485 &lt; 2.2e-16 ***</span></span>
+<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a><span class="co">#&gt; hev             -1.176207   2.913308 -0.4037  0.686407    </span></span>
+<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a><span class="co">#&gt; phev10           0.027225   3.128004  0.0087  0.993056    </span></span>
+<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a><span class="co">#&gt; phev20           1.694665   3.099701  0.5467  0.584572    </span></span>
+<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a><span class="co">#&gt; phev40           2.649552   2.985163  0.8876  0.374770    </span></span>
+<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a><span class="co">#&gt; bev75          -20.136494   3.667165 -5.4910 3.996e-08 ***</span></span>
+<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a><span class="co">#&gt; bev100         -19.496439   3.625584 -5.3775 7.554e-08 ***</span></span>
+<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a><span class="co">#&gt; bev150         -13.691135   3.492686 -3.9199 8.857e-05 ***</span></span>
+<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a><span class="co">#&gt; american         8.187709   2.405291  3.4040  0.000664 ***</span></span>
+<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a><span class="co">#&gt; japanese         0.934265   2.360347  0.3958  0.692240    </span></span>
+<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a><span class="co">#&gt; chinese        -19.007600   2.854081 -6.6598 2.742e-11 ***</span></span>
+<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a><span class="co">#&gt; skorean         -9.510324   2.523429 -3.7688  0.000164 ***</span></span>
+<span id="cb4-60"><a href="#cb4-60" tabindex="-1"></a><span class="co">#&gt; phevFastcharge   3.943904   2.362413  1.6694  0.095030 .  </span></span>
+<span id="cb4-61"><a href="#cb4-61" tabindex="-1"></a><span class="co">#&gt; bevFastcharge    3.342682   2.808676  1.1901  0.233996    </span></span>
+<span id="cb4-62"><a href="#cb4-62" tabindex="-1"></a><span class="co">#&gt; opCost          -1.597548   0.194850 -8.1989 2.220e-16 ***</span></span>
+<span id="cb4-63"><a href="#cb4-63" tabindex="-1"></a><span class="co">#&gt; accelTime       -1.171821   0.483469 -2.4238  0.015360 *  </span></span>
 <span id="cb4-64"><a href="#cb4-64" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
 <span id="cb4-65"><a href="#cb4-65" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
 <span id="cb4-66"><a href="#cb4-66" tabindex="-1"></a><span class="co">#&gt;                                      </span></span>
-<span id="cb4-67"><a href="#cb4-67" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -3425.6302885</span></span>
+<span id="cb4-67"><a href="#cb4-67" tabindex="-1"></a><span class="co">#&gt; Log-Likelihood:         -3425.6302845</span></span>
 <span id="cb4-68"><a href="#cb4-68" tabindex="-1"></a><span class="co">#&gt; Null Log-Likelihood:    -4360.5909275</span></span>
-<span id="cb4-69"><a href="#cb4-69" tabindex="-1"></a><span class="co">#&gt; AIC:                     6883.2605770</span></span>
+<span id="cb4-69"><a href="#cb4-69" tabindex="-1"></a><span class="co">#&gt; AIC:                     6883.2605689</span></span>
 <span id="cb4-70"><a href="#cb4-70" tabindex="-1"></a><span class="co">#&gt; BIC:                     6989.7997000</span></span>
 <span id="cb4-71"><a href="#cb4-71" tabindex="-1"></a><span class="co">#&gt; McFadden R2:                0.2144115</span></span>
 <span id="cb4-72"><a href="#cb4-72" tabindex="-1"></a><span class="co">#&gt; Adj McFadden R2:            0.2107422</span></span>
@@ -697,22 +696,22 @@ of each individual choice in the weighted model:</p>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">Weighted   =</span> <span class="fu">coef</span>(mnl_wtp_weighted)</span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>)</span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt;                  Unweighted     Weighted</span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; scalePar         0.07387776   0.05227900</span></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; hev              0.80682602  -1.17603220</span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; phev10           1.16499818   0.02891284</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; phev20           1.64739765   1.69636042</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; phev40           2.57953096   2.65000893</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; bev75          -16.04589966 -20.13763412</span></span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; bev100         -13.00330902 -19.49751057</span></span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; bev150          -9.57369897 -13.69439491</span></span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; american         2.34294510   8.18738812</span></span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; japanese        -0.37569387   0.93365066</span></span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; chinese        -10.27060451 -19.00774674</span></span>
-<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; skorean         -6.03201950  -9.51008556</span></span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; phevFastcharge   2.87970966   3.94314075</span></span>
-<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; bevFastcharge    2.91871408   3.34482635</span></span>
-<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; opCost          -1.63605116  -1.59757931</span></span>
-<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; accelTime       -1.69708921  -1.17189253</span></span></code></pre></div>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; scalePar         0.07387762   0.05228073</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; hev              0.80683687  -1.17620656</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; phev10           1.16605831   0.02722480</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; phev20           1.64787631   1.69466518</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; phev40           2.57980149   2.64955185</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; bev75          -16.04655895 -20.13649368</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; bev100         -13.00369657 -19.49643910</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; bev150          -9.57391233 -13.69113538</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; american         2.34408414   8.18770911</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; japanese        -0.37467593   0.93426518</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; chinese        -10.26890853 -19.00760036</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; skorean         -6.03104033  -9.51032389</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; phevFastcharge   2.87908941   3.94390385</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; bevFastcharge    2.91907697   3.34268191</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; opCost          -1.63606771  -1.59754813</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; accelTime       -1.69704742  -1.17182093</span></span></code></pre></div>
 <p>Here is a comparison of the log-likelihood for the weighted and
 unweighted models:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">c</span>(</span>
@@ -724,7 +723,7 @@ unweighted models:</p>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Helveston2015" class="csl-entry">
 Helveston, John Paul, Yimin Liu, Eleanor Mcdonnell Feit, Erica R. H.
 Fuchs, Erica Klampfl, and Jeremy J. Michalek. 2015. <span>“<span class="nocase">Will Subsidies Drive Electric Vehicle Adoption? Measuring
